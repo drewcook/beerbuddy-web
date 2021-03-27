@@ -7,8 +7,8 @@
 	],
   "scripts": {
     "dev": "next dev",
-    "build": "next build - $PORT",
-		"start": "next start -p $PORT"
+    "build": "next build -p $PORT",
+		"start": "next start"
   },
   "dependencies": {
     "next": "10.0.9",
