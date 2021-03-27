@@ -1,9 +1,12 @@
 import Head from 'next/head'
 import { Button, Typography } from '@material-ui/core';
 import Link from 'next/link';
-import styles from '../styles/HomePage.module.scss'
+import { useAuthentication } from '../components/AuthenticationContext';
+import styles from '../styles/home.module.scss'
 
 const HomePage = () => {
+	const { isAuthenticated } = useAuthentication();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -20,11 +23,25 @@ const HomePage = () => {
 					We keep track of your drinking habits so you don't have to!  Cheers!
 				</Typography>
 
-				<Link href="/login">
-					<a>
-						<Button color="primary" size="large" variant="contained">Login</Button>
-					</a>
-				</Link>
+				{isAuthenticated && <Typography variant="subtitle1">You can now go to your dashboard to create and manage your lists.</Typography>}
+
+				{isAuthenticated
+					? (
+						<Link href="/dashboard">
+							<a>
+								<Button color="primary" size="large" variant="contained">My Dashboard</Button>
+							</a>
+						</Link>
+					)
+					: (
+						<Link href="/login">
+							<a>
+								<Button color="primary" size="large" variant="contained">Login</Button>
+							</a>
+						</Link>
+					)
+				}
+
       </main>
 
       <footer className={styles.footer}>

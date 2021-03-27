@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
-import { AppBar, Container, CssBaseline } from '@material-ui/core';
+import { Container, CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { AuthProvider } from '../components/AuthenticationContext';
 import theme from '../styles/theme';
 import '../styles/globals.scss'
+import NavigationBar from '../components/NavigationBar';
 
 const BeerBuddy = (props) => {
 	const { Component, pageProps } = props;
@@ -16,21 +18,15 @@ const BeerBuddy = (props) => {
 	}, []);
 
   return (
-		<>
-			<ThemeProvider theme={theme}>
+		<ThemeProvider theme={theme}>
+			<AuthProvider>
 				<CssBaseline />
-				{/* navigation */}
-				<AppBar position="static">
-					<Container>
-						app bar here
-					</Container>
-				</AppBar>
-				{/* content */}
+				<NavigationBar />
 				<Container>
 					<Component {...pageProps} />
 				</Container>
-			</ThemeProvider>
-		</>
+			</AuthProvider>
+		</ThemeProvider>
 	);
 };
 

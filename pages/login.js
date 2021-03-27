@@ -12,22 +12,23 @@ import {
 	Typography,
 } from '@material-ui/core';
 import Link from 'next/link';
-import styles from '../styles/LoginPage.module.scss';
-import { authenticateUser } from '../api/auth';
+import styles from '../styles/login.module.scss';
+import { useAuthentication } from '../components/AuthenticationContext';
 
 const LoginPage = () => {
 	const router = useRouter();
+	const { logIn } = useAuthentication();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [error, setError] = useState(false);
+	const [error, setError] = useState(null);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsSubmitting(true);
-		console.log('logging in...');
+		setError(null);
 		try {
-			await authenticateUser({ email, password });
+			await logIn({ email, password });
 			// Redirect back home
 			router.push('/');
 		} catch (e) {
