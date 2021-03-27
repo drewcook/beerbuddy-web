@@ -1,7 +1,9 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { Button, Typography } from '@material-ui/core';
+import Link from 'next/link';
+import styles from '../styles/HomePage.module.scss'
 
-export default function Home() {
+const HomePage = () => {
   return (
     <div className={styles.container}>
       <Head>
@@ -10,13 +12,19 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
+        <Typography variant="h2">
           Welcome to BeerBuddy!
-        </h1>
+				</Typography>
 
-        <p className={styles.description}>
-          We keep track of your drinking habits so you don't have to!  Cheers!
-        </p>
+        <Typography>
+					We keep track of your drinking habits so you don't have to!  Cheers!
+				</Typography>
+
+				<Link href="/login">
+					<a>
+						<Button color="primary" size="large" variant="contained">Login</Button>
+					</a>
+				</Link>
       </main>
 
       <footer className={styles.footer}>
@@ -30,4 +38,6 @@ export default function Home() {
       </footer>
     </div>
   )
-}
+};
+
+export default HomePage;
