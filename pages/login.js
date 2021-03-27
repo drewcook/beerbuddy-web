@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import {
 	Box,
 	Button,
-	CircularProgress,
 	Container,
 	InputLabel,
 	Paper,
@@ -14,6 +13,7 @@ import {
 import Link from 'next/link';
 import styles from '../styles/login.module.scss';
 import { useAuthentication } from '../components/AuthenticationContext';
+import LoadingState from '../components/LoadingState';
 
 const LoginPage = () => {
 	const router = useRouter();
@@ -44,10 +44,8 @@ const LoginPage = () => {
 				<Paper className={styles.paper}>
 					<Typography variant="h3" className={styles.header}>Sign In</Typography>
 					<form onSubmit={handleSubmit} noValidate autoComplete="off">
-						<Box>
-							<InputLabel htmlFor="email">
-								<Typography variant="h5" component="span">Email</Typography>
-							</InputLabel>
+						<Box mb={2}>
+							<InputLabel htmlFor="email">Email</InputLabel>
 							<TextField
 								margin="normal"
 								variant="outlined"
@@ -60,10 +58,8 @@ const LoginPage = () => {
 								fullWidth
 							/>
 						</Box>
-						<Box>
-							<InputLabel htmlFor="password">
-								<Typography variant="h5" component="span">Password</Typography>
-							</InputLabel>
+						<Box mb={2}>
+							<InputLabel htmlFor="password">Password</InputLabel>
 							<TextField
 								margin="normal"
 								variant="outlined"
@@ -76,9 +72,9 @@ const LoginPage = () => {
 								fullWidth
 							/>
 						</Box>
-						{error && <Typography variant="overline" color="error">- {error}</Typography>}
+						{error && <Typography variant="overline" color="error">{error}</Typography>}
 						{isSubmitting
-							? <CircularProgress />
+							? <LoadingState />
 							: (
 								<Box display="flex" flexDirection="column" alignItems="center" className={styles.submit}>
 									<Button
