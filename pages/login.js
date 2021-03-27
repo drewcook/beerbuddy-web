@@ -1,5 +1,6 @@
 import React, { useState} from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import {
 	Box,
 	Button,
@@ -12,17 +13,27 @@ import {
 } from '@material-ui/core';
 import Link from 'next/link';
 import styles from '../styles/LoginPage.module.scss';
+import { authenticateUser } from '../api/auth';
 
 const LoginPage = () => {
+	const router = useRouter();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [error, setError] = useState(false);
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsSubmitting(true);
 		console.log('logging in...');
-		setTimeout(() => setIsSubmitting(false), 3000);
+		try {
+			await authenticateUser({ email, password });
+			// Redirect back home
+			router.push('/');
+		} catch (e) {
+			setIsSubmitting(false);
+			setError(e.message)
+		}
 	};
 
 	return (
@@ -64,6 +75,7 @@ const LoginPage = () => {
 								fullWidth
 							/>
 						</Box>
+						{error && <Typography variant="overline" color="error">- {error}</Typography>}
 						{isSubmitting
 							? <CircularProgress />
 							: (
