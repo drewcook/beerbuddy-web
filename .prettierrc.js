@@ -1,1 +1,4 @@
-module.exports = require('altheajs-prettier-config');
+module.exports = {
+	...require('altheajs-prettier-config'),
+	semi: false,
+}
