@@ -13,7 +13,11 @@ const NavigationBar = () => {
 					<Container maxWidth="lg">
 						{/* <IconButton>...</IconButton> */}
 						<Box display="flex" justifyContent="space-between" alignItems="center" py={1}>
-							<Typography>BeerBuddy</Typography>
+							<Link href="/">
+								<a>
+									<Typography>BeerBuddy</Typography>
+								</a>
+							</Link>
 							{isAuthenticated && (
 								<div>
 									<MenuList className={styles.menuItems}>
