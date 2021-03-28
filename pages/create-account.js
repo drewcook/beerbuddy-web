@@ -7,6 +7,7 @@ import LoadingState from '../components/LoadingState'
 import { createAccount } from '../api/users'
 import { useAuthentication } from '../components/AuthenticationContext'
 import styles from '../styles/login.module.scss'
+import baseStyles from '../styles/base.module.scss'
 
 const CreateAccountPage = () => {
 	const router = useRouter()
@@ -40,7 +41,7 @@ const CreateAccountPage = () => {
 			</Head>
 			<Container maxWidth="sm">
 				<Paper className={styles.paper}>
-					<Typography variant="h3" className={styles.header}>
+					<Typography variant="h3" className={baseStyles.pageTitle}>
 						Create An Account
 					</Typography>
 					<form onSubmit={handleSubmit} noValidate autoComplete="off">

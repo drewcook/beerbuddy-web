@@ -1,4 +1,6 @@
 import Head from 'next/head'
+import { Typography } from '@material-ui/core'
+import baseStyles from '../styles/base.module.scss'
 
 const DashboardPage = props => (
 	<>
@@ -7,7 +9,9 @@ const DashboardPage = props => (
 			<link rel="icon" href="/favicon.ico" />
 		</Head>
 
-		<h2>My Dashboard</h2>
+		<Typography variant="h3" className={baseStyles.pageTitle}>
+			My Dashboard
+		</Typography>
 		<ul>
 			<li>Display # of lists</li>
 			<li>Display recent history events</li>

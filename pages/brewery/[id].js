@@ -2,8 +2,9 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { Button, Typography } from '@material-ui/core'
 import { useAuthentication } from '../../components/AuthenticationContext'
-import styles from '../../styles/details.module.scss'
 import { getBreweryDetails } from '../../api/breweryDb'
+import styles from '../../styles/details.module.scss'
+import baseStyles from '../../styles/base.module.scss'
 
 const BreweryDetailsPage = props => {
 	const { details } = props
@@ -25,7 +26,11 @@ const BreweryDetailsPage = props => {
 					</Button>
 				</a>
 			</Link>
-			<Typography variant="h3">Brewery Details</Typography>
+
+			<Typography variant="h3" className={baseStyles.pageTitle}>
+				Brewery Details
+			</Typography>
+
 			<pre className={styles.code}>
 				<code>{JSON.stringify(details, null, 2)}</code>
 			</pre>

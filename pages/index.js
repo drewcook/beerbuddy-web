@@ -3,6 +3,7 @@ import { Button, Card, CardActions, CardHeader, Typography } from '@material-ui/
 import Link from 'next/link'
 import { useAuthentication } from '../components/AuthenticationContext'
 import styles from '../styles/home.module.scss'
+import baseStyles from '../styles/base.module.scss'
 
 const HomePage = () => {
 	const { isAuthenticated } = useAuthentication()
@@ -14,7 +15,7 @@ const HomePage = () => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<Typography variant="h2" gutterBottom>
+			<Typography variant="h2" component="h3" className={baseStyles.pageTitle}>
 				Welcome to BeerBuddy!
 			</Typography>
 
