@@ -37,7 +37,7 @@ const HomePage = () => {
 					<Link href="/login">
 						<a>
 							<Button color="primary" size="large" variant="contained">
-								Login
+								Sign In
 							</Button>
 						</a>
 					</Link>
