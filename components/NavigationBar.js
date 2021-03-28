@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { AppBar, Box, Container, MenuItem, MenuList, Toolbar, Typography } from '@material-ui/core'
 import { useAuthentication } from '../components/AuthenticationContext'
+import LocalDrinkIcon from '@material-ui/icons/LocalDrink'
 import styles from '../styles/navigationbar.module.scss'
 
 const NavigationBar = () => {
@@ -14,7 +15,10 @@ const NavigationBar = () => {
 					<Box display="flex" justifyContent="space-between" alignItems="center" py={1}>
 						<Link href="/">
 							<a>
-								<Typography>BeerBuddy</Typography>
+								<Typography variant="h5" component="h1" className={styles.appName}>
+									<LocalDrinkIcon />
+									BeerBuddy™
+								</Typography>
 							</a>
 						</Link>
 						{isAuthenticated && (
