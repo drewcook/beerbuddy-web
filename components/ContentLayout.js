@@ -1,4 +1,4 @@
-import { Container } from '@material-ui/core'
+import { Container, Typography } from '@material-ui/core'
 import NavigationBar from './NavigationBar'
 import styles from '../styles/base.module.scss'
 
@@ -11,9 +11,17 @@ const ContentLayout = ({ content }) => (
 			</main>
 		</div>
 		<footer className={styles.footer}>
-			<a href="https://altheawebservices.com" target="_blank" rel="noopener noreferrer">
-				Built by Althea Web Services
-			</a>
+			<Container maxWidth="lg">
+				<Typography variant="overline">
+					BeerBuddy™{' '}
+					<a href="https://altheawebservices.com" target="_blank" rel="noopener noreferrer">
+						<small>from Althea Web Services</small>
+					</a>
+				</Typography>
+				<Typography variant="overline">
+					&copy; {new Date().getFullYear()}, All Rights Reserved
+				</Typography>
+			</Container>
 		</footer>
 	</>
 )
