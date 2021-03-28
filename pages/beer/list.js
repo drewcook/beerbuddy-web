@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Typography } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import { useAuthentication } from '../../components/AuthenticationContext'
 import { getBeers } from '../../api/breweryDb'
 import BeerCard from '../../components/BeerCard'
@@ -22,9 +22,13 @@ const BeerListPage = props => {
 				Beer List
 			</Typography>
 
-			{list.map(beer => (
-				<BeerCard beer={beer} key={beer.id} />
-			))}
+			<Grid container spacing={3}>
+				{list.map(beer => (
+					<Grid item xs={12} sm={6} md={4}>
+						<BeerCard beer={beer} key={beer.id} />
+					</Grid>
+				))}
+			</Grid>
 		</>
 	)
 }

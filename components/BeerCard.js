@@ -29,14 +29,20 @@ const BeerCard = ({ beer }) => {
 					{beer.ibu ? beer.ibu : 'n/a'}
 				</Typography>
 			</CardContent>
-			<CardActions>
-				<Button variant="outlined" color="secondary" size="small" onClick={handleAddToList}>
+			<CardActions className={styles.btns}>
+				<Button
+					variant="outlined"
+					color="secondary"
+					size="small"
+					onClick={handleAddToList}
+					fullWidth
+				>
 					Add To List
 				</Button>
 				<Link href={`/beer/${beer.id}`}>
 					<a>
-						<Button variant="outlined" color="primary" size="small">
-							View More Details
+						<Button variant="outlined" color="primary" size="small" fullWidth>
+							View Details
 						</Button>
 					</a>
 				</Link>
