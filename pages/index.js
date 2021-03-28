@@ -43,12 +43,6 @@ const HomePage = () => {
 					</Link>
 				)}
 			</main>
-
-			<footer className={styles.footer}>
-				<a href="https://altheawebservices.com" target="_blank" rel="noopener noreferrer">
-					Built by Althea Web Services
-				</a>
-			</footer>
 		</div>
 	)
 }

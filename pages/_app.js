@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
-import { Container, CssBaseline } from '@material-ui/core'
+import { CssBaseline } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { AuthProvider } from '../components/AuthenticationContext'
 import theme from '../styles/theme'
 import '../styles/globals.scss'
 import NavigationBar from '../components/NavigationBar'
+import ContentLayout from '../components/ContentLayout'
 
 const BeerBuddy = props => {
 	const { Component, pageProps } = props
@@ -22,9 +23,7 @@ const BeerBuddy = props => {
 			<AuthProvider>
 				<CssBaseline />
 				<NavigationBar />
-				<Container>
-					<Component {...pageProps} />
-				</Container>
+				<ContentLayout content={<Component {...pageProps} />} />
 			</AuthProvider>
 		</ThemeProvider>
 	)
