@@ -1,9 +1,9 @@
 import Head from 'next/head'
-import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
-import Link from 'next/link'
+import { Grid, Typography } from '@material-ui/core'
 import { useAuthentication } from '../../components/AuthenticationContext'
-import styles from '../../styles/list.module.scss'
 import { getBreweries } from '../../api/breweryDb'
+import BreweryCard from '../../components/BreweryCard'
+import baseStyles from '../../styles/base.module.scss'
 
 const BreweryListPage = props => {
 	const { list, page, totalPages, totalResults } = props
@@ -18,24 +18,17 @@ const BreweryListPage = props => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<Typography variant="h3">Brewery List</Typography>
+			<Typography variant="h3" className={baseStyles.pageTitle}>
+				Brewery List
+			</Typography>
 
-			{list.map(brewery => (
-				<Card className={styles.card} key={brewery.id}>
-					<CardContent>
-						<Typography variant="h5">{brewery.name}</Typography>
-					</CardContent>
-					<CardActions>
-						<Link href={`/brewery/${brewery.id}`}>
-							<a>
-								<Button variant="contained" color="primary" size="small">
-									View More Details
-								</Button>
-							</a>
-						</Link>
-					</CardActions>
-				</Card>
-			))}
+			<Grid container spacing={3}>
+				{list.map(brewery => (
+					<Grid item xs={12} sm={6} md={4}>
+						<BreweryCard brewery={brewery} key={brewery.id} />
+					</Grid>
+				))}
+			</Grid>
 		</>
 	)
 }

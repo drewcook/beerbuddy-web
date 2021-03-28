@@ -1,5 +1,31 @@
 .card {
-	margin: 15px 0;
-}
+	padding: 15px;
+	text-align: center;
 
+	img {
+		width: 100%;
+		max-width: 200px;
+		margin: auto;
+	}
+
+	.website {
+		display: flex;
+		align-items: center;
+		margin: 5px 0;
+
+		svg {
+			font-size: 0.9rem;
+			margin-right: 5px;
+		}
+	}
+
+	.btns {
+		display: flex;
+		justify-content: space-between;
+
+		a {
+			width: 100%;
+		}
+	}
+}
 

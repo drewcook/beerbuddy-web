@@ -1,9 +1,9 @@
 import Head from 'next/head'
-import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
-import Link from 'next/link'
+import { Typography } from '@material-ui/core'
 import { useAuthentication } from '../../components/AuthenticationContext'
-import styles from '../../styles/list.module.scss'
 import { getBeers } from '../../api/breweryDb'
+import BeerCard from '../../components/BeerCard'
+import baseStyles from '../../styles/base.module.scss'
 
 const BeerListPage = props => {
 	const { list, page, totalPages, totalResults } = props
@@ -18,23 +18,12 @@ const BeerListPage = props => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<Typography variant="h3">Beer List</Typography>
+			<Typography variant="h3" className={baseStyles.pageTitle}>
+				Beer List
+			</Typography>
 
 			{list.map(beer => (
-				<Card className={styles.card} key={beer.id}>
-					<CardContent>
-						<Typography variant="h5">{beer.nameDisplay}</Typography>
-					</CardContent>
-					<CardActions>
-						<Link href={`/beer/${beer.id}`}>
-							<a>
-								<Button variant="contained" color="primary" size="small">
-									View More Details
-								</Button>
-							</a>
-						</Link>
-					</CardActions>
-				</Card>
+				<BeerCard beer={beer} key={beer.id} />
 			))}
 		</>
 	)
