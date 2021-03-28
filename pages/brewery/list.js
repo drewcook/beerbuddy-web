@@ -3,9 +3,9 @@ import { Button, Card, CardActions, CardContent, Typography } from '@material-ui
 import Link from 'next/link'
 import { useAuthentication } from '../../components/AuthenticationContext'
 import styles from '../../styles/list.module.scss'
-import { getBeers } from '../../api/breweryDb'
+import { getBreweries } from '../../api/breweryDb'
 
-const BeerListPage = props => {
+const BreweryListPage = props => {
 	const { list, page, totalPages, totalResults } = props
 	const { isAuthenticated } = useAuthentication()
 
@@ -14,19 +14,19 @@ const BeerListPage = props => {
 	return (
 		<>
 			<Head>
-				<title>BeerBuddy - Beer List</title>
+				<title>BeerBuddy - Brewery List</title>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
 			<main>
-				<Typography variant="h3">Beer List</Typography>
-				{list.map(beer => (
-					<Card className={styles.card} key={beer.id}>
+				<Typography variant="h3">Brewery List</Typography>
+				{list.map(brewery => (
+					<Card className={styles.card} key={brewery.id}>
 						<CardContent>
-							<Typography variant="h5">{beer.nameDisplay}</Typography>
+							<Typography variant="h5">{brewery.name}</Typography>
 						</CardContent>
 						<CardActions>
-							<Link href={`/beer/${beer.id}`}>
+							<Link href={`/brewery/${brewery.id}`}>
 								<a>
 									<Button variant="contained" color="primary" size="small">
 										View More Details
@@ -43,7 +43,7 @@ const BeerListPage = props => {
 
 export const getServerSideProps = async ctx => {
 	const page = 1
-	const resp = await getBeers(page)
+	const resp = await getBreweries(page)
 	const { data, currentPage, numberOfPages, totalResults } = resp
 
 	return {
@@ -56,4 +56,4 @@ export const getServerSideProps = async ctx => {
 	}
 }
 
-export default BeerListPage
+export default BreweryListPage
