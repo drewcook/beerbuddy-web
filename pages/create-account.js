@@ -4,12 +4,12 @@ import { useRouter } from 'next/router'
 import { Box, Button, Container, InputLabel, Paper, TextField, Typography } from '@material-ui/core'
 import Link from 'next/link'
 import styles from '../styles/login.module.scss'
-import { useAuthentication } from '../components/AuthenticationContext'
+// import { useAuthentication } from '../components/AuthenticationContext'
 import LoadingState from '../components/LoadingState'
 
-const LoginPage = () => {
+const CreateAccountPage = () => {
 	const router = useRouter()
-	const { logIn } = useAuthentication()
+	// const { logIn } = useAuthentication()
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [isSubmitting, setIsSubmitting] = useState(false)
@@ -20,7 +20,8 @@ const LoginPage = () => {
 		setIsSubmitting(true)
 		setError(null)
 		try {
-			await logIn({ email, password })
+			// TODO: wire this up, then sign them in, then redirect to hom
+			await createAccount({ email, password })
 			// Redirect to home
 			router.push('/')
 		} catch (e) {
@@ -37,7 +38,7 @@ const LoginPage = () => {
 			<Container maxWidth="sm">
 				<Paper className={styles.paper}>
 					<Typography variant="h3" className={styles.header}>
-						Sign In
+						Create An Account
 					</Typography>
 					<form onSubmit={handleSubmit} noValidate autoComplete="off">
 						<Box mb={2}>
@@ -90,12 +91,12 @@ const LoginPage = () => {
 									fullWidth
 									disabled={isSubmitting}
 								>
-									Sign In
+									Submit
 								</Button>
 								<Typography>
-									No account?{' '}
-									<Link href="/create-account">
-										<a>Create a free account</a>
+									Already have an account?{' '}
+									<Link href="/login">
+										<a>Sign in</a>
 									</Link>
 								</Typography>
 							</Box>
@@ -107,4 +108,4 @@ const LoginPage = () => {
 	)
 }
 
-export default LoginPage
+export default CreateAccountPage
