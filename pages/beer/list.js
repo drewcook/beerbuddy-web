@@ -24,8 +24,8 @@ const BeerListPage = props => {
 
 			<Grid container spacing={3}>
 				{list.map(beer => (
-					<Grid item xs={12} sm={6} md={4}>
-						<BeerCard beer={beer} key={beer.id} />
+					<Grid item xs={12} sm={6} md={4} key={beer.id}>
+						<BeerCard beer={beer} />
 					</Grid>
 				))}
 			</Grid>
