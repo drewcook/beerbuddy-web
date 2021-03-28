@@ -18,19 +18,17 @@ const BeerDetailsPage = props => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main>
-				<Link href="/beer/list">
-					<a>
-						<Button variant="outlined" color="secondary">
-							Back To List
-						</Button>
-					</a>
-				</Link>
-				<Typography variant="h3">Beer Details</Typography>
-				<pre className={styles.code}>
-					<code>{JSON.stringify(details, null, 2)}</code>
-				</pre>
-			</main>
+			<Link href="/beer/list">
+				<a>
+					<Button variant="outlined" color="secondary">
+						Back To List
+					</Button>
+				</a>
+			</Link>
+			<Typography variant="h3">Beer Details</Typography>
+			<pre className={styles.code}>
+				<code>{JSON.stringify(details, null, 2)}</code>
+			</pre>
 		</>
 	)
 }

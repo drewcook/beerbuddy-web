@@ -3,9 +3,9 @@ import { CssBaseline } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { AuthProvider } from '../components/AuthenticationContext'
 import theme from '../styles/theme'
-import '../styles/globals.scss'
 import NavigationBar from '../components/NavigationBar'
 import ContentLayout from '../components/ContentLayout'
+import '../styles/globals.scss'
 
 const BeerBuddy = props => {
 	const { Component, pageProps } = props

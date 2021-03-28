@@ -1,3 +1,5 @@
+@import './colors.module.scss';
+
 html,
 body {
   padding: 0;
@@ -8,7 +10,8 @@ body {
 }
 
 #__next {
-	background-color: #efefef;
+	background-color: $light;
+	min-height: 100vh;
 }
 
 a {

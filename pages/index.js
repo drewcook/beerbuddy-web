@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Button, Typography } from '@material-ui/core'
+import { Button, Card, CardActions, CardHeader, Typography } from '@material-ui/core'
 import Link from 'next/link'
 import { useAuthentication } from '../components/AuthenticationContext'
 import styles from '../styles/home.module.scss'
@@ -8,41 +8,57 @@ const HomePage = () => {
 	const { isAuthenticated } = useAuthentication()
 
 	return (
-		<div className={styles.container}>
+		<div className={styles.centered}>
 			<Head>
 				<title>BeerBuddy - Home</title>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main className={styles.main}>
-				<Typography variant="h2">Welcome to BeerBuddy!</Typography>
+			<Typography variant="h2" gutterBottom>
+				Welcome to BeerBuddy!
+			</Typography>
 
-				<Typography>We keep track of your drinking habits so you don't have to! Cheers!</Typography>
+			<Typography variant="h6">
+				We keep track of your drinking habits so you don't have to! Cheers!
+			</Typography>
 
-				{isAuthenticated && (
+			{isAuthenticated ? (
+				<Card className={[styles.centered, styles.card].join(' ')}>
+					<Typography variant="h5" gutterBottom>
+						Now What?
+					</Typography>
 					<Typography variant="subtitle1">
 						You can now go to your dashboard to create and manage your lists.
 					</Typography>
-				)}
-
-				{isAuthenticated ? (
-					<Link href="/dashboard">
-						<a>
-							<Button color="primary" size="large" variant="contained">
-								My Dashboard
-							</Button>
-						</a>
-					</Link>
-				) : (
-					<Link href="/login">
-						<a>
-							<Button color="primary" size="large" variant="contained">
-								Sign In
-							</Button>
-						</a>
-					</Link>
-				)}
-			</main>
+					<CardActions>
+						<Link href="/dashboard">
+							<a>
+								<Button color="primary" size="large" variant="contained" className={styles.btn}>
+									My Dashboard
+								</Button>
+							</a>
+						</Link>
+					</CardActions>
+				</Card>
+			) : (
+				<Card className={[styles.centered, styles.card].join(' ')}>
+					<Typography variant="h5" gutterBottom>
+						Get Started
+					</Typography>
+					<Typography variant="subtitle1">
+						Sign into your account, or create a new one to get started.
+					</Typography>
+					<CardActions>
+						<Link href="/login">
+							<a>
+								<Button color="primary" size="large" variant="contained" className={styles.btn}>
+									Sign In
+								</Button>
+							</a>
+						</Link>
+					</CardActions>
+				</Card>
+			)}
 		</div>
 	)
 }

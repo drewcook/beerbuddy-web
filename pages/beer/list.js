@@ -18,25 +18,24 @@ const BeerListPage = props => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main>
-				<Typography variant="h3">Beer List</Typography>
-				{list.map(beer => (
-					<Card className={styles.card} key={beer.id}>
-						<CardContent>
-							<Typography variant="h5">{beer.nameDisplay}</Typography>
-						</CardContent>
-						<CardActions>
-							<Link href={`/beer/${beer.id}`}>
-								<a>
-									<Button variant="contained" color="primary" size="small">
-										View More Details
-									</Button>
-								</a>
-							</Link>
-						</CardActions>
-					</Card>
-				))}
-			</main>
+			<Typography variant="h3">Beer List</Typography>
+
+			{list.map(beer => (
+				<Card className={styles.card} key={beer.id}>
+					<CardContent>
+						<Typography variant="h5">{beer.nameDisplay}</Typography>
+					</CardContent>
+					<CardActions>
+						<Link href={`/beer/${beer.id}`}>
+							<a>
+								<Button variant="contained" color="primary" size="small">
+									View More Details
+								</Button>
+							</a>
+						</Link>
+					</CardActions>
+				</Card>
+			))}
 		</>
 	)
 }

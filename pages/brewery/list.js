@@ -18,25 +18,24 @@ const BreweryListPage = props => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main>
-				<Typography variant="h3">Brewery List</Typography>
-				{list.map(brewery => (
-					<Card className={styles.card} key={brewery.id}>
-						<CardContent>
-							<Typography variant="h5">{brewery.name}</Typography>
-						</CardContent>
-						<CardActions>
-							<Link href={`/brewery/${brewery.id}`}>
-								<a>
-									<Button variant="contained" color="primary" size="small">
-										View More Details
-									</Button>
-								</a>
-							</Link>
-						</CardActions>
-					</Card>
-				))}
-			</main>
+			<Typography variant="h3">Brewery List</Typography>
+
+			{list.map(brewery => (
+				<Card className={styles.card} key={brewery.id}>
+					<CardContent>
+						<Typography variant="h5">{brewery.name}</Typography>
+					</CardContent>
+					<CardActions>
+						<Link href={`/brewery/${brewery.id}`}>
+							<a>
+								<Button variant="contained" color="primary" size="small">
+									View More Details
+								</Button>
+							</a>
+						</Link>
+					</CardActions>
+				</Card>
+			))}
 		</>
 	)
 }
