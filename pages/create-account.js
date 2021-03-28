@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
+import Link from 'next/link'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Box, Button, Container, InputLabel, Paper, TextField, Typography } from '@material-ui/core'
-import Link from 'next/link'
-import styles from '../styles/login.module.scss'
-// import { useAuthentication } from '../components/AuthenticationContext'
 import LoadingState from '../components/LoadingState'
+import { createAccount } from '../api/users'
+import { useAuthentication } from '../components/AuthenticationContext'
+import styles from '../styles/login.module.scss'
 
 const CreateAccountPage = () => {
 	const router = useRouter()
-	// const { logIn } = useAuthentication()
+	const { logIn } = useAuthentication()
+	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [isSubmitting, setIsSubmitting] = useState(false)
@@ -21,7 +23,8 @@ const CreateAccountPage = () => {
 		setError(null)
 		try {
 			// TODO: wire this up, then sign them in, then redirect to hom
-			await createAccount({ email, password })
+			const user = await createAccount({ name, email, password })
+			await logIn({ email, password })
 			// Redirect to home
 			router.push('/')
 		} catch (e) {
@@ -41,6 +44,19 @@ const CreateAccountPage = () => {
 						Create An Account
 					</Typography>
 					<form onSubmit={handleSubmit} noValidate autoComplete="off">
+						<Box mb={2}>
+							<InputLabel htmlFor="email">Full Name</InputLabel>
+							<TextField
+								margin="normal"
+								variant="outlined"
+								id="name"
+								name="name"
+								type="text"
+								onChange={e => setName(e.target.value)}
+								value={name}
+								fullWidth
+							/>
+						</Box>
 						<Box mb={2}>
 							<InputLabel htmlFor="email">Email</InputLabel>
 							<TextField
