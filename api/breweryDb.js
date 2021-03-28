@@ -77,7 +77,7 @@ const searchBeersAndBreweries = async (query, page) => {
 
 // // @desc Gets all breweries based off of a brewery type
 // // @access Public
-const filterBreweryByType = (type, page) => {
+const filterBreweryByType = async (type, page) => {
 	try {
 		const url = `https://api.brewerydb.com/v2/locations?locationType=${type}&p=${page}&key=${apiKey}`
 		const response = await axios.get(url)
@@ -89,7 +89,7 @@ const filterBreweryByType = (type, page) => {
 
 // // @desc Gets all breweries and beers based off of a country
 // // @access Public
-const filterByCountry = (country, page) => {
+const filterByCountry = async (country, page) => {
 	try {
 		const url = `https://api.brewerydb.com/v2/locations?countryIsoCode=${country}&p=${page}&key=${apiKey}`
 		const response = await axios.get(url)
@@ -101,7 +101,7 @@ const filterByCountry = (country, page) => {
 
 // // @desc Gets all breweries and beers based off of a US state
 // // @access Public
-const filterByState = (state, page) => {
+const filterByState = async (state, page) => {
 	try {
 		const url = `https://api.brewerydb.com/v2/locations?region=${state}&p=${page}&key=${apiKey}`
 		const response = await axios.get(url)
