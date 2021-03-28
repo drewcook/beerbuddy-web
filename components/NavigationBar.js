@@ -1,8 +1,8 @@
-import { AppBar, Box, Button, Container, Typography } from '@material-ui/core';
-import { useAuthentication } from '../components/AuthenticationContext';
+import { AppBar, Box, Button, Container, Typography } from '@material-ui/core'
+import { useAuthentication } from '../components/AuthenticationContext'
 
 const NavigationBar = () => {
-	const { isAuthenticated, logOut } = useAuthentication();
+	const { isAuthenticated, logOut } = useAuthentication()
 
 	return (
 		<div>
@@ -19,7 +19,7 @@ const NavigationBar = () => {
 				</Container>
 			</AppBar>
 		</div>
-	);
-};
+	)
+}
 
-export default NavigationBar;
+export default NavigationBar
