@@ -2,20 +2,19 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
 import { authenticateUser } from '../api/auth'
+import { getMe } from '../api/users'
 
 const AuthenticationContext = createContext()
 
 export const AuthProvider = ({ children }) => {
 	const router = useRouter()
 	const [isAuthenticated, setIsAuthenticated] = useState(false)
-	const [authToken, setAuthToken] = useState(null)
 
 	const checkAuthentication = () => {
 		const token = sessionStorage.getItem('auth-token')
 
 		if (token) {
 			setIsAuthenticated(true)
-			setAuthToken(token)
 		}
 	}
 
@@ -27,8 +26,6 @@ export const AuthProvider = ({ children }) => {
 		try {
 			const token = await authenticateUser({ email, password })
 			sessionStorage.setItem('auth-token', token)
-			// TODO: set an expiry?
-			setAuthToken(token)
 			setIsAuthenticated(true)
 		} catch (error) {
 			throw new Error(error)
@@ -40,9 +37,17 @@ export const AuthProvider = ({ children }) => {
 			const token = sessionStorage.getItem('auth-token')
 			if (!token) throw new Error('No token found')
 			sessionStorage.removeItem('auth-token')
-			setAuthToken(null)
 			setIsAuthenticated(false)
 			router.push('/')
+		} catch (error) {
+			throw new Error(error)
+		}
+	}
+
+	const getCurrentUser = async authToken => {
+		try {
+			const user = await getMe(authToken)
+			return user
 		} catch (error) {
 			throw new Error(error)
 		}
@@ -52,9 +57,9 @@ export const AuthProvider = ({ children }) => {
 		<AuthenticationContext.Provider
 			value={{
 				isAuthenticated,
-				authToken,
 				logIn,
 				logOut,
+				getCurrentUser,
 			}}
 		>
 			{children}
