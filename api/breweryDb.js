@@ -1,12 +1,14 @@
 // BreweryDB API endpoints
 import axios from 'axios'
 const apiKey = '69ee360e54918c2ed9d0e2d8568dafda'
+// const BASE_URL = 'https://sandbox-api.brewerydb.com/v2/'
+const BASE_URL = 'https://api.brewerydb.com/v2/'
 
 // @desc Gets all beers
 // @access Public
 export const getBeers = async page => {
 	try {
-		const url = `https://api.brewerydb.com/v2/beers?p=${page}&withBreweries=y&key=${apiKey}`
+		const url = `${BASE_URL}/beers?p=${page}&withBreweries=y&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (ex) {
@@ -18,7 +20,7 @@ export const getBeers = async page => {
 // @access Public
 export const getBeerDetails = async id => {
 	try {
-		const url = `https://api.brewerydb.com/v2/beer/${id}?withBreweries=y&key=${apiKey}`
+		const url = `${BASE_URL}/beer/${id}?withBreweries=y&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (ex) {
@@ -30,7 +32,7 @@ export const getBeerDetails = async id => {
 // @access Public
 export const getBreweries = async page => {
 	try {
-		const url = `https://api.brewerydb.com/v2/breweries?p=${page}&withLocations=y&key=${apiKey}`
+		const url = `${BASE_URL}/breweries?p=${page}&withLocations=y&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (ex) {
@@ -43,7 +45,7 @@ export const getBreweries = async page => {
 // @access Public
 export const getBreweryDetails = async id => {
 	try {
-		const url = `https://api.brewerydb.com/v2/brewery/${id}?withLocations=y&withGuilds=y&withSocialAccounts=y&key=${apiKey}`
+		const url = `${BASE_URL}/brewery/${id}?withLocations=y&withGuilds=y&withSocialAccounts=y&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (ex) {
@@ -55,7 +57,7 @@ export const getBreweryDetails = async id => {
 // // @access Public
 export const getGlassware = async () => {
 	try {
-		const url = `https://api.brewerydb.com/v2/glassware?key=${apiKey}`
+		const url = `${BASE_URL}/glassware?key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (ex) {
@@ -67,7 +69,7 @@ export const getGlassware = async () => {
 // // @access Public
 const searchBeersAndBreweries = async (query, page) => {
 	try {
-		const url = `https://api.brewerydb.com/v2/search?q=${query}&p=${page}&withBreweries=y&withLocations=y&key=${apiKey}`
+		const url = `${BASE_URL}/search?q=${query}&p=${page}&withBreweries=y&withLocations=y&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (ex) {
@@ -79,7 +81,7 @@ const searchBeersAndBreweries = async (query, page) => {
 // // @access Public
 const filterBreweryByType = async (type, page) => {
 	try {
-		const url = `https://api.brewerydb.com/v2/locations?locationType=${type}&p=${page}&key=${apiKey}`
+		const url = `${BASE_URL}/locations?locationType=${type}&p=${page}&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (ex) {
@@ -91,7 +93,7 @@ const filterBreweryByType = async (type, page) => {
 // // @access Public
 const filterByCountry = async (country, page) => {
 	try {
-		const url = `https://api.brewerydb.com/v2/locations?countryIsoCode=${country}&p=${page}&key=${apiKey}`
+		const url = `${BASE_URL}/locations?countryIsoCode=${country}&p=${page}&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (ex) {
@@ -103,7 +105,7 @@ const filterByCountry = async (country, page) => {
 // // @access Public
 const filterByState = async (state, page) => {
 	try {
-		const url = `https://api.brewerydb.com/v2/locations?region=${state}&p=${page}&key=${apiKey}`
+		const url = `${BASE_URL}/locations?region=${state}&p=${page}&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (ex) {
