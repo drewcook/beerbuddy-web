@@ -2,9 +2,10 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { Button, Typography } from '@material-ui/core'
 import { useAuthentication } from '../../components/AuthenticationContext'
-import { getBeerDetails } from '../../api/breweryDb'
+import { breweryDbService } from '../../api/'
 import styles from '../../styles/details.module.scss'
 import baseStyles from '../../styles/base.module.scss'
+import AddToListDialog from '../../components/AddToListDialog'
 
 const BeerDetailsPage = props => {
 	const { details } = props
@@ -31,6 +32,8 @@ const BeerDetailsPage = props => {
 				Beer Details
 			</Typography>
 
+			<AddToListDialog beerId={details.id} />
+
 			<pre className={styles.code}>
 				<code>{JSON.stringify(details, null, 2)}</code>
 			</pre>
@@ -39,7 +42,7 @@ const BeerDetailsPage = props => {
 }
 
 export const getServerSideProps = async ctx => {
-	const resp = await getBeerDetails(ctx.query.id)
+	const resp = await breweryDbService.getBeerDetails(ctx.query.id)
 	const { data } = resp
 
 	return {

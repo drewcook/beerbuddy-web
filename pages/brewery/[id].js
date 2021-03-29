@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { Button, Typography } from '@material-ui/core'
 import { useAuthentication } from '../../components/AuthenticationContext'
-import { getBreweryDetails } from '../../api/breweryDb'
+import { breweryDbService } from '../../api/'
 import styles from '../../styles/details.module.scss'
 import baseStyles from '../../styles/base.module.scss'
 
@@ -39,7 +39,7 @@ const BreweryDetailsPage = props => {
 }
 
 export const getServerSideProps = async ctx => {
-	const resp = await getBreweryDetails(ctx.query.id)
+	const resp = await breweryDbService.getBreweryDetails(ctx.query.id)
 	const { data } = resp
 
 	return {

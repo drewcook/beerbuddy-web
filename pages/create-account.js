@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Box, Button, Container, InputLabel, Paper, TextField, Typography } from '@material-ui/core'
 import LoadingState from '../components/LoadingState'
-import { createAccount } from '../api/users'
+import { userService } from '../api/'
 import { useAuthentication } from '../components/AuthenticationContext'
 import styles from '../styles/login.module.scss'
 import baseStyles from '../styles/base.module.scss'
@@ -24,7 +24,7 @@ const CreateAccountPage = () => {
 		setError(null)
 		try {
 			// TODO: wire this up, then sign them in, then redirect to hom
-			const user = await createAccount({ name, email, password })
+			const user = await userService.createAccount({ name, email, password })
 			await logIn({ email, password })
 			// Redirect to home
 			router.push('/')

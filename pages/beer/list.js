@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { Grid, Typography } from '@material-ui/core'
 import { useAuthentication } from '../../components/AuthenticationContext'
-import { getBeers } from '../../api/breweryDb'
+import { breweryDbService } from '../../api/'
 import BeerCard from '../../components/BeerCard'
 import baseStyles from '../../styles/base.module.scss'
 
@@ -35,7 +35,7 @@ const BeerListPage = props => {
 
 export const getServerSideProps = async ctx => {
 	const page = 1
-	const resp = await getBeers(page)
+	const resp = await breweryDbService.getBeers(page)
 	const { data, currentPage, numberOfPages, totalResults } = resp
 
 	return {

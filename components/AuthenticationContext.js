@@ -1,8 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
-import { authenticateUser } from '../api/auth'
-import { getMe } from '../api/users'
+import { authService, userService } from '../api/'
 
 const AuthenticationContext = createContext()
 
@@ -24,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
 	const logIn = async ({ email, password }) => {
 		try {
-			const token = await authenticateUser({ email, password })
+			const token = await authService.authenticateUser({ email, password })
 			sessionStorage.setItem('auth-token', token)
 			setIsAuthenticated(true)
 		} catch (error) {
@@ -44,9 +43,9 @@ export const AuthProvider = ({ children }) => {
 		}
 	}
 
-	const getCurrentUser = async authToken => {
+	const getCurrentUser = async () => {
 		try {
-			const user = await getMe(authToken)
+			const user = await userService.getMe()
 			return user
 		} catch (error) {
 			throw new Error(error)
