@@ -30,10 +30,7 @@ export const getMe = async () => {
 export const getUserDashboard = async () => {
 	try {
 		const user = await getMe()
-
 		const lists = await getUserLists(user._id)
-
-		console.log({ lists })
 
 		return {
 			lists,

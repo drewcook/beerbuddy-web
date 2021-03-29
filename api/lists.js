@@ -16,7 +16,6 @@ export const getUserLists = async userId => {
 
 export const createListForUser = async ({ userId, name, beerIds, breweryIds }) => {
 	try {
-		console.log({ userId })
 		const response = await axios.post(`${BASE_URL}/api/lists/`, {
 			userId,
 			name,
