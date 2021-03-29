@@ -49,7 +49,7 @@ const DashboardPage = () => {
 							<ListItem>Total: {details.lists.length}</ListItem>
 						</List>
 						{details.lists.map(list => (
-							<Box>
+							<Box key={list._id}>
 								<Typography>{list.name}</Typography>
 								<Typography>
 									<em>Created on:{list.dateCreated}</em>
