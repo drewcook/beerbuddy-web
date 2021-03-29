@@ -11,8 +11,8 @@ export const getBeers = async page => {
 		const url = `${BASE_URL}/beers?p=${page}&withBreweries=y&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
-	} catch (ex) {
-		throw new Error(ex.response.data)
+	} catch (error) {
+		throw new Error(error)
 	}
 }
 
@@ -23,8 +23,8 @@ export const getBeerDetails = async id => {
 		const url = `${BASE_URL}/beer/${id}?withBreweries=y&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
-	} catch (ex) {
-		throw new Error(ex.response.data)
+	} catch (error) {
+		throw new Error(error.response.data)
 	}
 }
 
@@ -35,8 +35,8 @@ export const getBreweries = async page => {
 		const url = `${BASE_URL}/breweries?p=${page}&withLocations=y&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
-	} catch (ex) {
-		throw new Error(ex.response.data)
+	} catch (error) {
+		throw new Error(error.response.data)
 	}
 }
 
@@ -48,8 +48,8 @@ export const getBreweryDetails = async id => {
 		const url = `${BASE_URL}/brewery/${id}?withLocations=y&withGuilds=y&withSocialAccounts=y&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
-	} catch (ex) {
-		throw new Error(ex.response.data)
+	} catch (error) {
+		throw new Error(error.response.data)
 	}
 }
 
@@ -60,8 +60,8 @@ export const getGlassware = async () => {
 		const url = `${BASE_URL}/glassware?key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
-	} catch (ex) {
-		throw new Error(ex.response.data)
+	} catch (error) {
+		throw new Error(error.response.data)
 	}
 }
 
@@ -72,8 +72,8 @@ const searchBeersAndBreweries = async (query, page) => {
 		const url = `${BASE_URL}/search?q=${query}&p=${page}&withBreweries=y&withLocations=y&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
-	} catch (ex) {
-		throw new Error(ex.response.data)
+	} catch (error) {
+		throw new Error(error.response.data)
 	}
 }
 
@@ -84,8 +84,8 @@ const filterBreweryByType = async (type, page) => {
 		const url = `${BASE_URL}/locations?locationType=${type}&p=${page}&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
-	} catch (ex) {
-		throw new Error(ex.response.data)
+	} catch (error) {
+		throw new Error(error.response.data)
 	}
 }
 
@@ -96,8 +96,8 @@ const filterByCountry = async (country, page) => {
 		const url = `${BASE_URL}/locations?countryIsoCode=${country}&p=${page}&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
-	} catch (ex) {
-		throw new Error(ex.response.data)
+	} catch (error) {
+		throw new Error(error.response.data)
 	}
 }
 
@@ -108,7 +108,7 @@ const filterByState = async (state, page) => {
 		const url = `${BASE_URL}/locations?region=${state}&p=${page}&key=${apiKey}`
 		const response = await axios.get(url)
 		return response.data
-	} catch (ex) {
-		throw new Error(ex.response.data)
+	} catch (error) {
+		throw new Error(error.response.data)
 	}
 }
