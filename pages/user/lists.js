@@ -5,7 +5,7 @@ import { gql } from '@apollo/client'
 const USER_LISTS_QUERY = gql`
 	query GetUserLists($userId: String!) {
 		userLists(userId: $userId) {
-			id
+			_id
 			name
 		}
 	}
