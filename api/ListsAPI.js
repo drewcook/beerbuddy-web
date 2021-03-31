@@ -4,18 +4,14 @@ const { RESTDataSource } = require('apollo-datasource-rest')
 const isProduction = process.env.NODE_ENV === 'production'
 const BASE_URL = isProduction ? 'https://beerbuddy-api.herokuapp.com' : 'http://localhost:5280'
 
-class UsersAPI extends RESTDataSource {
+class ListsAPI extends RESTDataSource {
 	constructor() {
 		super()
 		this.baseURL = `${BASE_URL}/api/lists`
 	}
 
 	willSendRequest(request) {
-		// TODO: use this.context.token somehow
-		request.headers.set(
-			'x-auth-token',
-			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDVmNWU2NjdlYmI3Njk4ZDFkMzhkYzgiLCJpYXQiOjE2MTcxNTc4NDZ9.A4y-3JS7pYayZYSfsABc-Pq0J7OFirRTsfNYzNAc6_4',
-		)
+		request.headers.set('authorization', this.context.token)
 	}
 
 	async getLists() {
@@ -34,4 +30,4 @@ class UsersAPI extends RESTDataSource {
 	}
 }
 
-export default UsersAPI
+export default ListsAPI

@@ -11,7 +11,7 @@ class UsersAPI extends RESTDataSource {
 	}
 
 	willSendRequest(request) {
-		request.headers.set('x-auth-token', this.context.token)
+		request.headers.set('authorization', this.context.token)
 	}
 
 	async getUsers() {
