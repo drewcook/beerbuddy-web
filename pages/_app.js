@@ -1,13 +1,15 @@
 import { useEffect } from 'react'
 import { CssBaseline } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/core/styles'
+import { ApolloProvider } from '@apollo/client'
+import { useApollo } from '../lib/apollo-client/apolloClient'
 import { AuthProvider } from '../components/AuthenticationContext'
-import theme from '../styles/theme'
 import ContentLayout from '../components/ContentLayout'
+import theme from '../styles/theme'
 import '../styles/globals.scss'
 
-const BeerBuddy = props => {
-	const { Component, pageProps } = props
+const BeerBuddy = ({ Component, pageProps }) => {
+	const apolloClient = useApollo(pageProps)
 
 	useEffect(() => {
 		// Remove the server-side injected CSS to fix MUI className mismatch errors
@@ -18,12 +20,14 @@ const BeerBuddy = props => {
 	}, [])
 
 	return (
-		<ThemeProvider theme={theme}>
-			<AuthProvider>
-				<CssBaseline />
-				<ContentLayout content={<Component {...pageProps} />} />
-			</AuthProvider>
-		</ThemeProvider>
+		<ApolloProvider client={apolloClient}>
+			<ThemeProvider theme={theme}>
+				<AuthProvider>
+					<CssBaseline />
+					<ContentLayout content={<Component {...pageProps} />} />
+				</AuthProvider>
+			</ThemeProvider>
+		</ApolloProvider>
 	)
 }
 
