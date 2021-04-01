@@ -42,67 +42,66 @@ const DashboardPage = () => {
 	if (loading) return <LoadingState />
 	if (error) return <Typography color="error">Error occurred</Typography>
 
-	console.log(data)
+	return (
+		<>
+			<Head>
+				<title>BeerBuddy - My Dashboard</title>
+				<link rel="icon" href="/favicon.ico" />
+			</Head>
 
-	if (details) {
-		return (
-			<>
-				<Head>
-					<title>BeerBuddy - My Dashboard</title>
-					<link rel="icon" href="/favicon.ico" />
-				</Head>
+			<Typography variant="h3" className={baseStyles.pageTitle}>
+				My Dashboard
+			</Typography>
 
-				<Typography variant="h3" className={baseStyles.pageTitle}>
-					My Dashboard
-				</Typography>
+			<Typography variant="h5" gutterBottom>
+				Hello, {details.userName}!
+			</Typography>
 
-				<Grid container spacing={3}>
-					<Grid item md={6}>
-						<Paper className={styles.paper}>
-							<Typography variant="h4">My Lists</Typography>
-							<List>
-								<ListItem>Total: {details.lists.length}</ListItem>
-							</List>
-							{details.lists.map(list => (
-								<Box key={list._id}>
-									<Typography>{list.name}</Typography>
-									<Typography>
-										<em>Created on:{list.dateCreated}</em>
-									</Typography>
-									<hr />
-								</Box>
-							))}
-							<Button variant="contained" color="primary" onClick={handleCreateList}>
-								Create New List
-							</Button>
-						</Paper>
-						<Paper className={styles.paper}>
-							<Typography variant="h4">My Favorites</Typography>
-							<List>
-								<ListItem>Odell Imperial IPA</ListItem>
-								<ListItem>Pelican Brewing Company</ListItem>
-								<ListItem>New Image Brewery</ListItem>
-								<ListItem>My Super Sour List</ListItem>
-							</List>
-						</Paper>
-					</Grid>
-					<Grid item md={6}>
-						<Paper className={styles.paper}>
-							<Typography variant="h4">My Stats</Typography>
-							<List>
-								<ListItem>Beers Logged: x</ListItem>
-								<ListItem>Brewery Check Ins: x</ListItem>
-							</List>
-						</Paper>
-						<Paper className={styles.paper}>
-							<Typography variant="h4">Recent History</Typography>
-						</Paper>
-					</Grid>
+			<Grid container spacing={3}>
+				<Grid item md={6}>
+					<Paper className={styles.paper}>
+						<Typography variant="h4">My Lists</Typography>
+						<List>
+							<ListItem>Total: {details.lists.length}</ListItem>
+						</List>
+						{details.lists.map(list => (
+							<Box key={list._id}>
+								<Typography>{list.name}</Typography>
+								<Typography>
+									<em>Created on:{list.dateCreated}</em>
+								</Typography>
+								<hr />
+							</Box>
+						))}
+						<Button variant="contained" color="primary" onClick={handleCreateList}>
+							Create New List
+						</Button>
+					</Paper>
+					<Paper className={styles.paper}>
+						<Typography variant="h4">My Favorites</Typography>
+						<List>
+							<ListItem>Odell Imperial IPA</ListItem>
+							<ListItem>Pelican Brewing Company</ListItem>
+							<ListItem>New Image Brewery</ListItem>
+							<ListItem>My Super Sour List</ListItem>
+						</List>
+					</Paper>
 				</Grid>
-			</>
-		)
-	}
-	return null
+				<Grid item md={6}>
+					<Paper className={styles.paper}>
+						<Typography variant="h4">My Stats</Typography>
+						<List>
+							<ListItem>Beers Logged: x</ListItem>
+							<ListItem>Brewery Check Ins: x</ListItem>
+						</List>
+					</Paper>
+					<Paper className={styles.paper}>
+						<Typography variant="h4">Recent History</Typography>
+					</Paper>
+				</Grid>
+			</Grid>
+		</>
+	)
 }
 
 export default DashboardPage
