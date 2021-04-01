@@ -8,6 +8,9 @@ const VIEWER_QUERY = gql`
 	query GetViewer {
 		viewer {
 			_id
+			name
+			email
+			listIds
 		}
 	}
 `
