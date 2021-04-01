@@ -71,7 +71,12 @@ const NavigationBar = () => {
 			>
 				<Link href="/dashboard">
 					<a onClick={handleClose}>
-						<MenuItem>Dashboard</MenuItem>
+						<MenuItem>My Dashboard</MenuItem>
+					</a>
+				</Link>
+				<Link href="/user/lists">
+					<a onClick={handleClose}>
+						<MenuItem>My Lists</MenuItem>
 					</a>
 				</Link>
 				<Link href="/beer/list">
