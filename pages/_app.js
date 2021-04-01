@@ -4,6 +4,7 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import { ApolloProvider } from '@apollo/client'
 import { useApollo } from '../lib/apollo-client/apolloClient'
 import { AuthProvider } from '../components/AuthenticationContext'
+import { ViewerProvider } from '../components/ViewerContext'
 import ContentLayout from '../components/ContentLayout'
 import theme from '../styles/theme'
 import '../styles/globals.scss'
@@ -23,8 +24,10 @@ const BeerBuddy = ({ Component, pageProps }) => {
 		<ApolloProvider client={apolloClient}>
 			<ThemeProvider theme={theme}>
 				<AuthProvider>
-					<CssBaseline />
-					<ContentLayout content={<Component {...pageProps} />} />
+					<ViewerProvider>
+						<CssBaseline />
+						<ContentLayout content={<Component {...pageProps} />} />
+					</ViewerProvider>
 				</AuthProvider>
 			</ThemeProvider>
 		</ApolloProvider>
