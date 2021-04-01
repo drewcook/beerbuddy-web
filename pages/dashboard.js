@@ -88,12 +88,4 @@ const DashboardPage = () => {
 	)
 }
 
-// export const getServerSideProps = async ctx => {
-// 	const resp = await getUserDashboard()
-
-// 	return {
-// 		props: { data: resp },
-// 	}
-// }
-
 export default DashboardPage
