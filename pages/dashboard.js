@@ -1,23 +1,34 @@
-import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { Box, Button, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
 import LoadingState from '../components/LoadingState'
+import { listService } from '../api/'
+import { useQuery, gql } from '@apollo/client'
+import { useViewer } from '../components/ViewerContext'
+import _get from 'lodash/get'
 import baseStyles from '../styles/base.module.scss'
 import styles from '../styles/dashboard.module.scss'
-import { userService, listService } from '../api/'
+
+const USER_DASHBOARD_QUERY = gql`
+	query GetUserDashboard($userId: ID!) {
+		userDashboard(userId: $userId) {
+			userName
+			lists {
+				_id
+				name
+				dateCreated
+			}
+		}
+	}
+`
 
 const DashboardPage = () => {
-	const [details, setDetails] = useState(null)
+	const { viewer } = useViewer()
+	const { loading, data, error } = useQuery(USER_DASHBOARD_QUERY, {
+		variables: { userId: viewer._id },
+	})
+	const details = _get(data, 'userDashboard')
 
-	const getUserDashboard = async () => {
-		const resp = await userService.getUserDashboard()
-		setDetails(resp)
-	}
-
-	useEffect(() => {
-		getUserDashboard()
-	}, [])
-
+	// TODO: capture form input
 	const handleCreateList = async () => {
 		await listService.createListForUser({
 			userId: details.user._id,
@@ -25,67 +36,73 @@ const DashboardPage = () => {
 			beerIds: ['aG4Ie2', 'LcpeBb'],
 			breweryIds: ['TMc6H2'],
 		})
-		getUserDashboard()
+		// refetch list
 	}
 
-	if (!details) return <LoadingState />
+	if (loading) return <LoadingState />
+	if (error) return <Typography color="error">Error occurred</Typography>
 
-	return (
-		<>
-			<Head>
-				<title>BeerBuddy - My Dashboard</title>
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
+	console.log(data)
 
-			<Typography variant="h3" className={baseStyles.pageTitle}>
-				My Dashboard
-			</Typography>
+	if (details) {
+		return (
+			<>
+				<Head>
+					<title>BeerBuddy - My Dashboard</title>
+					<link rel="icon" href="/favicon.ico" />
+				</Head>
 
-			<Grid container spacing={3}>
-				<Grid item md={6}>
-					<Paper className={styles.paper}>
-						<Typography variant="h4">My Lists</Typography>
-						<List>
-							<ListItem>Total: {details.lists.length}</ListItem>
-						</List>
-						{details.lists.map(list => (
-							<Box key={list._id}>
-								<Typography>{list.name}</Typography>
-								<Typography>
-									<em>Created on:{list.dateCreated}</em>
-								</Typography>
-								<hr />
-							</Box>
-						))}
-						<Button variant="contained" color="primary" onClick={handleCreateList}>
-							Create New List
-						</Button>
-					</Paper>
-					<Paper className={styles.paper}>
-						<Typography variant="h4">My Favorites</Typography>
-						<List>
-							<ListItem>Odell Imperial IPA</ListItem>
-							<ListItem>Pelican Brewing Company</ListItem>
-							<ListItem>New Image Brewery</ListItem>
-							<ListItem>My Super Sour List</ListItem>
-						</List>
-					</Paper>
+				<Typography variant="h3" className={baseStyles.pageTitle}>
+					My Dashboard
+				</Typography>
+
+				<Grid container spacing={3}>
+					<Grid item md={6}>
+						<Paper className={styles.paper}>
+							<Typography variant="h4">My Lists</Typography>
+							<List>
+								<ListItem>Total: {details.lists.length}</ListItem>
+							</List>
+							{details.lists.map(list => (
+								<Box key={list._id}>
+									<Typography>{list.name}</Typography>
+									<Typography>
+										<em>Created on:{list.dateCreated}</em>
+									</Typography>
+									<hr />
+								</Box>
+							))}
+							<Button variant="contained" color="primary" onClick={handleCreateList}>
+								Create New List
+							</Button>
+						</Paper>
+						<Paper className={styles.paper}>
+							<Typography variant="h4">My Favorites</Typography>
+							<List>
+								<ListItem>Odell Imperial IPA</ListItem>
+								<ListItem>Pelican Brewing Company</ListItem>
+								<ListItem>New Image Brewery</ListItem>
+								<ListItem>My Super Sour List</ListItem>
+							</List>
+						</Paper>
+					</Grid>
+					<Grid item md={6}>
+						<Paper className={styles.paper}>
+							<Typography variant="h4">My Stats</Typography>
+							<List>
+								<ListItem>Beers Logged: x</ListItem>
+								<ListItem>Brewery Check Ins: x</ListItem>
+							</List>
+						</Paper>
+						<Paper className={styles.paper}>
+							<Typography variant="h4">Recent History</Typography>
+						</Paper>
+					</Grid>
 				</Grid>
-				<Grid item md={6}>
-					<Paper className={styles.paper}>
-						<Typography variant="h4">My Stats</Typography>
-						<List>
-							<ListItem>Beers Logged: x</ListItem>
-							<ListItem>Brewery Check Ins: x</ListItem>
-						</List>
-					</Paper>
-					<Paper className={styles.paper}>
-						<Typography variant="h4">Recent History</Typography>
-					</Paper>
-				</Grid>
-			</Grid>
-		</>
-	)
+			</>
+		)
+	}
+	return null
 }
 
 export default DashboardPage
