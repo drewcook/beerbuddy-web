@@ -4,7 +4,7 @@ import * as breweryDb from './breweryDb'
 import * as lists from './lists'
 import * as users from './users'
 
-// Setup auth token for authorization
+// Setup auth token for authorization header on all axios calls
 axios.interceptors.request.use(
 	request => {
 		// Exclude adding this for BreweryDB endpoints

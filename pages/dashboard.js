@@ -1,23 +1,34 @@
-import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { Box, Button, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
 import LoadingState from '../components/LoadingState'
+import { listService } from '../api/'
+import { useQuery, gql } from '@apollo/client'
+import { useViewer } from '../components/ViewerContext'
+import _get from 'lodash/get'
 import baseStyles from '../styles/base.module.scss'
 import styles from '../styles/dashboard.module.scss'
-import { userService, listService } from '../api/'
+
+const USER_DASHBOARD_QUERY = gql`
+	query GetUserDashboard($userId: ID!) {
+		userDashboard(userId: $userId) {
+			userName
+			lists {
+				_id
+				name
+				dateCreated
+			}
+		}
+	}
+`
 
 const DashboardPage = () => {
-	const [details, setDetails] = useState(null)
+	const { viewer } = useViewer()
+	const { loading, data, error } = useQuery(USER_DASHBOARD_QUERY, {
+		variables: { userId: viewer._id },
+	})
+	const details = _get(data, 'userDashboard')
 
-	const getUserDashboard = async () => {
-		const resp = await userService.getUserDashboard()
-		setDetails(resp)
-	}
-
-	useEffect(() => {
-		getUserDashboard()
-	}, [])
-
+	// TODO: capture form input
 	const handleCreateList = async () => {
 		await listService.createListForUser({
 			userId: details.user._id,
@@ -25,10 +36,11 @@ const DashboardPage = () => {
 			beerIds: ['aG4Ie2', 'LcpeBb'],
 			breweryIds: ['TMc6H2'],
 		})
-		getUserDashboard()
+		// refetch list
 	}
 
-	if (!details) return <LoadingState />
+	if (loading) return <LoadingState />
+	if (error) return <Typography color="error">Error occurred</Typography>
 
 	return (
 		<>
@@ -39,6 +51,10 @@ const DashboardPage = () => {
 
 			<Typography variant="h3" className={baseStyles.pageTitle}>
 				My Dashboard
+			</Typography>
+
+			<Typography variant="h5" gutterBottom>
+				Hello, {details.userName}!
 			</Typography>
 
 			<Grid container spacing={3}>
@@ -87,13 +103,5 @@ const DashboardPage = () => {
 		</>
 	)
 }
-
-// export const getServerSideProps = async ctx => {
-// 	const resp = await getUserDashboard()
-
-// 	return {
-// 		props: { data: resp },
-// 	}
-// }
 
 export default DashboardPage

@@ -1,0 +1,39 @@
+import { createContext, useContext } from 'react'
+import { useQuery, gql } from '@apollo/client'
+import _get from 'lodash/get'
+
+const ViewerContext = createContext()
+
+const VIEWER_QUERY = gql`
+	query GetViewer {
+		viewer {
+			_id
+			name
+			email
+			listIds
+		}
+	}
+`
+
+export const ViewerProvider = ({ children }) => {
+	const { data, loading, error } = useQuery(VIEWER_QUERY)
+
+	if (loading || error) return null
+	if (error) return 'Error getting viewer'
+
+	return (
+		<ViewerContext.Provider value={{ viewer: _get(data, 'viewer') }}>
+			{children}
+		</ViewerContext.Provider>
+	)
+}
+
+export const useViewer = () => {
+	const context = useContext(ViewerContext)
+	if (context === undefined) {
+		throw new Error('useViewer must be used within a ViewerProvider component.')
+	}
+	return context
+}
+
+export default ViewerContext
