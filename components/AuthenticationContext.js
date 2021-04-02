@@ -7,13 +7,15 @@ const AuthenticationContext = createContext()
 
 export const AuthProvider = ({ children }) => {
 	const router = useRouter()
-	const [isAuthenticated, setIsAuthenticated] = useState(false)
+	const [isAuthenticated, setIsAuthenticated] = useState(null)
 
 	const checkAuthentication = () => {
 		const token = sessionStorage.getItem('auth-token')
 
 		if (token) {
 			setIsAuthenticated(true)
+		} else {
+			setIsAuthenticated(false)
 		}
 	}
 
