@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useQuery, gql } from '@apollo/client'
-import { Box, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
+import { Box, Divider, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
 import LoadingState from '~/components/LoadingState'
 import { useViewer } from '~/components/ViewerContext'
 import { formatDate } from '~/lib/dateUtils'
@@ -49,26 +49,28 @@ const DashboardPage = () => {
 			</Typography>
 
 			<Grid container spacing={3}>
-				<Grid item md={6}>
+				<Grid item xs={12} md={6}>
 					<Paper className={styles.paper}>
-						<Typography variant="h4">My Lists</Typography>
-						<List>
-							<ListItem>Total: {details.lists.length}</ListItem>
-						</List>
+						<Box display="flex" alignItems="baseline" mb={3} className={styles.listsHeader}>
+							<Typography variant="h4">My Lists</Typography>
+							<Typography variant="overline">{details.lists.length} total</Typography>
+						</Box>
 						{details.lists.map(list => (
-							<Box key={list._id}>
+							<Box key={list._id} className={styles.listItem}>
 								<Link href={`/user/list/${list._id}`}>
 									<a>
-										<Typography>{list.name}</Typography>
+										<Typography variant="h6">{list.name}</Typography>
 									</a>
 								</Link>
 								<Typography variant="overline">
 									<em>Created on: {formatDate(list.dateCreated)}</em>
 								</Typography>
-								<hr />
+								<Divider />
 							</Box>
 						))}
-						<CreateListDialog onRefetch={USER_DASHBOARD_QUERY} />
+						<Box display="flex" justifyContent="flex-end">
+							<CreateListDialog onRefetch={USER_DASHBOARD_QUERY} />
+						</Box>
 					</Paper>
 					<Paper className={styles.paper}>
 						<Typography variant="h4">My Favorites</Typography>
@@ -80,7 +82,7 @@ const DashboardPage = () => {
 						</List>
 					</Paper>
 				</Grid>
-				<Grid item md={6}>
+				<Grid item xs={12} md={6}>
 					<Paper className={styles.paper}>
 						<Typography variant="h4">My Stats</Typography>
 						<List>

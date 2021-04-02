@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
 import { useQuery, gql } from '@apollo/client'
 import LoadingState from '~/components/LoadingState'
@@ -24,7 +25,10 @@ const UserListsPage = () => {
 
 	return (
 		<div>
-			<Typography variant="h3">My Lists</Typography>
+			<Typography variant="h3" className={styles.pageTitle}>
+				My Lists
+			</Typography>
+
 			{!data.userLists.length ? (
 				<Typography color="error">No Lists Found</Typography>
 			) : (
@@ -35,9 +39,13 @@ const UserListsPage = () => {
 							<Typography>Name: {list.name}</Typography>
 						</CardContent>
 						<CardActions>
-							<Button variant="outlined" color="secondary">
-								View Details
-							</Button>
+							<Link href={`/user/list/${list._id}`}>
+								<a>
+									<Button variant="outlined" color="secondary">
+										View Details
+									</Button>
+								</a>
+							</Link>
 						</CardActions>
 					</Card>
 				))

@@ -46,8 +46,7 @@ const CreateListDialog = ({ onRefetch }) => {
 			name,
 		}
 		try {
-			const resp = await addUserList({ variables: { input } })
-			console.log({ resp, data })
+			await addUserList({ variables: { input } })
 			handleClose()
 		} catch (error) {
 			console.error(error)
