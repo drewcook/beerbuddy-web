@@ -1,11 +1,11 @@
 import Link from 'next/link'
 import Head from 'next/head'
 import { Button, Typography } from '@material-ui/core'
-import { useAuthentication } from '../../components/AuthenticationContext'
-import { breweryDbService } from '../../api/'
-import styles from '../../styles/details.module.scss'
-import baseStyles from '../../styles/base.module.scss'
-import AddToListDialog from '../../components/AddToListDialog'
+import { useAuthentication } from '~/components/AuthenticationContext'
+import { breweryDbService } from '~/api/'
+import styles from '~/styles/details.module.scss'
+import baseStyles from '~/styles/base.module.scss'
+import AddToListDialog from '~/components/AddToListDialog'
 
 const BeerDetailsPage = props => {
 	const { details } = props

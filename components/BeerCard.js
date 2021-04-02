@@ -1,7 +1,7 @@
 import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
-import styles from '../styles/list.module.scss'
+import styles from '~/styles/list.module.scss'
 
 const BeerCard = ({ beer }) => {
 	const handleAddToList = () => {

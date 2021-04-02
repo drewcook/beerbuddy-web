@@ -1,12 +1,12 @@
 import Head from 'next/head'
-import { Box, Button, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
-import LoadingState from '../components/LoadingState'
-import { listService } from '../api/'
 import { useQuery, gql } from '@apollo/client'
-import { useViewer } from '../components/ViewerContext'
+import { Box, Button, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
+import LoadingState from '~/components/LoadingState'
+import { listService } from '~/api/'
+import { useViewer } from '~/components/ViewerContext'
 import _get from 'lodash/get'
-import baseStyles from '../styles/base.module.scss'
-import styles from '../styles/dashboard.module.scss'
+import baseStyles from '~/styles/base.module.scss'
+import styles from '~/styles/dashboard.module.scss'
 
 const USER_DASHBOARD_QUERY = gql`
 	query GetUserDashboard($userId: ID!) {

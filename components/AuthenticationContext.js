@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
-import { authService, userService } from '../api/'
+import { authService, userService } from '~/api/'
 
 const AuthenticationContext = createContext()
 

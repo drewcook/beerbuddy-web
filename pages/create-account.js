@@ -3,11 +3,11 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Box, Button, Container, InputLabel, Paper, TextField, Typography } from '@material-ui/core'
-import LoadingState from '../components/LoadingState'
-import { userService } from '../api/'
-import { useAuthentication } from '../components/AuthenticationContext'
-import styles from '../styles/login.module.scss'
-import baseStyles from '../styles/base.module.scss'
+import LoadingState from '~/components/LoadingState'
+import { userService } from '~/api/'
+import { useAuthentication } from '~/components/AuthenticationContext'
+import styles from '~/styles/login.module.scss'
+import baseStyles from '~/styles/base.module.scss'
 
 const CreateAccountPage = () => {
 	const router = useRouter()

@@ -3,10 +3,10 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Box, Button, Container, InputLabel, Paper, TextField, Typography } from '@material-ui/core'
 import Link from 'next/link'
-import { useAuthentication } from '../components/AuthenticationContext'
-import LoadingState from '../components/LoadingState'
-import styles from '../styles/login.module.scss'
-import baseStyles from '../styles/base.module.scss'
+import { useAuthentication } from '~/components/AuthenticationContext'
+import LoadingState from '~/components/LoadingState'
+import styles from '~/styles/login.module.scss'
+import baseStyles from '~/styles/base.module.scss'
 
 const LoginPage = () => {
 	const router = useRouter()

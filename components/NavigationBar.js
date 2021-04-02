@@ -14,9 +14,9 @@ import {
 	Typography,
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
-import { useAuthentication } from '../components/AuthenticationContext'
+import { useAuthentication } from '~/components/AuthenticationContext'
 import LocalDrinkIcon from '@material-ui/icons/LocalDrink'
-import styles from '../styles/navigationbar.module.scss'
+import styles from '~/styles/navigationbar.module.scss'
 
 const NavigationBar = () => {
 	const { isAuthenticated, logOut } = useAuthentication()
