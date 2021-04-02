@@ -1,15 +1,36 @@
 import Head from 'next/head'
 import { Typography } from '@material-ui/core'
-import { useAuthentication } from '~/components/AuthenticationContext'
-import AddItemToListDialog from '~/components/AddItemToListDialog'
+import { useQuery, gql } from '@apollo/client'
+import _get from 'lodash/get'
+import LoadingState from '~/components/LoadingState'
 import styles from '~/styles/details.module.scss'
 import baseStyles from '~/styles/base.module.scss'
 
-const UserListDetailsPage = props => {
-	const { details } = props
-	const { isAuthenticated } = useAuthentication()
+const LIST_DETAILS_QUERY = gql`
+	query GetListDetails($listId: ID!) {
+		listDetails(listId: $listId) {
+			name
+			dateCreated
+			dateLastModified
+			beerItems {
+				id
+				name
+			}
+			breweryItems {
+				id
+				name
+			}
+		}
+	}
+`
 
-	if (!isAuthenticated) console.log("uh oh, you shouldn'nt be here")
+const UserListDetailsPage = ({ id }) => {
+	const { data, loading, error } = useQuery(LIST_DETAILS_QUERY, { variables: { listId: id } })
+	const details = _get(data, 'listDetails')
+	console.log({ details })
+
+	if (loading) return <LoadingState />
+	if (error) return <Typography color="error">Error occurred</Typography>
 
 	return (
 		<>
@@ -19,10 +40,8 @@ const UserListDetailsPage = props => {
 			</Head>
 
 			<Typography variant="h3" className={baseStyles.pageTitle}>
-				User Details
+				List Details
 			</Typography>
-
-			<AddItemToListDialog beerId={details.id} />
 
 			<pre className={styles.code}>
 				<code>{JSON.stringify(details, null, 2)}</code>
@@ -32,15 +51,10 @@ const UserListDetailsPage = props => {
 }
 
 export const getServerSideProps = async ctx => {
-	const { id } = ctx.req.query
-	// mock user details query
-	const resp = await ctx.query.id
-	const { data } = resp
+	const { id } = ctx.query
 
 	return {
-		props: {
-			details: data,
-		},
+		props: { id },
 	}
 }
 
