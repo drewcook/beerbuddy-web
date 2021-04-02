@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import { useQuery, gql } from '@apollo/client'
 import { Box, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
 import LoadingState from '~/components/LoadingState'
@@ -8,7 +9,7 @@ import baseStyles from '~/styles/base.module.scss'
 import styles from '~/styles/dashboard.module.scss'
 import CreateListDialog from '~/components/CreateListDialog'
 
-const USER_DASHBOARD_QUERY = gql`
+export const USER_DASHBOARD_QUERY = gql`
 	query GetUserDashboard($userId: ID!) {
 		userDashboard(userId: $userId) {
 			userName
@@ -55,14 +56,18 @@ const DashboardPage = () => {
 						</List>
 						{details.lists.map(list => (
 							<Box key={list._id}>
-								<Typography>{list.name}</Typography>
+								<Link href={`/user/list/${list._id}`}>
+									<a>
+										<Typography>{list.name}</Typography>
+									</a>
+								</Link>
 								<Typography>
 									<em>Created on:{list.dateCreated}</em>
 								</Typography>
 								<hr />
 							</Box>
 						))}
-						<CreateListDialog />
+						<CreateListDialog onRefetch={USER_DASHBOARD_QUERY} />
 					</Paper>
 					<Paper className={styles.paper}>
 						<Typography variant="h4">My Favorites</Typography>

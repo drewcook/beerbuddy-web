@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import {
 	Button,
 	Dialog,
@@ -23,12 +24,14 @@ const CREATE_NEW_LIST = gql`
 	}
 `
 
-const CreateListDialog = () => {
+const CreateListDialog = ({ onRefetch }) => {
 	const { viewer } = useViewer()
 	const [open, setOpen] = useState(false)
 	const [name, setName] = useState('')
 
-	const [addUserList, { data, loading, error }] = useMutation(CREATE_NEW_LIST)
+	const [addUserList, { data, loading, error }] = useMutation(CREATE_NEW_LIST, {
+		refetchQueries: [{ query: onRefetch, variables: { userId: viewer._id } }],
+	})
 
 	const toggleOpen = () => setOpen(!open)
 
@@ -43,7 +46,6 @@ const CreateListDialog = () => {
 			name,
 		}
 		try {
-			// TODO: implement refetchQueries: GET_USER_LISTS
 			const resp = await addUserList({ variables: { input } })
 			console.log({ resp, data })
 			handleClose()
@@ -91,6 +93,10 @@ const CreateListDialog = () => {
 			</Dialog>
 		</div>
 	)
+}
+
+CreateListDialog.propTypes = {
+	onRefetch: PropTypes.shape({}).isRequired,
 }
 
 export default CreateListDialog
