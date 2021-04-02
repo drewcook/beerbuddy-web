@@ -5,6 +5,7 @@ import { useQuery, gql } from '@apollo/client'
 import _get from 'lodash/get'
 import LoadingState from '~/components/LoadingState'
 import { formatDate } from '~/lib/dateUtils'
+import getErrors from '~/lib/getGraphQLErrors'
 import styles from '~/styles/details.module.scss'
 import baseStyles from '~/styles/base.module.scss'
 
@@ -31,7 +32,7 @@ const UserListDetailsPage = ({ id }) => {
 	const details = _get(data, 'listDetails')
 
 	if (loading) return <LoadingState />
-	if (error) return <Typography color="error">Error occurred</Typography>
+	if (error) return <Typography color="error">{getErrors(error)}</Typography>
 
 	return (
 		<>
