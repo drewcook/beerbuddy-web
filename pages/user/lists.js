@@ -2,6 +2,7 @@ import { Button, Card, CardActions, CardContent, Typography } from '@material-ui
 import { useQuery, gql } from '@apollo/client'
 import LoadingState from '~/components/LoadingState'
 import { useViewer } from '~/components/ViewerContext'
+import styles from '~/styles/base.module.scss'
 
 const USER_LISTS_QUERY = gql`
 	query GetUserLists($userId: ID!) {
@@ -28,7 +29,7 @@ const UserListsPage = () => {
 				<Typography color="error">No Lists Found</Typography>
 			) : (
 				data.userLists.map(list => (
-					<Card key={list._id}>
+					<Card key={list._id} className={styles.cardBase}>
 						<CardContent>
 							<Typography>ID: {list._id}</Typography>
 							<Typography>Name: {list.name}</Typography>

@@ -1,5 +1,6 @@
 import Head from 'next/head'
-import { Typography } from '@material-ui/core'
+import Link from 'next/link'
+import { Button, Card, CardActions, CardContent, Paper, Typography } from '@material-ui/core'
 import { useQuery, gql } from '@apollo/client'
 import _get from 'lodash/get'
 import LoadingState from '~/components/LoadingState'
@@ -27,7 +28,6 @@ const LIST_DETAILS_QUERY = gql`
 const UserListDetailsPage = ({ id }) => {
 	const { data, loading, error } = useQuery(LIST_DETAILS_QUERY, { variables: { listId: id } })
 	const details = _get(data, 'listDetails')
-	console.log({ details })
 
 	if (loading) return <LoadingState />
 	if (error) return <Typography color="error">Error occurred</Typography>
@@ -43,6 +43,29 @@ const UserListDetailsPage = ({ id }) => {
 				List Details
 			</Typography>
 
+			<Paper className={baseStyles.cardBase}>
+				<Typography variant="h4">{details.name}</Typography>
+				<Typography variant="h6">Created On: {details.dateCreated}</Typography>
+				<Typography variant="h6">Last Modified: {details.lastModified}</Typography>
+			</Paper>
+
+			{details.beerItems.concat(details.breweryItems).map(item => (
+				<Card key={item._id} className={baseStyles.cardBase}>
+					<CardContent>
+						<Typography>ID: {item.id}</Typography>
+						<Typography>Name: {item.name}</Typography>
+					</CardContent>
+					<CardActions>
+						<Link href={`/${item.__typename.toLowerCase()}/${item.id}`}>
+							<a>
+								<Button variant="outlined" color="secondary">
+									View Details
+								</Button>
+							</a>
+						</Link>
+					</CardActions>
+				</Card>
+			))}
 			<pre className={styles.code}>
 				<code>{JSON.stringify(details, null, 2)}</code>
 			</pre>
