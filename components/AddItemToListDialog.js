@@ -19,7 +19,6 @@ import { useViewer } from './ViewerContext'
 const AddItemToListDialog = ({ beerId, breweryId }) => {
 	const { viewer } = useViewer()
 	const [open, setOpen] = useState(false)
-	const [currentUser, setCurrentUser] = useState(null)
 	const [lists, setLists] = useState([])
 	const [listId, setListId] = useState('new')
 	const [listName, setListName] = useState('')
