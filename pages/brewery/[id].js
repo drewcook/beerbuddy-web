@@ -31,7 +31,7 @@ const BreweryDetailsPage = props => {
 				Brewery Details
 			</Typography>
 
-			<pre className={styles.code}>
+			<pre className={baseStyles.code}>
 				<code>{JSON.stringify(details, null, 2)}</code>
 			</pre>
 		</>

@@ -6,7 +6,7 @@ import _get from 'lodash/get'
 import LoadingState from '~/components/LoadingState'
 import { formatDate } from '~/lib/dateUtils'
 import getErrors from '~/lib/getGraphQLErrors'
-import styles from '~/styles/details.module.scss'
+import styles from '~/styles/listDetails.module.scss'
 import baseStyles from '~/styles/base.module.scss'
 
 const LIST_DETAILS_QUERY = gql`
@@ -68,7 +68,7 @@ const UserListDetailsPage = ({ id }) => {
 					</CardActions>
 				</Card>
 			))}
-			<pre className={styles.code}>
+			<pre className={baseStyles.code}>
 				<code>{JSON.stringify(details, null, 2)}</code>
 			</pre>
 		</>
