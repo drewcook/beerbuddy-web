@@ -100,7 +100,7 @@ const NavigationBar = () => {
 				<Container maxWidth="lg">
 					{/* <IconButton>...</IconButton> */}
 					<Box display="flex" justifyContent="space-between" alignItems="center" py={1}>
-						<Link href="/">
+						<Link href={isAuthenticated ? '/home' : '/'}>
 							<a>
 								<Typography variant="h5" component="h1" className={styles.appName}>
 									<LocalDrinkIcon />

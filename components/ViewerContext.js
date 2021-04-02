@@ -15,8 +15,12 @@ const VIEWER_QUERY = gql`
 	}
 `
 
-export const ViewerProvider = ({ children }) => {
-	const { data, loading, error } = useQuery(VIEWER_QUERY)
+export const ViewerProvider = ({ children, router }) => {
+	const { asPath } = router
+	const unauthenticatedRoutes = ['/', '/login', '/create-account']
+	const { data, loading, error } = useQuery(VIEWER_QUERY, {
+		skip: unauthenticatedRoutes.includes(asPath),
+	})
 
 	if (loading || error) return null
 	if (error) return 'Error getting viewer'

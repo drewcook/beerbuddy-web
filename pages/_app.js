@@ -9,7 +9,7 @@ import ContentLayout from '~/components/ContentLayout'
 import theme from '~/styles/theme'
 import '~/styles/globals.scss'
 
-const BeerBuddy = ({ Component, pageProps }) => {
+const BeerBuddy = ({ Component, pageProps, router }) => {
 	const apolloClient = useApollo(pageProps)
 
 	useEffect(() => {
@@ -24,7 +24,7 @@ const BeerBuddy = ({ Component, pageProps }) => {
 		<ApolloProvider client={apolloClient}>
 			<ThemeProvider theme={theme}>
 				<AuthProvider>
-					<ViewerProvider>
+					<ViewerProvider router={router}>
 						<CssBaseline />
 						<ContentLayout content={<Component {...pageProps} />} />
 					</ViewerProvider>
