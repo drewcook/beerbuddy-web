@@ -13,7 +13,7 @@ import {
 	Select,
 	TextField,
 } from '@material-ui/core'
-import { listService } from '../api/'
+import { listService } from '~/api/'
 import { useAuthentication } from './AuthenticationContext'
 
 const AddToListDialog = ({ beerId }) => {

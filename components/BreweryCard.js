@@ -2,7 +2,7 @@ import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@
 import LanguageIcon from '@material-ui/icons/Language'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
-import styles from '../styles/list.module.scss'
+import styles from '~/styles/list.module.scss'
 
 const BreweryCard = ({ brewery }) => {
 	const handleAddToList = () => {

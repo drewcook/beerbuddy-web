@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import { Grid, Typography } from '@material-ui/core'
-import { useAuthentication } from '../../components/AuthenticationContext'
-import { getBreweries } from '../../api/breweryDb'
-import BreweryCard from '../../components/BreweryCard'
-import baseStyles from '../../styles/base.module.scss'
+import { useAuthentication } from '~/components/AuthenticationContext'
+import { getBreweries } from '~/api/breweryDb'
+import BreweryCard from '~/components/BreweryCard'
+import baseStyles from '~/styles/base.module.scss'
 
 const BreweryListPage = props => {
 	const { list, page, totalPages, totalResults } = props

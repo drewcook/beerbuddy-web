@@ -1,9 +1,9 @@
 import Head from 'next/head'
-import { Button, Card, CardActions, CardHeader, Typography } from '@material-ui/core'
+import { Button, Card, CardActions, Typography } from '@material-ui/core'
 import Link from 'next/link'
-import { useAuthentication } from '../components/AuthenticationContext'
-import styles from '../styles/home.module.scss'
-import baseStyles from '../styles/base.module.scss'
+import { useAuthentication } from '~/components/AuthenticationContext'
+import styles from '~/styles/home.module.scss'
+import baseStyles from '~/styles/base.module.scss'
 
 const HomePage = () => {
 	const { isAuthenticated } = useAuthentication()
