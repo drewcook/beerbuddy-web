@@ -66,11 +66,4 @@ const WelcomePage = () => {
 	)
 }
 
-export const getServerSideProps = async ctx => {
-	console.log('context', ctx)
-	return {
-		props: {},
-	}
-}
-
 export default WelcomePage

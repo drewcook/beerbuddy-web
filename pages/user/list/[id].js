@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { Typography } from '@material-ui/core'
 import { useAuthentication } from '~/components/AuthenticationContext'
-import AddToListDialog from '~/components/AddToListDialog'
+import AddItemToListDialog from '~/components/AddItemToListDialog'
 import styles from '~/styles/details.module.scss'
 import baseStyles from '~/styles/base.module.scss'
 
@@ -22,7 +22,7 @@ const UserListDetailsPage = props => {
 				User Details
 			</Typography>
 
-			<AddToListDialog beerId={details.id} />
+			<AddItemToListDialog beerId={details.id} />
 
 			<pre className={styles.code}>
 				<code>{JSON.stringify(details, null, 2)}</code>

@@ -1,12 +1,12 @@
 import Head from 'next/head'
 import { useQuery, gql } from '@apollo/client'
-import { Box, Button, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
+import { Box, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
 import LoadingState from '~/components/LoadingState'
-import { listService } from '~/api/'
 import { useViewer } from '~/components/ViewerContext'
 import _get from 'lodash/get'
 import baseStyles from '~/styles/base.module.scss'
 import styles from '~/styles/dashboard.module.scss'
+import CreateListDialog from '~/components/CreateListDialog'
 
 const USER_DASHBOARD_QUERY = gql`
 	query GetUserDashboard($userId: ID!) {
@@ -27,17 +27,6 @@ const DashboardPage = () => {
 		variables: { userId: viewer._id },
 	})
 	const details = _get(data, 'userDashboard')
-
-	// TODO: capture form input
-	const handleCreateList = async () => {
-		await listService.createListForUser({
-			userId: details.user._id,
-			name: 'My New List',
-			beerIds: ['aG4Ie2', 'LcpeBb'],
-			breweryIds: ['TMc6H2'],
-		})
-		// refetch list
-	}
 
 	if (loading) return <LoadingState />
 	if (error) return <Typography color="error">Error occurred</Typography>
@@ -73,9 +62,7 @@ const DashboardPage = () => {
 								<hr />
 							</Box>
 						))}
-						<Button variant="contained" color="primary" onClick={handleCreateList}>
-							Create New List
-						</Button>
+						<CreateListDialog />
 					</Paper>
 					<Paper className={styles.paper}>
 						<Typography variant="h4">My Favorites</Typography>
