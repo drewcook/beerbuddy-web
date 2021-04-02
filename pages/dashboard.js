@@ -4,6 +4,7 @@ import { useQuery, gql } from '@apollo/client'
 import { Box, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
 import LoadingState from '~/components/LoadingState'
 import { useViewer } from '~/components/ViewerContext'
+import { formatDate } from '~/lib/dateUtils'
 import _get from 'lodash/get'
 import baseStyles from '~/styles/base.module.scss'
 import styles from '~/styles/dashboard.module.scss'
@@ -61,8 +62,8 @@ const DashboardPage = () => {
 										<Typography>{list.name}</Typography>
 									</a>
 								</Link>
-								<Typography>
-									<em>Created on:{list.dateCreated}</em>
+								<Typography variant="overline">
+									<em>Created on: {formatDate(list.dateCreated)}</em>
 								</Typography>
 								<hr />
 							</Box>

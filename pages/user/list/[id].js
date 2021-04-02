@@ -4,6 +4,7 @@ import { Button, Card, CardActions, CardContent, Paper, Typography } from '@mate
 import { useQuery, gql } from '@apollo/client'
 import _get from 'lodash/get'
 import LoadingState from '~/components/LoadingState'
+import { formatDate } from '~/lib/dateUtils'
 import styles from '~/styles/details.module.scss'
 import baseStyles from '~/styles/base.module.scss'
 
@@ -45,8 +46,8 @@ const UserListDetailsPage = ({ id }) => {
 
 			<Paper className={baseStyles.cardBase}>
 				<Typography variant="h4">{details.name}</Typography>
-				<Typography variant="h6">Created On: {details.dateCreated}</Typography>
-				<Typography variant="h6">Last Modified: {details.lastModified}</Typography>
+				<Typography variant="h6">Created On: {formatDate(details.dateCreated)}</Typography>
+				<Typography variant="h6">Last Modified: {formatDate(details.lastModified)}</Typography>
 			</Paper>
 
 			{details.beerItems.concat(details.breweryItems).map(item => (
