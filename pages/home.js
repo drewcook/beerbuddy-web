@@ -1,8 +1,8 @@
-import Head from 'next/head'
+import baseStyles from '@bb/styles/base.module.scss'
+import styles from '@bb/styles/home.module.scss'
 import { Button, Card, CardActions, Typography } from '@material-ui/core'
+import Head from 'next/head'
 import Link from 'next/link'
-import styles from '~/styles/home.module.scss'
-import baseStyles from '~/styles/base.module.scss'
 
 const HomePage = () => (
 	<div className={styles.centered}>

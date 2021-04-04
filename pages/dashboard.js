@@ -1,14 +1,14 @@
+import { useQuery, gql } from '@apollo/client'
+import CreateListDialog from '@bb/components/CreateListDialog'
+import LoadingState from '@bb/components/LoadingState'
+import { useViewer } from '@bb/components/ViewerContext'
+import { formatDate } from '@bb/lib/dateUtils'
+import baseStyles from '@bb/styles/base.module.scss'
+import styles from '@bb/styles/dashboard.module.scss'
+import { Box, Divider, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
+import _get from 'lodash/get'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useQuery, gql } from '@apollo/client'
-import { Box, Divider, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
-import LoadingState from '~/components/LoadingState'
-import { useViewer } from '~/components/ViewerContext'
-import { formatDate } from '~/lib/dateUtils'
-import _get from 'lodash/get'
-import baseStyles from '~/styles/base.module.scss'
-import styles from '~/styles/dashboard.module.scss'
-import CreateListDialog from '~/components/CreateListDialog'
 
 export const USER_DASHBOARD_QUERY = gql`
 	query GetUserDashboard($userId: ID!) {

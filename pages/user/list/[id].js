@@ -1,13 +1,13 @@
+import { useQuery, gql } from '@apollo/client'
+import LoadingState from '@bb/components/LoadingState'
+import { formatDate } from '@bb/lib/dateUtils'
+import getErrors from '@bb/lib/getGraphQLErrors'
+import baseStyles from '@bb/styles/base.module.scss'
+import styles from '@bb/styles/listDetails.module.scss'
+import { Button, Card, CardActions, CardContent, Paper, Typography } from '@material-ui/core'
+import _get from 'lodash/get'
 import Head from 'next/head'
 import Link from 'next/link'
-import { Button, Card, CardActions, CardContent, Paper, Typography } from '@material-ui/core'
-import { useQuery, gql } from '@apollo/client'
-import _get from 'lodash/get'
-import LoadingState from '~/components/LoadingState'
-import { formatDate } from '~/lib/dateUtils'
-import getErrors from '~/lib/getGraphQLErrors'
-import styles from '~/styles/listDetails.module.scss'
-import baseStyles from '~/styles/base.module.scss'
 
 const LIST_DETAILS_QUERY = gql`
 	query GetListDetails($listId: ID!) {

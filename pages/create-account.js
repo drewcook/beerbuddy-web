@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import Link from 'next/link'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
+import { userService } from '@bb/api/'
+import { useAuthentication } from '@bb/components/AuthenticationContext'
+import LoadingState from '@bb/components/LoadingState'
+import baseStyles from '@bb/styles/base.module.scss'
+import styles from '@bb/styles/login.module.scss'
 import { Box, Button, Container, InputLabel, Paper, TextField, Typography } from '@material-ui/core'
-import LoadingState from '~/components/LoadingState'
-import { userService } from '~/api/'
-import { useAuthentication } from '~/components/AuthenticationContext'
-import styles from '~/styles/login.module.scss'
-import baseStyles from '~/styles/base.module.scss'
+import Head from 'next/head'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import React, { useState } from 'react'
 
 const CreateAccountPage = () => {
 	const router = useRouter()

@@ -1,9 +1,9 @@
-import Link from 'next/link'
-import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
 import { useQuery, gql } from '@apollo/client'
-import LoadingState from '~/components/LoadingState'
-import { useViewer } from '~/components/ViewerContext'
-import styles from '~/styles/base.module.scss'
+import LoadingState from '@bb/components/LoadingState'
+import { useViewer } from '@bb/components/ViewerContext'
+import styles from '@bb/styles/base.module.scss'
+import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
+import Link from 'next/link'
 
 const USER_LISTS_QUERY = gql`
 	query GetUserLists($userId: ID!) {
