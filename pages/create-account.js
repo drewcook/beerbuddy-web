@@ -25,7 +25,7 @@ const CreateAccountPage = () => {
 	const [password, setPassword] = useState('')
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [error, setError] = useState(null)
-	const [createUser, { data, loading, error}] = useMutation(CREATE_USER_MUTATION)
+	const [createUser, { data, loading, error: createUserError }] = useMutation(CREATE_USER_MUTATION)
 
 	const handleSubmit = async e => {
 		e.preventDefault()
@@ -33,7 +33,7 @@ const CreateAccountPage = () => {
 		setError(null)
 		try {
 			// TODO: wire this up, then sign them in, then redirect to hom
-			await createUser({ variables: { input: { name, email, password } } });
+			await createUser({ variables: { input: { name, email, password } } })
 			await logIn({ email, password })
 			// Redirect to home
 			router.push('/')
