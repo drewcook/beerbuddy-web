@@ -28,6 +28,7 @@
 		"sass": "^1.32.8"
 	},
 	"devDependencies": {
+		"@trivago/prettier-plugin-sort-imports": "^2.0.2",
 		"altheajs-prettier-config": "^1.1.1",
 		"lint-staged": "^10.5.4",
 		"prettier": "2.2.1",
