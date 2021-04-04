@@ -1,10 +1,11 @@
-import { breweryDbService } from '@bb/api/'
-import { useAuthentication } from '@bb/components/AuthenticationContext'
-import baseStyles from '@bb/styles/base.module.scss'
-import styles from '@bb/styles/details.module.scss'
 import { Button, Typography } from '@material-ui/core'
 import Head from 'next/head'
 import Link from 'next/link'
+import { breweryDbService } from '@bb/api/'
+import AddItemToListDialog from '@bb/components/AddItemToListDialog'
+import { useAuthentication } from '@bb/components/AuthenticationContext'
+import baseStyles from '@bb/styles/base.module.scss'
+import styles from '@bb/styles/details.module.scss'
 
 const BreweryDetailsPage = props => {
 	const { details } = props
@@ -30,6 +31,8 @@ const BreweryDetailsPage = props => {
 			<Typography variant="h3" className={baseStyles.pageTitle}>
 				Brewery Details
 			</Typography>
+
+			<AddItemToListDialog beerId={details.id} />
 
 			<pre className={baseStyles.code}>
 				<code>{JSON.stringify(details, null, 2)}</code>

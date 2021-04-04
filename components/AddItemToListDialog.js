@@ -39,7 +39,7 @@ const ADD_ITEM_MUTATION = gql`
 	}
 `
 
-const AddItemToListDialog = ({ beerId, breweryId }) => {
+const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 	const { viewer } = useViewer()
 	const [open, setOpen] = useState(false)
 	const [listId, setListId] = useState('new')
@@ -85,8 +85,8 @@ const AddItemToListDialog = ({ beerId, breweryId }) => {
 	}
 
 	return (
-		<div>
-			<Button variant="outlined" color="primary" onClick={handleClickOpen}>
+		<>
+			<Button variant="outlined" color="primary" onClick={handleClickOpen} {...btnProps}>
 				Add To List
 			</Button>
 			<Dialog open={open} onClose={handleClose} aria-labelledby="add-to-list">
@@ -154,18 +154,22 @@ const AddItemToListDialog = ({ beerId, breweryId }) => {
 					</Button>
 				</DialogActions>
 			</Dialog>
-		</div>
+		</>
 	)
 }
 
 AddItemToListDialog.propTypes = {
 	beerId: PropTypes.string,
 	breweryId: PropTypes.string,
+	btnProps: PropTypes.shape({
+		fullWidth: PropTypes.bool,
+	}),
 }
 
 AddItemToListDialog.defaultProps = {
 	beerId: undefined,
 	breweryId: undefined,
+	btnProps: undefined,
 }
 
 export default AddItemToListDialog

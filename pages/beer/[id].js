@@ -1,10 +1,10 @@
+import { Button, Typography } from '@material-ui/core'
+import Head from 'next/head'
+import Link from 'next/link'
 import { breweryDbService } from '@bb/api/'
 import AddItemToListDialog from '@bb/components/AddItemToListDialog'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/details.module.scss'
-import { Button, Typography } from '@material-ui/core'
-import Head from 'next/head'
-import Link from 'next/link'
 
 const BeerDetailsPage = ({ details }) => {
 	return (
