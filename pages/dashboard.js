@@ -31,7 +31,12 @@ const DashboardPage = () => {
 	const details = _get(data, 'userDashboard')
 
 	if (loading) return <LoadingState />
-	if (error) return <Typography color="error">Error occurred</Typography>
+	if (error)
+		return (
+			<Typography color="error">
+				Sorry, an error occurred while getting the user dashboard.
+			</Typography>
+		)
 
 	return (
 		<>
