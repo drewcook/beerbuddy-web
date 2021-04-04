@@ -1,6 +1,6 @@
-import { createContext, useContext } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import _get from 'lodash/get'
+import { createContext, useContext } from 'react'
 
 const ViewerContext = createContext()
 

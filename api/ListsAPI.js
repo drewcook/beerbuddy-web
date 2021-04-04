@@ -28,6 +28,16 @@ class ListsAPI extends RESTDataSource {
 		const data = await this.get(`/user/${userId}`)
 		return data
 	}
+
+	async createList({ userId, name }) {
+		const data = await this.post('/', { userId, name })
+		return data
+	}
+
+	async addItemToList({ listId, beerId, breweryId }) {
+		const data = await this.patch(`/${listId}`, { beerId, breweryId })
+		return data
+	}
 }
 
 export default ListsAPI

@@ -1,18 +1,12 @@
-import Link from 'next/link'
-import Head from 'next/head'
 import { Button, Typography } from '@material-ui/core'
-import { useAuthentication } from '~/components/AuthenticationContext'
-import { breweryDbService } from '~/api/'
-import styles from '~/styles/details.module.scss'
-import baseStyles from '~/styles/base.module.scss'
-import AddToListDialog from '~/components/AddToListDialog'
+import Head from 'next/head'
+import Link from 'next/link'
+import { breweryDbService } from '@bb/api/'
+import AddItemToListDialog from '@bb/components/AddItemToListDialog'
+import baseStyles from '@bb/styles/base.module.scss'
+import styles from '@bb/styles/details.module.scss'
 
-const BeerDetailsPage = props => {
-	const { details } = props
-	const { isAuthenticated } = useAuthentication()
-
-	if (!isAuthenticated) console.log("uh oh, you shouldn'nt be here")
-
+const BeerDetailsPage = ({ details }) => {
 	return (
 		<>
 			<Head>
@@ -32,9 +26,9 @@ const BeerDetailsPage = props => {
 				Beer Details
 			</Typography>
 
-			<AddToListDialog beerId={details.id} />
+			<AddItemToListDialog beerId={details.id} />
 
-			<pre className={styles.code}>
+			<pre className={baseStyles.code}>
 				<code>{JSON.stringify(details, null, 2)}</code>
 			</pre>
 		</>

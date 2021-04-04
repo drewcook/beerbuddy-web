@@ -1,3 +1,3 @@
-import initApolloServer from '~/lib/apollo-server/apolloServer'
+import initApolloServer from '@bb/lib/apollo-server/apolloServer'
 
 initApolloServer()

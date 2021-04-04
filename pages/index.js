@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
-import Head from 'next/head'
 import { Button, Card, CardActions, Typography } from '@material-ui/core'
+import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useAuthentication } from '~/components/AuthenticationContext'
-import styles from '~/styles/home.module.scss'
-import baseStyles from '~/styles/base.module.scss'
-import LoadingState from '~/components/LoadingState'
+import { useEffect, useState } from 'react'
+import { useAuthentication } from '@bb/components/AuthenticationContext'
+import LoadingState from '@bb/components/LoadingState'
+import baseStyles from '@bb/styles/base.module.scss'
+import styles from '@bb/styles/home.module.scss'
 
 const WelcomePage = () => {
 	const router = useRouter()
@@ -64,13 +64,6 @@ const WelcomePage = () => {
 			<LoadingState />
 		</div>
 	)
-}
-
-export const getServerSideProps = async ctx => {
-	console.log('context', ctx)
-	return {
-		props: {},
-	}
 }
 
 export default WelcomePage

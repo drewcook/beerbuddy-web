@@ -1,14 +1,11 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core'
 import LanguageIcon from '@material-ui/icons/Language'
-import PropTypes from 'prop-types'
 import Link from 'next/link'
-import styles from '~/styles/list.module.scss'
+import PropTypes from 'prop-types'
+import AddItemToListDialog from '@bb/components/AddItemToListDialog'
+import styles from '@bb/styles/list.module.scss'
 
 const BreweryCard = ({ brewery }) => {
-	const handleAddToList = () => {
-		console.log('adding to list', brewery.name)
-	}
-
 	const renderLocation = () => {
 		return (
 			brewery.locations && (
@@ -46,15 +43,10 @@ const BreweryCard = ({ brewery }) => {
 				)}
 			</CardContent>
 			<CardActions className={styles.btns}>
-				<Button
-					variant="outlined"
-					color="secondary"
-					size="small"
-					onClick={handleAddToList}
-					fullWidth
-				>
-					Add To List
-				</Button>
+				<AddItemToListDialog
+					breweryId={brewery.id}
+					btnProps={{ fullWidth: true, size: 'small', color: 'secondary' }}
+				/>
 				<Link href={`/brewery/${brewery.id}`}>
 					<a>
 						<Button variant="outlined" color="primary" size="small" fullWidth>

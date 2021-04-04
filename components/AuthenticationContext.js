@@ -1,7 +1,7 @@
-import { createContext, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
-import { authService, userService } from '~/api/'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { authenticateUser } from '@bb/api/auth'
 
 const AuthenticationContext = createContext()
 
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
 
 	const logIn = async ({ email, password }) => {
 		try {
-			const token = await authService.authenticateUser({ email, password })
+			const token = await authenticateUser({ email, password })
 			sessionStorage.setItem('auth-token', token)
 			setIsAuthenticated(true)
 		} catch (error) {
@@ -45,22 +45,12 @@ export const AuthProvider = ({ children }) => {
 		}
 	}
 
-	const getCurrentUser = async () => {
-		try {
-			const user = await userService.getMe()
-			return user
-		} catch (error) {
-			throw new Error(error)
-		}
-	}
-
 	return (
 		<AuthenticationContext.Provider
 			value={{
 				isAuthenticated,
 				logIn,
 				logOut,
-				getCurrentUser,
 			}}
 		>
 			{children}

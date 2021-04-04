@@ -1,15 +1,38 @@
+import { useQuery, gql } from '@apollo/client'
+import LoadingState from '@bb/components/LoadingState'
+import { formatDate } from '@bb/lib/dateUtils'
+import getErrors from '@bb/lib/getGraphQLErrors'
+import baseStyles from '@bb/styles/base.module.scss'
+import styles from '@bb/styles/listDetails.module.scss'
+import { Button, Card, CardActions, CardContent, Paper, Typography } from '@material-ui/core'
+import _get from 'lodash/get'
 import Head from 'next/head'
-import { Typography } from '@material-ui/core'
-import { useAuthentication } from '~/components/AuthenticationContext'
-import AddToListDialog from '~/components/AddToListDialog'
-import styles from '~/styles/details.module.scss'
-import baseStyles from '~/styles/base.module.scss'
+import Link from 'next/link'
 
-const UserListDetailsPage = props => {
-	const { details } = props
-	const { isAuthenticated } = useAuthentication()
+const LIST_DETAILS_QUERY = gql`
+	query GetListDetails($listId: ID!) {
+		listDetails(listId: $listId) {
+			name
+			dateCreated
+			dateLastModified
+			beerItems {
+				id
+				name
+			}
+			breweryItems {
+				id
+				name
+			}
+		}
+	}
+`
 
-	if (!isAuthenticated) console.log("uh oh, you shouldn'nt be here")
+const UserListDetailsPage = ({ id }) => {
+	const { data, loading, error } = useQuery(LIST_DETAILS_QUERY, { variables: { listId: id } })
+	const details = _get(data, 'listDetails')
+
+	if (loading) return <LoadingState />
+	if (error) return <Typography color="error">{getErrors(error)}</Typography>
 
 	return (
 		<>
@@ -19,12 +42,33 @@ const UserListDetailsPage = props => {
 			</Head>
 
 			<Typography variant="h3" className={baseStyles.pageTitle}>
-				User Details
+				List Details
 			</Typography>
 
-			<AddToListDialog beerId={details.id} />
+			<Paper className={baseStyles.cardBase}>
+				<Typography variant="h4">{details.name}</Typography>
+				<Typography variant="h6">Created On: {formatDate(details.dateCreated)}</Typography>
+				<Typography variant="h6">Last Modified: {formatDate(details.lastModified)}</Typography>
+			</Paper>
 
-			<pre className={styles.code}>
+			{details.beerItems.concat(details.breweryItems).map(item => (
+				<Card key={item._id} className={baseStyles.cardBase}>
+					<CardContent>
+						<Typography>ID: {item.id}</Typography>
+						<Typography>Name: {item.name}</Typography>
+					</CardContent>
+					<CardActions>
+						<Link href={`/${item.__typename.toLowerCase()}/${item.id}`}>
+							<a>
+								<Button variant="outlined" color="secondary">
+									View Details
+								</Button>
+							</a>
+						</Link>
+					</CardActions>
+				</Card>
+			))}
+			<pre className={baseStyles.code}>
 				<code>{JSON.stringify(details, null, 2)}</code>
 			</pre>
 		</>
@@ -32,15 +76,10 @@ const UserListDetailsPage = props => {
 }
 
 export const getServerSideProps = async ctx => {
-	const { id } = ctx.req.query
-	// mock user details query
-	const resp = await ctx.query.id
-	const { data } = resp
+	const { id } = ctx.query
 
 	return {
-		props: {
-			details: data,
-		},
+		props: { id },
 	}
 }
 

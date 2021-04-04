@@ -1,13 +1,21 @@
-import React, { useState } from 'react'
-import Link from 'next/link'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
+import { useMutation, gql } from '@apollo/client'
 import { Box, Button, Container, InputLabel, Paper, TextField, Typography } from '@material-ui/core'
-import LoadingState from '~/components/LoadingState'
-import { userService } from '~/api/'
-import { useAuthentication } from '~/components/AuthenticationContext'
-import styles from '~/styles/login.module.scss'
-import baseStyles from '~/styles/base.module.scss'
+import Head from 'next/head'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { useAuthentication } from '@bb/components/AuthenticationContext'
+import LoadingState from '@bb/components/LoadingState'
+import baseStyles from '@bb/styles/base.module.scss'
+import styles from '@bb/styles/login.module.scss'
+
+const CREATE_USER_MUTATION = gql`
+	mutation CreateUser($input: CreateUserInput!) {
+		createUser(input: $input) {
+			_id
+		}
+	}
+`
 
 const CreateAccountPage = () => {
 	const router = useRouter()
@@ -17,6 +25,7 @@ const CreateAccountPage = () => {
 	const [password, setPassword] = useState('')
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [error, setError] = useState(null)
+	const [createUser, { data, loading, error: createUserError }] = useMutation(CREATE_USER_MUTATION)
 
 	const handleSubmit = async e => {
 		e.preventDefault()
@@ -24,7 +33,7 @@ const CreateAccountPage = () => {
 		setError(null)
 		try {
 			// TODO: wire this up, then sign them in, then redirect to hom
-			const user = await userService.createAccount({ name, email, password })
+			await createUser({ variables: { input: { name, email, password } } })
 			await logIn({ email, password })
 			// Redirect to home
 			router.push('/')
