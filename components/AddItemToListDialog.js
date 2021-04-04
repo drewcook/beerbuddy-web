@@ -1,3 +1,4 @@
+import { useQuery, useMutation, gql } from '@apollo/client'
 import {
 	Button,
 	Dialog,
@@ -10,18 +11,45 @@ import {
 	MenuItem,
 	Select,
 	TextField,
+	Typography,
 } from '@material-ui/core'
 import PropTypes from 'prop-types'
-import { useEffect, useState } from 'react'
-import { listService } from '@bb/api/'
+import { useState } from 'react'
+import LoadingState from './LoadingState'
 import { useViewer } from './ViewerContext'
+
+const USER_LISTS_QUERY = gql`
+	query GetUserLists($userId: ID!) {
+		userLists(userId: $userId) {
+			_id
+			name
+		}
+	}
+`
+
+const ADD_ITEM_MUTATION = gql`
+	mutation AddItemToList($input: AddItemToListInput!) {
+		addItemToList(input: $input) {
+			_id
+			name
+			beerIds
+			breweryIds
+			dateLastModified
+		}
+	}
+`
 
 const AddItemToListDialog = ({ beerId, breweryId }) => {
 	const { viewer } = useViewer()
 	const [open, setOpen] = useState(false)
-	const [lists, setLists] = useState([])
 	const [listId, setListId] = useState('new')
 	const [listName, setListName] = useState('')
+	const { data: getData, loading: getLoading, error: getError } = useQuery(USER_LISTS_QUERY, {
+		variables: { userId: viewer._id },
+	})
+	const [addItem, { data: addData, loading: addLoading, error: addError }] = useMutation(
+		ADD_ITEM_MUTATION,
+	)
 
 	const handleClickOpen = () => setOpen(true)
 	const handleClose = () => {
@@ -34,30 +62,27 @@ const AddItemToListDialog = ({ beerId, breweryId }) => {
 	const handleAddToList = async () => {
 		try {
 			if (listId === 'new') {
-				// create the new list with the beerID in it
-				await listService.createListForUser({
-					userId: currentUser._id,
-					name: listName,
-					beerIds: beerId ? [beerId] : [],
-					breweryIds: breweryId ? [brewerId] : [],
-				})
-				handleClose()
-				// repopulate dropdown after add
-				const resp = await listService.getUserLists(user._id)
-				setLists(resp)
+				// TODO: wire this up
+				// // create the new list with the beerID in it
+				// await listService.createListForUser({
+				// 	userId: currentUser._id,
+				// 	name: listName,
+				// 	beerIds: beerId ? [beerId] : [],
+				// 	breweryIds: breweryId ? [brewerId] : [],
+				// })
+				// handleClose()
+				// // repopulate dropdown after add
+				// const resp = await listService.getUserLists(user._id)
+				// setLists(resp)
 			} else {
-				await listService.addBeerToList({ listId, beerId, name: listName })
+				const list = await addItem({ variables: { input: { listId, beerId, breweryId } } })
+				console.log('updated list', list)
 				handleClose()
 			}
 		} catch (error) {
 			console.error(error)
 		}
 	}
-
-	useEffect(async () => {
-		const resp = await listService.getUserLists(viewer._id)
-		setLists(resp)
-	}, [])
 
 	return (
 		<div>
@@ -67,40 +92,64 @@ const AddItemToListDialog = ({ beerId, breweryId }) => {
 			<Dialog open={open} onClose={handleClose} aria-labelledby="add-to-list">
 				<DialogTitle id="add-to-list">Add To List</DialogTitle>
 				<DialogContent>
-					<DialogContentText>What list would you like to add this item to?</DialogContentText>
-					<FormControl fullWidth>
-						<InputLabel id="lists-dropdown-label">My Lists</InputLabel>
-						<Select
-							variant="outlined"
-							labelId="list-dropdown-label"
-							id="list-dropdown"
-							value={listId}
-							onChange={handleChange}
-						>
-							<MenuItem value="new">
-								<em>Create New List</em>
-							</MenuItem>
-							{lists.map(list => (
-								<MenuItem value={list._id}>{list.name}</MenuItem>
-							))}
-						</Select>
-					</FormControl>
-					{listId === 'new' && (
-						<TextField
-							margin="normal"
-							variant="outlined"
-							name="listName"
-							onChange={e => setListName(e.target.value)}
-							value={listName}
-							fullWidth
-						/>
+					{getLoading || addLoading ? (
+						<LoadingState />
+					) : (
+						<>
+							<DialogContentText>What list would you like to add this item to?</DialogContentText>
+							<FormControl fullWidth>
+								{/* <InputLabel id="lists-dropdown-label">My Lists</InputLabel> */}
+								<Select
+									variant="outlined"
+									labelId="list-dropdown-label"
+									id="list-dropdown"
+									value={listId}
+									onChange={handleChange}
+								>
+									<MenuItem value="new">
+										<em>Create New List</em>
+									</MenuItem>
+									{getData.userLists.map(list => (
+										<MenuItem key={list._id} value={list._id}>
+											{list.name}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+							{listId === 'new' && (
+								<TextField
+									margin="normal"
+									variant="outlined"
+									name="listName"
+									onChange={e => setListName(e.target.value)}
+									value={listName}
+									fullWidth
+								/>
+							)}
+							{getError && (
+								<Typography color="error">There was an error getting the user lists.</Typography>
+							)}
+							{addError && (
+								<Typography color="error">
+									There was an error adding the item to the list.
+								</Typography>
+							)}
+						</>
 					)}
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={handleClose} color="primary">
+					<Button
+						onClick={handleClose}
+						color="primary"
+						disabled={getLoading || addLoading ? true : false}
+					>
 						Cancel
 					</Button>
-					<Button onClick={handleAddToList} color="primary">
+					<Button
+						onClick={handleAddToList}
+						color="primary"
+						disabled={getLoading || addLoading ? true : false}
+					>
 						Submit
 					</Button>
 				</DialogActions>
@@ -115,8 +164,8 @@ AddItemToListDialog.propTypes = {
 }
 
 AddItemToListDialog.defaultProps = {
-	beerId: null,
-	breweryId: null,
+	beerId: undefined,
+	breweryId: undefined,
 }
 
 export default AddItemToListDialog

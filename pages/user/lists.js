@@ -1,9 +1,9 @@
 import { useQuery, gql } from '@apollo/client'
+import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
+import Link from 'next/link'
 import LoadingState from '@bb/components/LoadingState'
 import { useViewer } from '@bb/components/ViewerContext'
 import styles from '@bb/styles/base.module.scss'
-import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
-import Link from 'next/link'
 
 const USER_LISTS_QUERY = gql`
 	query GetUserLists($userId: ID!) {
@@ -21,7 +21,8 @@ const UserListsPage = () => {
 	})
 
 	if (loading) return <LoadingState />
-	if (error) return <Typography color="error">Error occurred</Typography>
+	if (error)
+		return <Typography color="error">Sorry, an error occurred getting user lists.</Typography>
 
 	return (
 		<div>

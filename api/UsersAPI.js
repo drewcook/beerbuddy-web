@@ -14,6 +14,11 @@ class UsersAPI extends RESTDataSource {
 		request.headers.set('authorization', this.context.token)
 	}
 
+	async createUser(params) {
+		const data = await this.post('/', params)
+		return data
+	}
+
 	async getUsers() {
 		const data = await this.get('/')
 		return data
