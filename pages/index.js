@@ -1,12 +1,12 @@
-import { useAuthentication } from '@bb/components/AuthenticationContext'
-import LoadingState from '@bb/components/LoadingState'
-import baseStyles from '@bb/styles/base.module.scss'
-import styles from '@bb/styles/home.module.scss'
 import { Button, Card, CardActions, Typography } from '@material-ui/core'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useAuthentication } from '@bb/components/AuthenticationContext'
+import LoadingState from '@bb/components/LoadingState'
+import baseStyles from '@bb/styles/base.module.scss'
+import styles from '@bb/styles/home.module.scss'
 
 const WelcomePage = () => {
 	const router = useRouter()

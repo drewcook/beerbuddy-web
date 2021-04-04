@@ -1,5 +1,3 @@
-import { useAuthentication } from '@bb/components/AuthenticationContext'
-import styles from '@bb/styles/navigationbar.module.scss'
 import {
 	AppBar,
 	Box,
@@ -17,6 +15,8 @@ import LocalDrinkIcon from '@material-ui/icons/LocalDrink'
 import MenuIcon from '@material-ui/icons/Menu'
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
+import { useAuthentication } from '@bb/components/AuthenticationContext'
+import styles from '@bb/styles/navigationbar.module.scss'
 
 const NavigationBar = () => {
 	const { isAuthenticated, logOut } = useAuthentication()

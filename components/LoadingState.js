@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
 import { Box, CircularProgress } from '@material-ui/core'
+import PropTypes from 'prop-types'
 
 const LoadingState = ({ spinnerSize, spinnerColor, ...rest }) => (
 	<Box textAlign="center" m={4} {...rest}>

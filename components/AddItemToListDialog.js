@@ -1,4 +1,3 @@
-import { listService } from '@bb/api/'
 import {
 	Button,
 	Dialog,
@@ -14,7 +13,7 @@ import {
 } from '@material-ui/core'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
-
+import { listService } from '@bb/api/'
 import { useViewer } from './ViewerContext'
 
 const AddItemToListDialog = ({ beerId, breweryId }) => {

@@ -1,13 +1,13 @@
 import { ApolloProvider } from '@apollo/client'
-import { AuthProvider } from '@bb/components/AuthenticationContext'
-import ContentLayout from '@bb/components/ContentLayout'
-import { ViewerProvider } from '@bb/components/ViewerContext'
-import { useApollo } from '@bb/lib/apollo-client/apolloClient'
-import '@bb/styles/globals.scss'
-import theme from '@bb/styles/theme'
 import { CssBaseline } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { useEffect } from 'react'
+import { useApollo } from '@bb/lib/apollo-client/apolloClient'
+import { AuthProvider } from '@bb/components/AuthenticationContext'
+import ContentLayout from '@bb/components/ContentLayout'
+import { ViewerProvider } from '@bb/components/ViewerContext'
+import '@bb/styles/globals.scss'
+import theme from '@bb/styles/theme'
 
 const BeerBuddy = ({ Component, pageProps, router }) => {
 	const apolloClient = useApollo(pageProps)

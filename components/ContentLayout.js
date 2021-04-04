@@ -1,7 +1,6 @@
-import styles from '@bb/styles/base.module.scss'
 import { Container, Typography } from '@material-ui/core'
-
 import NavigationBar from './NavigationBar'
+import styles from '@bb/styles/base.module.scss'
 
 const ContentLayout = ({ content }) => (
 	<>

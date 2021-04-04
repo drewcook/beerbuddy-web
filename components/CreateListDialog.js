@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useMutation, gql } from '@apollo/client'
 import {
 	Button,
 	Dialog,
@@ -10,9 +9,10 @@ import {
 	TextField,
 	Typography,
 } from '@material-ui/core'
-import { useViewer } from './ViewerContext'
+import PropTypes from 'prop-types'
+import { useState } from 'react'
 import LoadingState from './LoadingState'
-import { useMutation, gql } from '@apollo/client'
+import { useViewer } from './ViewerContext'
 
 const CREATE_NEW_LIST = gql`
 	mutation CreatNewList($input: CreateListInput!) {

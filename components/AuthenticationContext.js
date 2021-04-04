@@ -1,7 +1,7 @@
-import { authService, userService } from '@bb/api/'
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { authService, userService } from '@bb/api/'
 
 const AuthenticationContext = createContext()
 

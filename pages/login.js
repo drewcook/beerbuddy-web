@@ -1,12 +1,12 @@
-import { useAuthentication } from '@bb/components/AuthenticationContext'
-import LoadingState from '@bb/components/LoadingState'
-import baseStyles from '@bb/styles/base.module.scss'
-import styles from '@bb/styles/login.module.scss'
 import { Box, Button, Container, InputLabel, Paper, TextField, Typography } from '@material-ui/core'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { useAuthentication } from '@bb/components/AuthenticationContext'
+import LoadingState from '@bb/components/LoadingState'
+import baseStyles from '@bb/styles/base.module.scss'
+import styles from '@bb/styles/login.module.scss'
 
 const LoginPage = () => {
 	const router = useRouter()

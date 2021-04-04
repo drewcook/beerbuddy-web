@@ -1,13 +1,13 @@
+import { Box, Button, Container, InputLabel, Paper, TextField, Typography } from '@material-ui/core'
+import Head from 'next/head'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { userService } from '@bb/api/'
 import { useAuthentication } from '@bb/components/AuthenticationContext'
 import LoadingState from '@bb/components/LoadingState'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/login.module.scss'
-import { Box, Button, Container, InputLabel, Paper, TextField, Typography } from '@material-ui/core'
-import Head from 'next/head'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import React, { useState } from 'react'
 
 const CreateAccountPage = () => {
 	const router = useRouter()
