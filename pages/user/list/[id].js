@@ -1,13 +1,13 @@
 import { useQuery, gql } from '@apollo/client'
-import LoadingState from '@bb/components/LoadingState'
-import { formatDate } from '@bb/lib/dateUtils'
-import getErrors from '@bb/lib/getGraphQLErrors'
-import baseStyles from '@bb/styles/base.module.scss'
-import styles from '@bb/styles/listDetails.module.scss'
 import { Button, Card, CardActions, CardContent, Paper, Typography } from '@material-ui/core'
 import _get from 'lodash/get'
 import Head from 'next/head'
 import Link from 'next/link'
+import { formatDate } from '@bb/lib/dateUtils'
+import getErrors from '@bb/lib/getGraphQLErrors'
+import LoadingState from '@bb/components/LoadingState'
+import baseStyles from '@bb/styles/base.module.scss'
+import styles from '@bb/styles/listDetails.module.scss'
 
 const LIST_DETAILS_QUERY = gql`
 	query GetListDetails($listId: ID!) {
@@ -28,7 +28,11 @@ const LIST_DETAILS_QUERY = gql`
 `
 
 const UserListDetailsPage = ({ id }) => {
-	const { data, loading, error } = useQuery(LIST_DETAILS_QUERY, { variables: { listId: id } })
+	const { data, loading, error } = useQuery(LIST_DETAILS_QUERY, {
+		variables: { listId: id },
+		fetchPolicy: 'no-cache',
+	})
+	console.log({ data })
 	const details = _get(data, 'listDetails')
 
 	if (loading) return <LoadingState />
