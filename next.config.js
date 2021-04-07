@@ -11,6 +11,7 @@ module.exports = {
 		// Will be available on both server and client
 		staticFolder: '/public',
 		port: process.env.PORT,
+		beerBuddyApiHost: process.env.BEERBUDDY_API_HOST,
 		breweryDBApiHost: process.env.BREWERYDB_API_HOST,
 		breweryDBApiKey: process.env.BREWERYDB_API_KEY,
 	},
