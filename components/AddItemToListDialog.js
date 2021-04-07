@@ -1,4 +1,4 @@
-import { useQuery, useMutation, gql } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import {
 	Button,
 	Dialog,
@@ -7,7 +7,6 @@ import {
 	DialogContentText,
 	DialogTitle,
 	FormControl,
-	InputLabel,
 	MenuItem,
 	Select,
 	TextField,
@@ -15,29 +14,9 @@ import {
 } from '@material-ui/core'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
+import { USER_LISTS_QUERY, ADD_ITEM_MUTATION } from '@bb/lib/apollo-client/shemas'
 import LoadingState from './LoadingState'
 import { useViewer } from './ViewerContext'
-
-const USER_LISTS_QUERY = gql`
-	query GetUserLists($userId: ID!) {
-		userLists(userId: $userId) {
-			_id
-			name
-		}
-	}
-`
-
-const ADD_ITEM_MUTATION = gql`
-	mutation AddItemToList($input: UpdateListInput!) {
-		addItemToList(input: $input) {
-			_id
-			name
-			beerIds
-			breweryIds
-			dateLastModified
-		}
-	}
-`
 
 const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 	const { viewer } = useViewer()
@@ -47,9 +26,9 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 	const { data: getData, loading: getLoading, error: getError } = useQuery(USER_LISTS_QUERY, {
 		variables: { userId: viewer._id },
 	})
-	const [addItem, { data: addData, loading: addLoading, error: addError }] = useMutation(
-		ADD_ITEM_MUTATION,
-	)
+	const [addItem, { loading: addLoading, error: addError }] = useMutation(ADD_ITEM_MUTATION, {
+		refetchQueries: [{ query: USER_LISTS_QUERY, variables: { userId: viewer._id } }],
+	})
 
 	const handleClickOpen = () => setOpen(true)
 	const handleClose = () => {
@@ -97,7 +76,6 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 						<>
 							<DialogContentText>What list would you like to add this item to?</DialogContentText>
 							<FormControl fullWidth>
-								{/* <InputLabel id="lists-dropdown-label">My Lists</InputLabel> */}
 								<Select
 									variant="outlined"
 									labelId="list-dropdown-label"

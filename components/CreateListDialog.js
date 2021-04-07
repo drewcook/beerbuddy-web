@@ -1,4 +1,4 @@
-import { useMutation, gql } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import {
 	Button,
 	Dialog,
@@ -12,26 +12,17 @@ import {
 import AddIcon from '@material-ui/icons/Add'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
+import { CREATE_NEW_LIST } from '@bb/lib/apollo-client/shemas'
 import LoadingState from './LoadingState'
 import { useViewer } from './ViewerContext'
 
-const CREATE_NEW_LIST = gql`
-	mutation CreatNewList($input: CreateListInput!) {
-		createNewList(input: $input) {
-			_id
-			name
-			dateCreated
-		}
-	}
-`
-
-const CreateListDialog = ({ onRefetch }) => {
+const CreateListDialog = ({ refetchQueries }) => {
 	const { viewer } = useViewer()
 	const [open, setOpen] = useState(false)
 	const [name, setName] = useState('')
 
-	const [addUserList, { data, loading, error }] = useMutation(CREATE_NEW_LIST, {
-		refetchQueries: [{ query: onRefetch, variables: { userId: viewer._id } }],
+	const [addUserList, { loading, error }] = useMutation(CREATE_NEW_LIST, {
+		refetchQueries,
 	})
 
 	const toggleOpen = () => setOpen(!open)
@@ -96,7 +87,7 @@ const CreateListDialog = ({ onRefetch }) => {
 }
 
 CreateListDialog.propTypes = {
-	onRefetch: PropTypes.shape({}).isRequired,
+	refetchQueries: PropTypes.arrayOf(PropTypes.any).isRequired,
 }
 
 export default CreateListDialog
