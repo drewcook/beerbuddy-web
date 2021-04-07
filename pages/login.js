@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useAuthentication } from '@bb/components/AuthenticationContext'
 import LoadingState from '@bb/components/LoadingState'
+import PageTitle from '@bb/components/PageTitle'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/login.module.scss'
 
@@ -37,9 +38,7 @@ const LoginPage = () => {
 			</Head>
 			<Container maxWidth="sm">
 				<Paper className={styles.paper}>
-					<Typography variant="h3" className={baseStyles.pageTitle}>
-						Sign In
-					</Typography>
+					<PageTitle title="Sign In" />
 					<form onSubmit={handleSubmit} noValidate autoComplete="off">
 						<Box mb={2}>
 							<InputLabel htmlFor="email">Email</InputLabel>

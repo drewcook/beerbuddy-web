@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { formatDate } from '@bb/lib/dateUtils'
 import CreateListDialog from '@bb/components/CreateListDialog'
 import LoadingState from '@bb/components/LoadingState'
+import PageTitle from '@bb/components/PageTitle'
 import { useViewer } from '@bb/components/ViewerContext'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/dashboard.module.scss'
@@ -45,13 +46,7 @@ const DashboardPage = () => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<Typography variant="h3" className={baseStyles.pageTitle}>
-				My Dashboard
-			</Typography>
-
-			<Typography variant="h5" gutterBottom>
-				Hello, {details.userName}!
-			</Typography>
+			<PageTitle title="My Dashboard" headline={`Hello, ${details.userName}!`} />
 
 			<Grid container spacing={3}>
 				<Grid item xs={12} md={6}>

@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useAuthentication } from '@bb/components/AuthenticationContext'
 import LoadingState from '@bb/components/LoadingState'
+import PageTitle from '@bb/components/PageTitle'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/login.module.scss'
 
@@ -50,9 +51,7 @@ const CreateAccountPage = () => {
 			</Head>
 			<Container maxWidth="sm">
 				<Paper className={styles.paper}>
-					<Typography variant="h3" className={baseStyles.pageTitle}>
-						Create An Account
-					</Typography>
+					<PageTitle title="Create An Account" />
 					<form onSubmit={handleSubmit} noValidate autoComplete="off">
 						<Box mb={2}>
 							<InputLabel htmlFor="email">Full Name</InputLabel>

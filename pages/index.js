@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useAuthentication } from '@bb/components/AuthenticationContext'
 import LoadingState from '@bb/components/LoadingState'
+import PageTitle from '@bb/components/PageTitle'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/home.module.scss'
 
@@ -28,9 +29,7 @@ const WelcomePage = () => {
 					<title>BeerBuddy - Welcome!</title>
 					<link rel="icon" href="/favicon.ico" />
 				</Head>
-				<Typography variant="h2" component="h3" className={baseStyles.pageTitle}>
-					Welcome to BeerBuddy!
-				</Typography>
+				<PageTitle title="" headline="Welcome to BeerBuddy!" />
 				<Typography variant="h6">
 					We keep track of your drinking habits so you don't have to! Cheers!
 				</Typography>

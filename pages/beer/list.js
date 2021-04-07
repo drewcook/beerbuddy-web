@@ -1,9 +1,10 @@
+import { Grid, Typography } from '@material-ui/core'
+import Head from 'next/head'
 import { breweryDbService } from '@bb/api/'
 import { useAuthentication } from '@bb/components/AuthenticationContext'
 import BeerCard from '@bb/components/BeerCard'
+import PageTitle from '@bb/components/PageTitle'
 import baseStyles from '@bb/styles/base.module.scss'
-import { Grid, Typography } from '@material-ui/core'
-import Head from 'next/head'
 
 const BeerListPage = props => {
 	const { list, page, totalPages, totalResults } = props
@@ -18,9 +19,7 @@ const BeerListPage = props => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<Typography variant="h3" className={baseStyles.pageTitle}>
-				Beer List
-			</Typography>
+			<PageTitle title="Beer List" headline="Search Beer" />
 
 			<Grid container spacing={3}>
 				{list.map(beer => (
