@@ -5,6 +5,9 @@ import { useAuthentication } from '@bb/components/AuthenticationContext'
 import BeerCard from '@bb/components/BeerCard'
 import PageTitle from '@bb/components/PageTitle'
 
+// These beer IDs are causing 404s when fetching thier details from BreweryDB
+const BUGGY_BEER_IDS = ['p1tFbP']
+
 const BeerListPage = props => {
 	const { list, page, totalPages, totalResults } = props
 	const { isAuthenticated } = useAuthentication()
@@ -21,11 +24,13 @@ const BeerListPage = props => {
 			<PageTitle title="Beer List" headline="Search Beer" />
 
 			<Grid container spacing={3}>
-				{list.map(beer => (
-					<Grid item xs={12} sm={6} md={4} key={beer.id}>
-						<BeerCard beer={beer} />
-					</Grid>
-				))}
+				{list
+					.filter(b => !BUGGY_BEER_IDS.includes(b.id))
+					.map(beer => (
+						<Grid item xs={12} sm={6} md={4} key={beer.id}>
+							<BeerCard beer={beer} />
+						</Grid>
+					))}
 			</Grid>
 		</>
 	)
