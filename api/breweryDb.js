@@ -25,6 +25,7 @@ export const getBeerDetails = async id => {
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
+		console.error(error)
 		throw new Error(error.response.data)
 	}
 }

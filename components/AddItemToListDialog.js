@@ -76,7 +76,6 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 				// setLists(resp)
 			} else {
 				const list = await addItem({ variables: { input: { listId, beerId, breweryId } } })
-				console.log('updated list', list)
 				handleClose()
 			}
 		} catch (error) {
