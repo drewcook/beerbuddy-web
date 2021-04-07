@@ -23,6 +23,7 @@ import StarIcon from '@material-ui/icons/Star'
 import _get from 'lodash/get'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { formatDate } from '@bb/lib/dateUtils'
 import getErrors from '@bb/lib/getGraphQLErrors'
@@ -75,9 +76,19 @@ const REMOVE_ITEM_MUTATION = gql`
 	}
 `
 
+const DELETE_LIST_MUTATION = gql`
+	mutation DeleteUserList($id: ID!) {
+		deleteUserList(id: $id) {
+			_id
+		}
+	}
+`
+
 const UserListDetailsPage = ({ id }) => {
+	const router = useRouter()
 	const [itemToRemove, setItemToRemove] = useState(null)
 	const [removeDialogOpen, setRemoveDialogOpen] = useState(false)
+	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 	const { data, loading, error } = useQuery(LIST_DETAILS_QUERY, {
 		variables: { listId: id },
 		fetchPolicy: 'no-cache',
@@ -85,6 +96,9 @@ const UserListDetailsPage = ({ id }) => {
 	const details = _get(data, 'listDetails')
 	const [removeItemFromList, { loading: removeLoading, error: removeError }] = useMutation(
 		REMOVE_ITEM_MUTATION,
+	)
+	const [deleteUserList, { loading: deleteLoading, error: deleteError }] = useMutation(
+		DELETE_LIST_MUTATION,
 	)
 
 	const handleOpenRemoveDialog = item => {
@@ -95,6 +109,10 @@ const UserListDetailsPage = ({ id }) => {
 	const handleCloseRemoveDialog = () => {
 		setItemToRemove(null)
 		setRemoveDialogOpen(false)
+	}
+
+	const handleCloseDeleteDialog = () => {
+		setDeleteDialogOpen(false)
 	}
 
 	const handleRemoveFromList = async () => {
@@ -111,6 +129,16 @@ const UserListDetailsPage = ({ id }) => {
 			})
 
 			handleCloseRemoveDialog()
+		} catch (ex) {
+			console.error(ex)
+		}
+	}
+
+	const handleDeleteUserList = async () => {
+		try {
+			await deleteUserList({ variables: { id } })
+			handleCloseDeleteDialog()
+			router.push('/user/lists')
 		} catch (ex) {
 			console.error(ex)
 		}
@@ -211,7 +239,7 @@ const UserListDetailsPage = ({ id }) => {
 						</Button>
 					</Box>
 					<Box my={2}>
-						<IconButton edge="end" aria-label="delete" onClick={() => console.log('deleting', id)}>
+						<IconButton edge="end" aria-label="delete" onClick={() => setDeleteDialogOpen(true)}>
 							<DeleteIcon />
 						</IconButton>
 					</Box>
@@ -263,7 +291,7 @@ const UserListDetailsPage = ({ id }) => {
 							<DialogContentText>{`Are you sure you would like to remove ${itemToRemove?.name} from ${details.name}?`}</DialogContentText>
 							{removeError && (
 								<Typography color="error">
-									There was an error remove the item from the list.
+									An error occurred while removing the item from the list.
 								</Typography>
 							)}
 						</>
@@ -275,6 +303,40 @@ const UserListDetailsPage = ({ id }) => {
 					</Button>
 					<Button onClick={handleRemoveFromList} color="primary" disabled={removeLoading}>
 						Yes, Remove
+					</Button>
+				</DialogActions>
+			</Dialog>
+
+			<Dialog
+				open={deleteDialogOpen}
+				onClose={() => setDeleteDialogOpen(false)}
+				aria-labelledby="delete-user-list"
+			>
+				<DialogTitle id="delete-user-list">Delete User List</DialogTitle>
+				<DialogContent>
+					{deleteLoading ? (
+						<LoadingState />
+					) : (
+						<>
+							<DialogContentText>{`Are you sure you would like to delete ${details.name} from your lists? This cannot be undone.`}</DialogContentText>
+							{deleteError && (
+								<Typography color="error">
+									An error occurred while deleting the user list.
+								</Typography>
+							)}
+						</>
+					)}
+				</DialogContent>
+				<DialogActions>
+					<Button
+						onClick={() => setDeleteDialogOpen(false)}
+						color="primary"
+						disabled={deleteLoading}
+					>
+						Cancel
+					</Button>
+					<Button onClick={handleDeleteUserList} color="primary" disabled={deleteLoading}>
+						Yes, Delete
 					</Button>
 				</DialogActions>
 			</Dialog>

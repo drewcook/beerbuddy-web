@@ -79,6 +79,9 @@ const DashboardPage = () => {
 					</Paper>
 					<Paper className={styles.paper}>
 						<Typography variant="h4">My Favorites</Typography>
+						<Typography>
+							<em>Coming soon...</em>
+						</Typography>
 						<List>
 							<ListItem>Odell Imperial IPA</ListItem>
 							<ListItem>Pelican Brewing Company</ListItem>
@@ -90,6 +93,9 @@ const DashboardPage = () => {
 				<Grid item xs={12} md={6}>
 					<Paper className={styles.paper}>
 						<Typography variant="h4">My Stats</Typography>
+						<Typography>
+							<em>Coming soon...</em>
+						</Typography>
 						<List>
 							<ListItem>Beers Logged: x</ListItem>
 							<ListItem>Brewery Check Ins: x</ListItem>
@@ -97,6 +103,9 @@ const DashboardPage = () => {
 					</Paper>
 					<Paper className={styles.paper}>
 						<Typography variant="h4">Recent History</Typography>
+						<Typography>
+							<em>Coming soon...</em>
+						</Typography>
 					</Paper>
 				</Grid>
 			</Grid>
