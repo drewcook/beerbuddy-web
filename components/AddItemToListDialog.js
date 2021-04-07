@@ -28,7 +28,7 @@ const USER_LISTS_QUERY = gql`
 `
 
 const ADD_ITEM_MUTATION = gql`
-	mutation AddItemToList($input: AddItemToListInput!) {
+	mutation AddItemToList($input: UpdateListInput!) {
 		addItemToList(input: $input) {
 			_id
 			name

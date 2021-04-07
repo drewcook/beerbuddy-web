@@ -1,5 +1,6 @@
-import { useQuery, gql } from '@apollo/client'
+import { useQuery, useMutation, gql } from '@apollo/client'
 import {
+	Box,
 	Button,
 	Dialog,
 	DialogActions,
@@ -17,6 +18,8 @@ import {
 	Typography,
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
+import ShareIcon from '@material-ui/icons/Share'
+import StarIcon from '@material-ui/icons/Star'
 import _get from 'lodash/get'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -62,6 +65,16 @@ const LIST_DETAILS_QUERY = gql`
 	}
 `
 
+const REMOVE_ITEM_MUTATION = gql`
+	mutation RemoveItemFromList($input: UpdateListInput!) {
+		removeItemFromList(input: $input) {
+			beerIds
+			breweryIds
+			dateLastModified
+		}
+	}
+`
+
 const UserListDetailsPage = ({ id }) => {
 	const [itemToRemove, setItemToRemove] = useState(null)
 	const [removeDialogOpen, setRemoveDialogOpen] = useState(false)
@@ -69,9 +82,10 @@ const UserListDetailsPage = ({ id }) => {
 		variables: { listId: id },
 		fetchPolicy: 'no-cache',
 	})
-	const removeLoading = false
-	const removeError = false
 	const details = _get(data, 'listDetails')
+	const [removeItemFromList, { loading: removeLoading, error: removeError }] = useMutation(
+		REMOVE_ITEM_MUTATION,
+	)
 
 	const handleOpenRemoveDialog = item => {
 		setItemToRemove(item)
@@ -83,9 +97,23 @@ const UserListDetailsPage = ({ id }) => {
 		setRemoveDialogOpen(false)
 	}
 
-	const handleRemoveFromList = () => {
-		// TODO: make mutation
-		console.log('removing...', itemToRemove)
+	const handleRemoveFromList = async () => {
+		const type = itemToRemove.__typename.toLowerCase()
+		// construct input
+		let input = { listId: id }
+		if (type === 'beer') input = { ...input, beerId: itemToRemove.id }
+		if (type === 'brewery') input = { ...input, breweryId: itemToRemove.id }
+
+		try {
+			await removeItemFromList({
+				variables: { input },
+				refetchQueries: [{ query: LIST_DETAILS_QUERY, variables: { listId: id } }],
+			})
+
+			handleCloseRemoveDialog()
+		} catch (ex) {
+			console.error(ex)
+		}
 	}
 
 	if (loading) return <LoadingState />
@@ -100,7 +128,7 @@ const UserListDetailsPage = ({ id }) => {
 		}
 
 		return (
-			<ListItem key={key} divider>
+			<ListItem key={key} divider className={styles.listItem}>
 				<Link href={`/beer/${beer.id}`}>
 					<a>
 						<ListItemText primary={beer.name} secondary={subLine()} />
@@ -127,7 +155,7 @@ const UserListDetailsPage = ({ id }) => {
 		}
 
 		return (
-			<ListItem key={key} divider>
+			<ListItem key={key} divider className={styles.listItem}>
 				<Link href={`/brewery/${brewery.id}`}>
 					<a>
 						<ListItemText primary={brewery.name} secondary={location()} />
@@ -159,17 +187,34 @@ const UserListDetailsPage = ({ id }) => {
 
 			<Grid container spacing={3}>
 				<Grid item xs={12} md={5}>
-					<Paper className={baseStyles.cardBase}>
-						<Typography variant="h6">Created On: {formatDate(details.dateCreated)}</Typography>
-						<Typography variant="h6">Last Modified: {formatDate(details.lastModified)}</Typography>
-					</Paper>
-					<Button
-						variant="outlined"
-						color="secondary"
-						onClick={() => console.log('sharing..', details._id)}
-					>
-						Share
-					</Button>
+					<Typography gutterBottom>
+						<em>Created {formatDate(details.dateCreated)}</em>
+					</Typography>
+					<Box my={2}>
+						<Button
+							variant="contained"
+							color="primary"
+							onClick={() => console.log('favoriting..', id)}
+							endIcon={<StarIcon />}
+						>
+							Add To Favorites
+						</Button>
+					</Box>
+					<Box my={2}>
+						<Button
+							variant="contained"
+							color="secondary"
+							onClick={() => console.log('sharing..', id)}
+							endIcon={<ShareIcon />}
+						>
+							Share
+						</Button>
+					</Box>
+					<Box my={2}>
+						<IconButton edge="end" aria-label="delete" onClick={() => console.log('deleting', id)}>
+							<DeleteIcon />
+						</IconButton>
+					</Box>
 				</Grid>
 				<Grid item xs={12} md={7}>
 					<Paper className={baseStyles.cardBase}>
@@ -233,9 +278,6 @@ const UserListDetailsPage = ({ id }) => {
 					</Button>
 				</DialogActions>
 			</Dialog>
-			<pre className={baseStyles.code}>
-				<code>{JSON.stringify(details, null, 2)}</code>
-			</pre>
 		</>
 	)
 }

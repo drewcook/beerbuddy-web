@@ -35,7 +35,12 @@ class ListsAPI extends RESTDataSource {
 	}
 
 	async addItemToList({ listId, beerId, breweryId }) {
-		const data = await this.patch(`/${listId}`, { beerId, breweryId })
+		const data = await this.patch(`/${listId}/add`, { beerId, breweryId })
+		return data
+	}
+
+	async removeItemFromList({ listId, beerId, breweryId }) {
+		const data = await this.patch(`/${listId}/remove`, { beerId, breweryId })
 		return data
 	}
 }
