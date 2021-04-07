@@ -28,6 +28,7 @@ import { useState } from 'react'
 import { formatDate } from '@bb/lib/dateUtils'
 import getErrors from '@bb/lib/getGraphQLErrors'
 import LoadingState from '@bb/components/LoadingState'
+import PageTitle from '@bb/components/PageTitle'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/listDetails.module.scss'
 
@@ -205,44 +206,54 @@ const UserListDetailsPage = ({ id }) => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<Typography variant="h4" component="h2" className={baseStyles.pageTitle}>
-				List Details
-			</Typography>
-
-			<Typography variant="h2" component="h3" gutterBottom>
-				{details.name}
-			</Typography>
+			<PageTitle title="List Details" headline={details.name} />
 
 			<Grid container spacing={3}>
 				<Grid item xs={12} md={5}>
-					<Typography gutterBottom>
-						<em>Created {formatDate(details.dateCreated)}</em>
-					</Typography>
-					<Box my={2}>
-						<Button
-							variant="contained"
-							color="primary"
-							onClick={() => console.log('favoriting..', id)}
-							endIcon={<StarIcon />}
-						>
-							Add To Favorites
-						</Button>
-					</Box>
-					<Box my={2}>
-						<Button
-							variant="contained"
-							color="secondary"
-							onClick={() => console.log('sharing..', id)}
-							endIcon={<ShareIcon />}
-						>
-							Share
-						</Button>
-					</Box>
-					<Box my={2}>
-						<IconButton edge="end" aria-label="delete" onClick={() => setDeleteDialogOpen(true)}>
-							<DeleteIcon />
-						</IconButton>
-					</Box>
+					<Paper className={baseStyles.cardBase}>
+						<Typography variant="h4" gutterBottom>
+							Details
+						</Typography>
+						<Divider />
+						<Box my={2}>
+							<Typography gutterBottom color="textSecondary">
+								<em>Created {formatDate(details.dateCreated)}</em>
+							</Typography>
+						</Box>
+						<Box my={2}>
+							<Typography>
+								Beer Count: <strong>{details.beerItems.length}</strong>
+							</Typography>
+							<Typography>
+								Brewery Count: <strong>{details.breweryItems.length}</strong>
+							</Typography>
+						</Box>
+						<Box my={2}>
+							<Button
+								variant="contained"
+								color="primary"
+								onClick={() => console.log('favoriting..', id)}
+								endIcon={<StarIcon />}
+							>
+								Add To Favorites
+							</Button>
+						</Box>
+						<Box my={2}>
+							<Button
+								variant="contained"
+								color="secondary"
+								onClick={() => console.log('sharing..', id)}
+								endIcon={<ShareIcon />}
+							>
+								Share
+							</Button>
+						</Box>
+						<Box my={2}>
+							<IconButton edge="end" aria-label="delete" onClick={() => setDeleteDialogOpen(true)}>
+								<DeleteIcon />
+							</IconButton>
+						</Box>
+					</Paper>
 				</Grid>
 				<Grid item xs={12} md={7}>
 					<Paper className={baseStyles.cardBase}>

@@ -4,8 +4,9 @@ import Link from 'next/link'
 import { formatDate } from '@bb/lib/dateUtils'
 import CreateListDialog from '@bb/components/CreateListDialog'
 import LoadingState from '@bb/components/LoadingState'
+import PageTitle from '@bb/components/PageTitle'
 import { useViewer } from '@bb/components/ViewerContext'
-import styles from '@bb/styles/base.module.scss'
+import baseStyles from '@bb/styles/base.module.scss'
 
 const USER_LISTS_QUERY = gql`
 	query GetUserLists($userId: ID!) {
@@ -32,9 +33,7 @@ const UserListsPage = () => {
 
 	return (
 		<div>
-			<Typography variant="h3" className={styles.pageTitle}>
-				My Lists
-			</Typography>
+			<PageTitle title="User Lists" headline="My Lists" />
 
 			{!data.userLists.length ? (
 				<Box className={styles.centered}>
@@ -45,7 +44,7 @@ const UserListsPage = () => {
 				</Box>
 			) : (
 				data.userLists.map(list => (
-					<Card key={list._id} className={styles.cardBase}>
+					<Card key={list._id} className={baseStyles.cardBase}>
 						<CardContent>
 							<Typography variant="h4" gutterBottom>
 								{list.name}

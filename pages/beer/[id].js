@@ -1,8 +1,9 @@
-import { Button, Typography } from '@material-ui/core'
+import { Box, Button, Typography } from '@material-ui/core'
 import Head from 'next/head'
 import Link from 'next/link'
 import { breweryDbService } from '@bb/api/'
 import AddItemToListDialog from '@bb/components/AddItemToListDialog'
+import PageTitle from '@bb/components/PageTitle'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/details.module.scss'
 
@@ -14,17 +15,17 @@ const BeerDetailsPage = ({ details }) => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<Link href="/beer/list">
-				<a>
-					<Button variant="outlined" color="secondary">
-						Back To List
-					</Button>
-				</a>
-			</Link>
+			<PageTitle title="Beer Details" headline={details.name} />
 
-			<Typography variant="h3" className={baseStyles.pageTitle}>
-				Beer Details
-			</Typography>
+			<Box mb={2}>
+				<Link href="/beer/list">
+					<a>
+						<Button variant="outlined" color="secondary">
+							Back To List
+						</Button>
+					</a>
+				</Link>
+			</Box>
 
 			<AddItemToListDialog beerId={details.id} />
 

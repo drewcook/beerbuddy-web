@@ -1,6 +1,7 @@
 import { Button, Card, CardActions, Typography } from '@material-ui/core'
 import Head from 'next/head'
 import Link from 'next/link'
+import PageTitle from '@bb/components/PageTitle'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/home.module.scss'
 
@@ -11,9 +12,7 @@ const HomePage = () => (
 			<link rel="icon" href="/favicon.ico" />
 		</Head>
 
-		<Typography variant="h2" component="h3" className={baseStyles.pageTitle}>
-			Welcome to BeerBuddy!
-		</Typography>
+		<PageTitle title="" headline="Welcome to BeerBuddy!" />
 
 		<Typography variant="h6">
 			We keep track of your drinking habits so you don't have to! Cheers!
