@@ -57,7 +57,10 @@ const DashboardPage = () => {
 				<Grid item xs={12} md={6}>
 					<Paper className={styles.paper}>
 						<Box display="flex" alignItems="baseline" mb={3} className={styles.listsHeader}>
-							<Typography variant="h4">My Lists</Typography>
+							<Typography variant="h4" gutterBottom>
+								My Lists
+							</Typography>
+							<Divider />
 							<Typography variant="overline">{details.lists.length} total</Typography>
 						</Box>
 						{details.lists.map(list => (
@@ -78,10 +81,15 @@ const DashboardPage = () => {
 						</Box>
 					</Paper>
 					<Paper className={styles.paper}>
-						<Typography variant="h4">My Favorites</Typography>
-						<Typography>
-							<em>Coming soon...</em>
+						<Typography variant="h4" gutterBottom>
+							My Favorites
 						</Typography>
+						<Divider />
+						<Box className={baseStyles.centered} my={3}>
+							<Typography>
+								<em>Coming soon...</em>
+							</Typography>
+						</Box>
 						<List>
 							<ListItem>Odell Imperial IPA</ListItem>
 							<ListItem>Pelican Brewing Company</ListItem>
@@ -92,20 +100,30 @@ const DashboardPage = () => {
 				</Grid>
 				<Grid item xs={12} md={6}>
 					<Paper className={styles.paper}>
-						<Typography variant="h4">My Stats</Typography>
-						<Typography>
-							<em>Coming soon...</em>
+						<Typography variant="h4" gutterBottom>
+							My Stats
 						</Typography>
+						<Divider />
+						<Box className={baseStyles.centered} my={3}>
+							<Typography>
+								<em>Coming soon...</em>
+							</Typography>
+						</Box>
 						<List>
 							<ListItem>Beers Logged: x</ListItem>
 							<ListItem>Brewery Check Ins: x</ListItem>
 						</List>
 					</Paper>
 					<Paper className={styles.paper}>
-						<Typography variant="h4">Recent History</Typography>
-						<Typography>
-							<em>Coming soon...</em>
+						<Typography variant="h4" gutterBottom>
+							Recent History
 						</Typography>
+						<Divider />
+						<Box className={baseStyles.centered} my={3}>
+							<Typography>
+								<em>Coming soon...</em>
+							</Typography>
+						</Box>
 					</Paper>
 				</Grid>
 			</Grid>
