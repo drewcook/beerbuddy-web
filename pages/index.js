@@ -23,7 +23,7 @@ const WelcomePage = () => {
 
 	if (isAuthenticated === false) {
 		return (
-			<div className={styles.centered}>
+			<div className={styles.homeCentered}>
 				<Head>
 					<title>BeerBuddy - Welcome!</title>
 					<link rel="icon" href="/favicon.ico" />
@@ -32,7 +32,7 @@ const WelcomePage = () => {
 				<Typography variant="h6">
 					We keep track of your drinking habits so you don't have to! Cheers!
 				</Typography>
-				<Card className={[styles.centered, styles.card].join(' ')}>
+				<Card className={[styles.homeCentered, styles.card].join(' ')}>
 					<Typography variant="h5" gutterBottom>
 						Get Started
 					</Typography>
@@ -54,7 +54,7 @@ const WelcomePage = () => {
 	}
 
 	return (
-		<div className={styles.centered}>
+		<div className={styles.homeCentered}>
 			<Head>
 				<title>BeerBuddy - Welcome!</title>
 				<link rel="icon" href="/favicon.ico" />

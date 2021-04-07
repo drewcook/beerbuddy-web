@@ -1,13 +1,9 @@
 const { RESTDataSource } = require('apollo-datasource-rest')
 
-// TODO: set as .env var
-const isProduction = process.env.NODE_ENV === 'production'
-const BASE_URL = isProduction ? 'https://beerbuddy-api.herokuapp.com' : 'http://localhost:5280'
-
 class ListsAPI extends RESTDataSource {
 	constructor() {
 		super()
-		this.baseURL = `${BASE_URL}/api/lists`
+		this.baseURL = `${process.env.BEERBUDDY_API_HOST}/lists`
 	}
 
 	willSendRequest(request) {
