@@ -1,15 +1,16 @@
 // BreweryDB API endpoints
 import axios from 'axios'
+import getConfig from 'next/config'
 
-const apiKey = '69ee360e54918c2ed9d0e2d8568dafda'
-// const BASE_URL = 'https://sandbox-api.brewerydb.com/v2/'
-const BASE_URL = 'https://api.brewerydb.com/v2/'
+const {
+	publicRuntimeConfig: { breweryDBApiHost, breweryDBApiKey },
+} = getConfig()
 
 // @desc Gets all beers
 // @access Public
 export const getBeers = async page => {
 	try {
-		const url = `${BASE_URL}/beers?p=${page}&withBreweries=y&key=${apiKey}`
+		const url = `${breweryDBApiHost}/beers?p=${page}&withBreweries=y&key=${breweryDBApiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -21,7 +22,7 @@ export const getBeers = async page => {
 // @access Public
 export const getBeerDetails = async id => {
 	try {
-		const url = `${BASE_URL}/beer/${id}?withBreweries=y&key=${apiKey}`
+		const url = `${breweryDBApiHost}/beer/${id}?withBreweries=y&key=${breweryDBApiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -34,7 +35,7 @@ export const getBeerDetails = async id => {
 // @access Public
 export const getBreweries = async page => {
 	try {
-		const url = `${BASE_URL}/breweries?p=${page}&withLocations=y&key=${apiKey}`
+		const url = `${breweryDBApiHost}/breweries?p=${page}&withLocations=y&key=${breweryDBApiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -47,7 +48,7 @@ export const getBreweries = async page => {
 // @access Public
 export const getBreweryDetails = async id => {
 	try {
-		const url = `${BASE_URL}/brewery/${id}?withLocations=y&withGuilds=y&withSocialAccounts=y&key=${apiKey}`
+		const url = `${breweryDBApiHost}/brewery/${id}?withLocations=y&withGuilds=y&withSocialAccounts=y&key=${breweryDBApiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -59,7 +60,7 @@ export const getBreweryDetails = async id => {
 // // @access Public
 export const getGlassware = async () => {
 	try {
-		const url = `${BASE_URL}/glassware?key=${apiKey}`
+		const url = `${breweryDBApiHost}/glassware?key=${breweryDBApiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -71,7 +72,7 @@ export const getGlassware = async () => {
 // // @access Public
 const searchBeersAndBreweries = async (query, page) => {
 	try {
-		const url = `${BASE_URL}/search?q=${query}&p=${page}&withBreweries=y&withLocations=y&key=${apiKey}`
+		const url = `${breweryDBApiHost}/search?q=${query}&p=${page}&withBreweries=y&withLocations=y&key=${breweryDBApiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -83,7 +84,7 @@ const searchBeersAndBreweries = async (query, page) => {
 // // @access Public
 const filterBreweryByType = async (type, page) => {
 	try {
-		const url = `${BASE_URL}/locations?locationType=${type}&p=${page}&key=${apiKey}`
+		const url = `${breweryDBApiHost}/locations?locationType=${type}&p=${page}&key=${breweryDBApiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -95,7 +96,7 @@ const filterBreweryByType = async (type, page) => {
 // // @access Public
 const filterByCountry = async (country, page) => {
 	try {
-		const url = `${BASE_URL}/locations?countryIsoCode=${country}&p=${page}&key=${apiKey}`
+		const url = `${breweryDBApiHost}/locations?countryIsoCode=${country}&p=${page}&key=${breweryDBApiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -107,7 +108,7 @@ const filterByCountry = async (country, page) => {
 // // @access Public
 const filterByState = async (state, page) => {
 	try {
-		const url = `${BASE_URL}/locations?region=${state}&p=${page}&key=${apiKey}`
+		const url = `${breweryDBApiHost}/locations?region=${state}&p=${page}&key=${breweryDBApiKey}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
