@@ -9,8 +9,8 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start -p $PORT",
-		"prettify": "npx prettier --config ./prettier.config.js ./**/*.js --write",
-		"prettify:check": "npx prettier --config ./prettier.config.js ./**/*.js --check"
+		"prettier": "npx prettier --config ./prettier.config.js **/*.* --check",
+		"prettier:fix": "npx prettier --config ./prettier.config.js **/*.* --write"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.3.13",
