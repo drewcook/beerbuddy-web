@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from '@material-ui/core'
 import Head from 'next/head'
 import Link from 'next/link'
-import { breweryDbService } from '@bb/api/'
+import * as breweryDbService from '@bb/api/breweryDb'
 import AddItemToListDialog from '@bb/components/AddItemToListDialog'
 import PageTitle from '@bb/components/PageTitle'
 import baseStyles from '@bb/styles/base.module.scss'

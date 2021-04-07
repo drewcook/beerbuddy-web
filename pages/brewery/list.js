@@ -4,7 +4,6 @@ import { getBreweries } from '@bb/api/breweryDb'
 import { useAuthentication } from '@bb/components/AuthenticationContext'
 import BreweryCard from '@bb/components/BreweryCard'
 import PageTitle from '@bb/components/PageTitle'
-import baseStyles from '@bb/styles/base.module.scss'
 
 const BreweryListPage = props => {
 	const { list, page, totalPages, totalResults } = props

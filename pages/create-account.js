@@ -7,7 +7,6 @@ import { useState } from 'react'
 import { useAuthentication } from '@bb/components/AuthenticationContext'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
-import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/login.module.scss'
 
 const CREATE_USER_MUTATION = gql`
