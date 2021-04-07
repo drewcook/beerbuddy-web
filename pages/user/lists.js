@@ -1,6 +1,8 @@
 import { useQuery, gql } from '@apollo/client'
-import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
+import { Box, Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
 import Link from 'next/link'
+import { formatDate } from '@bb/lib/dateUtils'
+import CreateListDialog from '@bb/components/CreateListDialog'
 import LoadingState from '@bb/components/LoadingState'
 import { useViewer } from '@bb/components/ViewerContext'
 import styles from '@bb/styles/base.module.scss'
@@ -10,6 +12,9 @@ const USER_LISTS_QUERY = gql`
 		userLists(userId: $userId) {
 			_id
 			name
+			dateCreated
+			beerIds
+			breweryIds
 		}
 	}
 `
@@ -18,6 +23,7 @@ const UserListsPage = () => {
 	const { viewer } = useViewer()
 	const { loading, data, error } = useQuery(USER_LISTS_QUERY, {
 		variables: { userId: viewer._id },
+		fetchPolicy: 'no-cache',
 	})
 
 	if (loading) return <LoadingState />
@@ -31,18 +37,29 @@ const UserListsPage = () => {
 			</Typography>
 
 			{!data.userLists.length ? (
-				<Typography color="error">No Lists Found</Typography>
+				<Box className={styles.centered}>
+					<Typography>
+						<em>No Lists Found</em>
+					</Typography>
+					<CreateListDialog onRefetch={USER_LISTS_QUERY} />
+				</Box>
 			) : (
 				data.userLists.map(list => (
 					<Card key={list._id} className={styles.cardBase}>
 						<CardContent>
-							<Typography>ID: {list._id}</Typography>
-							<Typography>Name: {list.name}</Typography>
+							<Typography variant="h4" gutterBottom>
+								{list.name}
+							</Typography>
+							<Typography variant="subtitle1">
+								<em>Created {formatDate(list.dateCreated)}</em>
+							</Typography>
+							<Typography variant="subtitle2">Beer Count: {list.beerIds.length}</Typography>
+							<Typography variant="subtitle2">Brewery Count: {list.breweryIds.length}</Typography>
 						</CardContent>
 						<CardActions>
 							<Link href={`/user/list/${list._id}`}>
 								<a>
-									<Button variant="outlined" color="secondary">
+									<Button variant="contained" color="primary">
 										View Details
 									</Button>
 								</a>

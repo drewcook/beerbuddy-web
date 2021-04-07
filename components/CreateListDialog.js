@@ -9,6 +9,7 @@ import {
 	TextField,
 	Typography,
 } from '@material-ui/core'
+import AddIcon from '@material-ui/icons/Add'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import LoadingState from './LoadingState'
@@ -55,7 +56,7 @@ const CreateListDialog = ({ onRefetch }) => {
 
 	return (
 		<div>
-			<Button variant="outlined" color="primary" onClick={toggleOpen}>
+			<Button variant="outlined" color="primary" onClick={toggleOpen} endIcon={<AddIcon />}>
 				Create New List
 			</Button>
 			<Dialog open={open} onClose={handleClose} aria-labelledby="create-list">

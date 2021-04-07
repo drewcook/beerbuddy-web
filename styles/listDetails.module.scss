@@ -1,1 +1,26 @@
+@import '@bb/styles/colors.module.scss';
 
+.noItems {
+	text-align: center !important;
+	font-style: italic;
+}
+
+.listItem {
+	a {
+		color: $breezy_primary_dark;
+
+		&:hover {
+			cursor: pointer;
+			color: $breezy_primary;
+		}
+	}
+}
+
+.deleteBtn {
+	background-color: $error_color !important;
+	color: $breezy_light;
+
+	&:hover {
+		background-color: $error_color_dark !important;
+	}
+}

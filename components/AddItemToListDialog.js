@@ -28,7 +28,7 @@ const USER_LISTS_QUERY = gql`
 `
 
 const ADD_ITEM_MUTATION = gql`
-	mutation AddItemToList($input: AddItemToListInput!) {
+	mutation AddItemToList($input: UpdateListInput!) {
 		addItemToList(input: $input) {
 			_id
 			name
@@ -76,7 +76,6 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 				// setLists(resp)
 			} else {
 				const list = await addItem({ variables: { input: { listId, beerId, breweryId } } })
-				console.log('updated list', list)
 				handleClose()
 			}
 		} catch (error) {
