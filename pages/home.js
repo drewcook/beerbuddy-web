@@ -5,7 +5,7 @@ import PageTitle from '@bb/components/PageTitle'
 import styles from '@bb/styles/home.module.scss'
 
 const HomePage = () => (
-	<div className={styles.centered}>
+	<div className={styles.homeCentered}>
 		<Head>
 			<title>BeerBuddy - Home</title>
 			<link rel="icon" href="/favicon.ico" />
@@ -17,7 +17,7 @@ const HomePage = () => (
 			We keep track of your drinking habits so you don't have to! Cheers!
 		</Typography>
 
-		<Card className={[styles.centered, styles.card].join(' ')}>
+		<Card className={[styles.homeCentered, styles.card].join(' ')}>
 			<Typography variant="h5" gutterBottom>
 				Now What?
 			</Typography>

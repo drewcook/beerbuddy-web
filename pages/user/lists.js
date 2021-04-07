@@ -36,7 +36,7 @@ const UserListsPage = () => {
 			<PageTitle title="User Lists" headline="My Lists" />
 
 			{!data.userLists.length ? (
-				<Box className={styles.centered}>
+				<Box className={baseStyles.centered}>
 					<Typography>
 						<em>No Lists Found</em>
 					</Typography>
