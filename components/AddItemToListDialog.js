@@ -14,7 +14,11 @@ import {
 } from '@material-ui/core'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { USER_LISTS_QUERY, ADD_ITEM_MUTATION } from '@bb/lib/apollo-client/shemas'
+import {
+	USER_LISTS_QUERY,
+	ADD_ITEM_MUTATION,
+	LIST_DETAILS_QUERY,
+} from '@bb/lib/apollo-client/shemas'
 import LoadingState from './LoadingState'
 import { useViewer } from './ViewerContext'
 
@@ -27,7 +31,36 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 		variables: { userId: viewer._id },
 	})
 	const [addItem, { loading: addLoading, error: addError }] = useMutation(ADD_ITEM_MUTATION, {
-		refetchQueries: [{ query: USER_LISTS_QUERY, variables: { userId: viewer._id } }],
+		update: (store, { data }) => {
+			// User lists cache
+			const userListData = store.readQuery({
+				query: USER_LISTS_QUERY,
+				variables: { userId: viewer._id },
+			})
+			const userLists = userListData.userLists.map(list =>
+				list._id === data?.addItemToList._id ? data?.addItemToList : list,
+			)
+			store.writeQuery({
+				query: USER_LISTS_QUERY,
+				variables: { userId: viewer._id },
+				data: { userLists },
+			})
+			// List details cache
+			// const listData = store.readQuery({
+			// 	query: LIST_DETAILS_QUERY,
+			// 	variables: { listId: data?.addItemToList._id },
+			// })
+			// store.writeQuery({
+			// 	query: LIST_DETAILS_QUERY,
+			// 	variables: { listId: data?.addItemToList._id },
+			// 	data: {
+			// 		listDetails: { ...listData.listDetails },
+			// 	},
+			// })
+			// TODO: get beer or brewery details and add
+			// to beerItems or breweryItems on list details cache
+		},
+		refetchQueries: [{ query: LIST_DETAILS_QUERY, variables: { listId } }],
 	})
 
 	const handleClickOpen = () => setOpen(true)
