@@ -1,8 +1,9 @@
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { Box, Divider, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
 import _get from 'lodash/get'
 import Head from 'next/head'
 import Link from 'next/link'
+import { USER_DASHBOARD_QUERY } from '@bb/lib/apollo-client/shemas'
 import { formatDate } from '@bb/lib/dateUtils'
 import CreateListDialog from '@bb/components/CreateListDialog'
 import LoadingState from '@bb/components/LoadingState'
@@ -10,19 +11,6 @@ import PageTitle from '@bb/components/PageTitle'
 import { useViewer } from '@bb/components/ViewerContext'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/dashboard.module.scss'
-
-export const USER_DASHBOARD_QUERY = gql`
-	query GetUserDashboard($userId: ID!) {
-		userDashboard(userId: $userId) {
-			userName
-			lists {
-				_id
-				name
-				dateCreated
-			}
-		}
-	}
-`
 
 const DashboardPage = () => {
 	const { viewer } = useViewer()
@@ -72,7 +60,7 @@ const DashboardPage = () => {
 							</Box>
 						))}
 						<Box display="flex" justifyContent="flex-end">
-							<CreateListDialog onRefetch={USER_DASHBOARD_QUERY} />
+							<CreateListDialog />
 						</Box>
 					</Paper>
 					<Paper className={styles.paper}>

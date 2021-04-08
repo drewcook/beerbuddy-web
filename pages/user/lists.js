@@ -1,6 +1,7 @@
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { Box, Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
 import Link from 'next/link'
+import { USER_LISTS_QUERY } from '@bb/lib/apollo-client/shemas'
 import { formatDate } from '@bb/lib/dateUtils'
 import CreateListDialog from '@bb/components/CreateListDialog'
 import LoadingState from '@bb/components/LoadingState'
@@ -8,23 +9,10 @@ import PageTitle from '@bb/components/PageTitle'
 import { useViewer } from '@bb/components/ViewerContext'
 import baseStyles from '@bb/styles/base.module.scss'
 
-const USER_LISTS_QUERY = gql`
-	query GetUserLists($userId: ID!) {
-		userLists(userId: $userId) {
-			_id
-			name
-			dateCreated
-			beerIds
-			breweryIds
-		}
-	}
-`
-
 const UserListsPage = () => {
 	const { viewer } = useViewer()
 	const { loading, data, error } = useQuery(USER_LISTS_QUERY, {
 		variables: { userId: viewer._id },
-		fetchPolicy: 'no-cache',
 	})
 
 	if (loading) return <LoadingState />
@@ -33,14 +21,16 @@ const UserListsPage = () => {
 
 	return (
 		<div>
-			<PageTitle title="User Lists" headline="My Lists" />
+			<Box display="flex" justifyContent="space-between" alignItems="center">
+				<PageTitle title="User Lists" headline="My Lists" />
+				<CreateListDialog />
+			</Box>
 
 			{!data.userLists.length ? (
 				<Box className={baseStyles.centered}>
 					<Typography>
 						<em>No Lists Found</em>
 					</Typography>
-					<CreateListDialog onRefetch={USER_LISTS_QUERY} />
 				</Box>
 			) : (
 				data.userLists.map(list => (

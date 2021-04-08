@@ -1,4 +1,4 @@
-import { useQuery, useMutation, gql } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import {
 	Box,
 	Button,
@@ -25,81 +25,83 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import {
+	USER_LISTS_QUERY,
+	USER_DASHBOARD_QUERY,
+	DELETE_LIST_MUTATION,
+	LIST_DETAILS_QUERY,
+	REMOVE_ITEM_MUTATION,
+} from '@bb/lib/apollo-client/shemas'
 import { formatDate } from '@bb/lib/dateUtils'
 import getErrors from '@bb/lib/getGraphQLErrors'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
+import { useViewer } from '@bb/components/ViewerContext'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/listDetails.module.scss'
 
-const LIST_DETAILS_QUERY = gql`
-	query GetListDetails($listId: ID!) {
-		listDetails(listId: $listId) {
-			name
-			dateCreated
-			dateLastModified
-			beerItems {
-				id
-				name
-				abv
-				ibu
-				isOrganic
-				style {
-					shortName
-					category {
-						name
-					}
-				}
-			}
-			breweryItems {
-				id
-				name
-				isOrganic
-				locations {
-					locality
-					region
-					country {
-						displayName
-					}
-				}
-			}
-		}
-	}
-`
-
-const REMOVE_ITEM_MUTATION = gql`
-	mutation RemoveItemFromList($input: UpdateListInput!) {
-		removeItemFromList(input: $input) {
-			beerIds
-			breweryIds
-			dateLastModified
-		}
-	}
-`
-
-const DELETE_LIST_MUTATION = gql`
-	mutation DeleteUserList($id: ID!) {
-		deleteUserList(id: $id) {
-			_id
-		}
-	}
-`
-
 const UserListDetailsPage = ({ id }) => {
 	const router = useRouter()
+	const { viewer } = useViewer()
 	const [itemToRemove, setItemToRemove] = useState(null)
 	const [removeDialogOpen, setRemoveDialogOpen] = useState(false)
 	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 	const { data, loading, error } = useQuery(LIST_DETAILS_QUERY, {
 		variables: { listId: id },
-		fetchPolicy: 'no-cache',
 	})
 	const details = _get(data, 'listDetails')
+
 	const [removeItemFromList, { loading: removeLoading, error: removeError }] = useMutation(
 		REMOVE_ITEM_MUTATION,
+		{
+			refetchQueries: [
+				{
+					query: LIST_DETAILS_QUERY,
+					variables: { listId: details?._id },
+				},
+			],
+			awaitRefetchQueries: true,
+		},
 	)
 	const [deleteUserList, { loading: deleteLoading, error: deleteError }] = useMutation(
 		DELETE_LIST_MUTATION,
+		{
+			update: (store, { data }) => {
+				// Update User Dashboard cache
+				const dashboardData = store.readQuery({
+					query: USER_DASHBOARD_QUERY,
+					variables: { userId: viewer._id },
+				})
+				if (dashboardData) {
+					store.writeQuery({
+						query: USER_DASHBOARD_QUERY,
+						variables: { userId: viewer._id },
+						data: {
+							userDashboard: {
+								...dashboardData.userDashboard,
+								lists: dashboardData.userDashboard.lists.filter(
+									list => list._id !== data?.deleteUserList._id,
+								),
+							},
+						},
+					})
+				}
+				// Update User Lists cache
+				const listsData = store.readQuery({
+					query: USER_LISTS_QUERY,
+					variables: { userId: viewer._id },
+				})
+				if (listsData) {
+					store.writeQuery({
+						query: USER_LISTS_QUERY,
+						variables: { userId: viewer._id },
+						data: {
+							userLists: listsData.userLists.filter(list => list._id !== data?.deleteUserList._id),
+						},
+					})
+				}
+			},
+		},
 	)
 
 	const handleOpenRemoveDialog = item => {
@@ -126,9 +128,7 @@ const UserListDetailsPage = ({ id }) => {
 		try {
 			await removeItemFromList({
 				variables: { input },
-				refetchQueries: [{ query: LIST_DETAILS_QUERY, variables: { listId: id } }],
 			})
-
 			handleCloseRemoveDialog()
 		} catch (ex) {
 			console.error(ex)
@@ -295,7 +295,7 @@ const UserListDetailsPage = ({ id }) => {
 			>
 				<DialogTitle id="remove-from-list">Remove Item From List</DialogTitle>
 				<DialogContent>
-					{removeLoading ? (
+					{removeLoading || loading ? (
 						<LoadingState />
 					) : (
 						<>

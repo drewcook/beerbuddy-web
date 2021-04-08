@@ -1,21 +1,14 @@
-import { useMutation, gql } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Box, Button, Container, InputLabel, Paper, TextField, Typography } from '@material-ui/core'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { CREATE_USER_MUTATION } from '@bb/lib/apollo-client/shemas'
 import { useAuthentication } from '@bb/components/AuthenticationContext'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
 import styles from '@bb/styles/login.module.scss'
-
-const CREATE_USER_MUTATION = gql`
-	mutation CreateUser($input: CreateUserInput!) {
-		createUser(input: $input) {
-			_id
-		}
-	}
-`
 
 const CreateAccountPage = () => {
 	const router = useRouter()

@@ -1,19 +1,9 @@
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import _get from 'lodash/get'
 import { createContext, useContext } from 'react'
+import { VIEWER_QUERY } from '@bb/lib/apollo-client/shemas'
 
 const ViewerContext = createContext()
-
-const VIEWER_QUERY = gql`
-	query GetViewer {
-		viewer {
-			_id
-			name
-			email
-			listIds
-		}
-	}
-`
 
 export const ViewerProvider = ({ children, router }) => {
 	const { asPath } = router

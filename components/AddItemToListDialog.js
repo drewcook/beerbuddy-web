@@ -1,4 +1,4 @@
-import { useQuery, useMutation, gql } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import {
 	Button,
 	Dialog,
@@ -7,7 +7,6 @@ import {
 	DialogContentText,
 	DialogTitle,
 	FormControl,
-	InputLabel,
 	MenuItem,
 	Select,
 	TextField,
@@ -15,29 +14,15 @@ import {
 } from '@material-ui/core'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
+import {
+	ADD_ITEM_NEW_LIST_MUTATION,
+	USER_DASHBOARD_QUERY,
+	USER_LISTS_QUERY,
+	ADD_ITEM_MUTATION,
+	LIST_DETAILS_QUERY,
+} from '@bb/lib/apollo-client/shemas'
 import LoadingState from './LoadingState'
 import { useViewer } from './ViewerContext'
-
-const USER_LISTS_QUERY = gql`
-	query GetUserLists($userId: ID!) {
-		userLists(userId: $userId) {
-			_id
-			name
-		}
-	}
-`
-
-const ADD_ITEM_MUTATION = gql`
-	mutation AddItemToList($input: UpdateListInput!) {
-		addItemToList(input: $input) {
-			_id
-			name
-			beerIds
-			breweryIds
-			dateLastModified
-		}
-	}
-`
 
 const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 	const { viewer } = useViewer()
@@ -47,9 +32,66 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 	const { data: getData, loading: getLoading, error: getError } = useQuery(USER_LISTS_QUERY, {
 		variables: { userId: viewer._id },
 	})
-	const [addItem, { data: addData, loading: addLoading, error: addError }] = useMutation(
-		ADD_ITEM_MUTATION,
+	const [addItemToNewList, { loading: addNewLoading, error: addNewError }] = useMutation(
+		ADD_ITEM_NEW_LIST_MUTATION,
+		{
+			update: (store, { data }) => {
+				// Update User Dashboard cache
+				const dashboardData = store.readQuery({
+					query: USER_DASHBOARD_QUERY,
+					variables: { userId: viewer._id },
+				})
+				if (dashboardData) {
+					store.writeQuery({
+						query: USER_DASHBOARD_QUERY,
+						variables: { userId: viewer._id },
+						data: {
+							userDashboard: {
+								...dashboardData.userDashboard,
+								lists: [...dashboardData.userDashboard.lists, data?.addItemToNewList],
+							},
+						},
+					})
+				}
+
+				// Update User Lists cache
+				const listsData = store.readQuery({
+					query: USER_LISTS_QUERY,
+					variables: { userId: viewer._id },
+				})
+				if (listsData) {
+					store.writeQuery({
+						query: USER_LISTS_QUERY,
+						variables: { userId: viewer._id },
+						data: {
+							userLists: [...listsData.userLists, data?.addItemToNewList],
+						},
+					})
+				}
+			},
+		},
 	)
+
+	const [addItem, { loading: addLoading, error: addError }] = useMutation(ADD_ITEM_MUTATION, {
+		update: (store, { data }) => {
+			// User lists cache
+			const listsData = store.readQuery({
+				query: USER_LISTS_QUERY,
+				variables: { userId: viewer._id },
+			})
+			if (listsData) {
+				const userLists = listsData.userLists.map(list =>
+					list._id === data?.addItemToList._id ? data?.addItemToList : list,
+				)
+				store.writeQuery({
+					query: USER_LISTS_QUERY,
+					variables: { userId: viewer._id },
+					data: { userLists },
+				})
+			}
+		},
+		refetchQueries: [{ query: LIST_DETAILS_QUERY, variables: { listId } }],
+	})
 
 	const handleClickOpen = () => setOpen(true)
 	const handleClose = () => {
@@ -62,20 +104,13 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 	const handleAddToList = async () => {
 		try {
 			if (listId === 'new') {
-				// TODO: wire this up
-				// // create the new list with the beerID in it
-				// await listService.createListForUser({
-				// 	userId: currentUser._id,
-				// 	name: listName,
-				// 	beerIds: beerId ? [beerId] : [],
-				// 	breweryIds: breweryId ? [brewerId] : [],
-				// })
-				// handleClose()
-				// // repopulate dropdown after add
-				// const resp = await listService.getUserLists(user._id)
-				// setLists(resp)
+				await addItemToNewList({
+					variables: { input: { userId: viewer._id, listName, beerId, breweryId } },
+				})
+
+				handleClose()
 			} else {
-				const list = await addItem({ variables: { input: { listId, beerId, breweryId } } })
+				await addItem({ variables: { input: { listId, beerId, breweryId } } })
 				handleClose()
 			}
 		} catch (error) {
@@ -91,13 +126,12 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 			<Dialog open={open} onClose={handleClose} aria-labelledby="add-to-list">
 				<DialogTitle id="add-to-list">Add To List</DialogTitle>
 				<DialogContent>
-					{getLoading || addLoading ? (
+					{getLoading || addLoading || addNewLoading ? (
 						<LoadingState />
 					) : (
 						<>
 							<DialogContentText>What list would you like to add this item to?</DialogContentText>
 							<FormControl fullWidth>
-								{/* <InputLabel id="lists-dropdown-label">My Lists</InputLabel> */}
 								<Select
 									variant="outlined"
 									labelId="list-dropdown-label"
@@ -128,7 +162,7 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 							{getError && (
 								<Typography color="error">There was an error getting the user lists.</Typography>
 							)}
-							{addError && (
+							{(addError || addNewError) && (
 								<Typography color="error">
 									There was an error adding the item to the list.
 								</Typography>

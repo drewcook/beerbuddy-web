@@ -1,4 +1,4 @@
-import { useMutation, gql } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import {
 	Button,
 	Dialog,
@@ -10,28 +10,55 @@ import {
 	Typography,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import PropTypes from 'prop-types'
 import { useState } from 'react'
+import {
+	CREATE_NEW_LIST,
+	USER_DASHBOARD_QUERY,
+	USER_LISTS_QUERY,
+} from '@bb/lib/apollo-client/shemas'
 import LoadingState from './LoadingState'
 import { useViewer } from './ViewerContext'
 
-const CREATE_NEW_LIST = gql`
-	mutation CreatNewList($input: CreateListInput!) {
-		createNewList(input: $input) {
-			_id
-			name
-			dateCreated
-		}
-	}
-`
-
-const CreateListDialog = ({ onRefetch }) => {
+const CreateListDialog = () => {
 	const { viewer } = useViewer()
 	const [open, setOpen] = useState(false)
 	const [name, setName] = useState('')
 
-	const [addUserList, { data, loading, error }] = useMutation(CREATE_NEW_LIST, {
-		refetchQueries: [{ query: onRefetch, variables: { userId: viewer._id } }],
+	const [addUserList, { loading, error }] = useMutation(CREATE_NEW_LIST, {
+		update: (store, { data }) => {
+			// Update User Dashboard cache
+			const dashboardData = store.readQuery({
+				query: USER_DASHBOARD_QUERY,
+				variables: { userId: viewer._id },
+			})
+			if (dashboardData) {
+				store.writeQuery({
+					query: USER_DASHBOARD_QUERY,
+					variables: { userId: viewer._id },
+					data: {
+						userDashboard: {
+							...dashboardData.userDashboard,
+							lists: [...dashboardData.userDashboard.lists, data?.createNewList],
+						},
+					},
+				})
+			}
+
+			// Update User Lists cache
+			const listsData = store.readQuery({
+				query: USER_LISTS_QUERY,
+				variables: { userId: viewer._id },
+			})
+			if (listsData) {
+				store.writeQuery({
+					query: USER_LISTS_QUERY,
+					variables: { userId: viewer._id },
+					data: {
+						userLists: [...listsData.userLists, data?.createNewList],
+					},
+				})
+			}
+		},
 	})
 
 	const toggleOpen = () => setOpen(!open)
@@ -93,10 +120,6 @@ const CreateListDialog = ({ onRefetch }) => {
 			</Dialog>
 		</div>
 	)
-}
-
-CreateListDialog.propTypes = {
-	onRefetch: PropTypes.shape({}).isRequired,
 }
 
 export default CreateListDialog
