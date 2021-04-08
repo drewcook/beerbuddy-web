@@ -31,31 +31,33 @@ const CreateListDialog = () => {
 				query: USER_DASHBOARD_QUERY,
 				variables: { userId: viewer._id },
 			})
-
-			store.writeQuery({
-				query: USER_DASHBOARD_QUERY,
-				variables: { userId: viewer._id },
-				data: {
-					userDashboard: {
-						...dashboardData.userDashboard,
-						lists: [...dashboardData.userDashboard.lists, data?.createNewList],
+			if (dashboardData) {
+				store.writeQuery({
+					query: USER_DASHBOARD_QUERY,
+					variables: { userId: viewer._id },
+					data: {
+						userDashboard: {
+							...dashboardData.userDashboard,
+							lists: [...dashboardData.userDashboard.lists, data?.createNewList],
+						},
 					},
-				},
-			})
+				})
+			}
 
 			// Update User Lists cache
 			const listsData = store.readQuery({
 				query: USER_LISTS_QUERY,
 				variables: { userId: viewer._id },
 			})
-
-			store.writeQuery({
-				query: USER_LISTS_QUERY,
-				variables: { userId: viewer._id },
-				data: {
-					userLists: [...listsData.userLists, data?.createNewList],
-				},
-			})
+			if (listsData) {
+				store.writeQuery({
+					query: USER_LISTS_QUERY,
+					variables: { userId: viewer._id },
+					data: {
+						userLists: [...listsData.userLists, data?.createNewList],
+					},
+				})
+			}
 		},
 	})
 

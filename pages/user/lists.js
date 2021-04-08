@@ -21,20 +21,16 @@ const UserListsPage = () => {
 
 	return (
 		<div>
-			<PageTitle title="User Lists" headline="My Lists" />
-
-			{data.userLists.length && (
-				<Box mb={3}>
-					<CreateListDialog />
-				</Box>
-			)}
+			<Box display="flex" justifyContent="space-between" alignItems="center">
+				<PageTitle title="User Lists" headline="My Lists" />
+				<CreateListDialog />
+			</Box>
 
 			{!data.userLists.length ? (
 				<Box className={baseStyles.centered}>
 					<Typography>
 						<em>No Lists Found</em>
 					</Typography>
-					<CreateListDialog />
 				</Box>
 			) : (
 				data.userLists.map(list => (

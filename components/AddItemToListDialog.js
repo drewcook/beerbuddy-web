@@ -33,32 +33,20 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 	const [addItem, { loading: addLoading, error: addError }] = useMutation(ADD_ITEM_MUTATION, {
 		update: (store, { data }) => {
 			// User lists cache
-			const userListData = store.readQuery({
+			const listsData = store.readQuery({
 				query: USER_LISTS_QUERY,
 				variables: { userId: viewer._id },
 			})
-			const userLists = userListData.userLists.map(list =>
-				list._id === data?.addItemToList._id ? data?.addItemToList : list,
-			)
-			store.writeQuery({
-				query: USER_LISTS_QUERY,
-				variables: { userId: viewer._id },
-				data: { userLists },
-			})
-			// List details cache
-			// const listData = store.readQuery({
-			// 	query: LIST_DETAILS_QUERY,
-			// 	variables: { listId: data?.addItemToList._id },
-			// })
-			// store.writeQuery({
-			// 	query: LIST_DETAILS_QUERY,
-			// 	variables: { listId: data?.addItemToList._id },
-			// 	data: {
-			// 		listDetails: { ...listData.listDetails },
-			// 	},
-			// })
-			// TODO: get beer or brewery details and add
-			// to beerItems or breweryItems on list details cache
+			if (listsData) {
+				const userLists = listsData.userLists.map(list =>
+					list._id === data?.addItemToList._id ? data?.addItemToList : list,
+				)
+				store.writeQuery({
+					query: USER_LISTS_QUERY,
+					variables: { userId: viewer._id },
+					data: { userLists },
+				})
+			}
 		},
 		refetchQueries: [{ query: LIST_DETAILS_QUERY, variables: { listId } }],
 	})
