@@ -60,7 +60,7 @@ const DashboardPage = () => {
 							</Box>
 						))}
 						<Box display="flex" justifyContent="flex-end">
-							<CreateListDialog refetchQueries={['GetUserDashboard']} />
+							<CreateListDialog />
 						</Box>
 					</Paper>
 					<Paper className={styles.paper}>

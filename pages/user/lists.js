@@ -25,7 +25,7 @@ const UserListsPage = () => {
 
 			{data.userLists.length && (
 				<Box mb={3}>
-					<CreateListDialog refetchQueries={['GetUserLists', 'GetUserDashboard']} />
+					<CreateListDialog />
 				</Box>
 			)}
 
@@ -34,7 +34,7 @@ const UserListsPage = () => {
 					<Typography>
 						<em>No Lists Found</em>
 					</Typography>
-					<CreateListDialog refetchQueries={['GetUserLists', 'GetUserDashboard']} />
+					<CreateListDialog />
 				</Box>
 			) : (
 				data.userLists.map(list => (

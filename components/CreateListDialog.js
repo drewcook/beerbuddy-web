@@ -10,19 +10,53 @@ import {
 	Typography,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { CREATE_NEW_LIST } from '@bb/lib/apollo-client/shemas'
+import {
+	CREATE_NEW_LIST,
+	USER_DASHBOARD_QUERY,
+	USER_LISTS_QUERY,
+} from '@bb/lib/apollo-client/shemas'
 import LoadingState from './LoadingState'
 import { useViewer } from './ViewerContext'
 
-const CreateListDialog = ({ refetchQueries }) => {
+const CreateListDialog = () => {
 	const { viewer } = useViewer()
 	const [open, setOpen] = useState(false)
 	const [name, setName] = useState('')
 
 	const [addUserList, { loading, error }] = useMutation(CREATE_NEW_LIST, {
-		refetchQueries,
+		update: (store, { data }) => {
+			// Update User Dashboard cache
+			const dashboardData = store.readQuery({
+				query: USER_DASHBOARD_QUERY,
+				variables: { userId: viewer._id },
+			})
+
+			store.writeQuery({
+				query: USER_DASHBOARD_QUERY,
+				variables: { userId: viewer._id },
+				data: {
+					userDashboard: {
+						...dashboardData.userDashboard,
+						lists: [...dashboardData.userDashboard.lists, data?.createNewList],
+					},
+				},
+			})
+
+			// Update User Lists cache
+			const listsData = store.readQuery({
+				query: USER_LISTS_QUERY,
+				variables: { userId: viewer._id },
+			})
+
+			store.writeQuery({
+				query: USER_LISTS_QUERY,
+				variables: { userId: viewer._id },
+				data: {
+					userLists: [...listsData.userLists, data?.createNewList],
+				},
+			})
+		},
 	})
 
 	const toggleOpen = () => setOpen(!open)
@@ -84,10 +118,6 @@ const CreateListDialog = ({ refetchQueries }) => {
 			</Dialog>
 		</div>
 	)
-}
-
-CreateListDialog.propTypes = {
-	refetchQueries: PropTypes.arrayOf(PropTypes.any).isRequired,
 }
 
 export default CreateListDialog
