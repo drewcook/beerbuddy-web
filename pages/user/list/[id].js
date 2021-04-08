@@ -174,7 +174,8 @@ const UserListDetailsPage = ({ id }) => {
 
 	const renderBreweryItem = (key, brewery) => {
 		const location = () => {
-			if (brewery.locations.length < 1) return ''
+			// TODO: this is brittle as some data comes back inconsistently
+			if (!brewery.locations || brewery.locations.length < 1) return ''
 			const [main] = brewery.locations
 			const isUSBased = main.country.displayName === 'United States'
 			const region = main.region ? `, ${main.region}` : ''
