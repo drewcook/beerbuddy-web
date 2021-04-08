@@ -98,7 +98,6 @@ const NavigationBar = () => {
 		<AppBar position="static" color="secondary">
 			<Toolbar>
 				<Container maxWidth="lg">
-					{/* <IconButton>...</IconButton> */}
 					<Box display="flex" justifyContent="space-between" alignItems="center" py={1}>
 						<Link href={isAuthenticated ? '/home' : '/'}>
 							<a>

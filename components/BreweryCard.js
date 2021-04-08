@@ -29,8 +29,6 @@ const BreweryCard = ({ brewery }) => {
 		)
 	}
 
-	const image = console.log(image)
-
 	return (
 		<Card className={styles.card}>
 			<Box>

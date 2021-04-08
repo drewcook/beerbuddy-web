@@ -1,8 +1,9 @@
-import { Grid } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import Head from 'next/head'
 import * as breweryDbService from '@bb/api/breweryDb'
 import { useAuthentication } from '@bb/components/AuthenticationContext'
 import BeerCard from '@bb/components/BeerCard'
+import ListPagination from '@bb/components/ListPagination'
 import PageTitle from '@bb/components/PageTitle'
 
 // These beer IDs are causing 404s when fetching thier details from BreweryDB
@@ -22,6 +23,9 @@ const BeerListPage = props => {
 			</Head>
 
 			<PageTitle title="Beer List" headline="Search Beer" />
+			<Typography>{totalResults} results</Typography>
+
+			<ListPagination pageInfo={{ page, totalPages }} />
 
 			<Grid container spacing={3}>
 				{list
