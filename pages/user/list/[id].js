@@ -262,7 +262,7 @@ const UserListDetailsPage = ({ id }) => {
 						</Typography>
 						<Divider />
 						<List>
-							{details.beerItems.length ? (
+							{details.beerItems.length > 0 ? (
 								details.beerItems.map((item, idx) => renderBeerItem(idx, item))
 							) : (
 								<ListItem className={styles.noItems}>
@@ -277,7 +277,7 @@ const UserListDetailsPage = ({ id }) => {
 						</Typography>
 						<Divider />
 						<List>
-							{details.breweryItems.length ? (
+							{details.breweryItems.length > 0 ? (
 								details.breweryItems.map((item, idx) => renderBreweryItem(idx, item))
 							) : (
 								<ListItem className={styles.noItems}>
