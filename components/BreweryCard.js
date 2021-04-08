@@ -1,4 +1,12 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core'
+import {
+	Box,
+	Button,
+	Card,
+	CardActions,
+	CardContent,
+	CardMedia,
+	Typography,
+} from '@material-ui/core'
 import LanguageIcon from '@material-ui/icons/Language'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
@@ -21,27 +29,29 @@ const BreweryCard = ({ brewery }) => {
 		)
 	}
 
+	const image = console.log(image)
+
 	return (
 		<Card className={styles.card}>
-			{brewery.images && (
+			<Box>
 				<CardMedia
 					component="img"
-					image={brewery.images.squareMedium}
+					image={brewery.images?.squareMedium ?? '/brewery_inverse.png'}
 					title={brewery.name}
 					alt={brewery.name}
 				/>
-			)}
-			<CardContent>
-				<Typography variant="h6">{brewery.name}</Typography>
-				{renderLocation()}
-				{brewery.website && (
-					<Typography variant="body2">
-						<a href={brewery.website} target="_blank" className={styles.website}>
-							<LanguageIcon /> Website
-						</a>
-					</Typography>
-				)}
-			</CardContent>
+				<CardContent>
+					<Typography variant="h6">{brewery.name}</Typography>
+					{renderLocation()}
+					{brewery.website && (
+						<Typography variant="body2">
+							<a href={brewery.website} target="_blank" className={styles.website}>
+								<LanguageIcon /> Website
+							</a>
+						</Typography>
+					)}
+				</CardContent>
+			</Box>
 			<CardActions className={styles.btns}>
 				<AddItemToListDialog
 					breweryId={brewery.id}

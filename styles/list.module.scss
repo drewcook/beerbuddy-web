@@ -1,6 +1,10 @@
 .card {
 	padding: 15px;
 	text-align: center;
+	min-height: 400px;
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
 
 	img {
 		width: 100%;
