@@ -2,15 +2,26 @@
 import axios from 'axios'
 import getConfig from 'next/config'
 
+// These endpoints are setup to be used within Next's getServerSideProps,
+// so these requests run on the server and not the client.
 const {
-	publicRuntimeConfig: { breweryDBApiHost, breweryDBApiKey },
+	serverRuntimeConfig: {
+		BREWERYDB_API_HOST,
+		BREWERYDB_SANDBOX_API_HOST,
+		BREWERYDB_API_KEY,
+		USE_SANDBOX_API,
+	},
 } = getConfig()
+
+// Support for using the BreweryDB sandbox API instead
+const BASE_URL = USE_SANDBOX_API === 'true' ? BREWERYDB_SANDBOX_API_HOST : BREWERYDB_API_HOST
+const KEY_PARAM = USE_SANDBOX_API === 'true' ? '' : `?key=${BREWERYDB_API_KEY}`
 
 // @desc Gets all beers
 // @access Public
 export const getBeers = async page => {
 	try {
-		const url = `${breweryDBApiHost}/beers?p=${page}&withBreweries=y&key=${breweryDBApiKey}`
+		const url = `${BASE_URL}/beers${KEY_PARAM}&p=${page}&withBreweries=y`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -22,7 +33,7 @@ export const getBeers = async page => {
 // @access Public
 export const getBeerDetails = async id => {
 	try {
-		const url = `${breweryDBApiHost}/beer/${id}?withBreweries=y&key=${breweryDBApiKey}`
+		const url = `${BASE_URL}/beer/${id}${KEY_PARAM}&withBreweries=y`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -35,7 +46,7 @@ export const getBeerDetails = async id => {
 // @access Public
 export const getBreweries = async page => {
 	try {
-		const url = `${breweryDBApiHost}/breweries?p=${page}&withLocations=y&key=${breweryDBApiKey}`
+		const url = `${BASE_URL}/breweries${KEY_PARAM}&p=${page}&withLocations=y`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -48,7 +59,7 @@ export const getBreweries = async page => {
 // @access Public
 export const getBreweryDetails = async id => {
 	try {
-		const url = `${breweryDBApiHost}/brewery/${id}?withLocations=y&withGuilds=y&withSocialAccounts=y&key=${breweryDBApiKey}`
+		const url = `${BASE_URL}/brewery/${id}${KEY_PARAM}&withLocations=y&withGuilds=y&withSocialAccounts=y`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -60,7 +71,7 @@ export const getBreweryDetails = async id => {
 // // @access Public
 export const getGlassware = async () => {
 	try {
-		const url = `${breweryDBApiHost}/glassware?key=${breweryDBApiKey}`
+		const url = `${BASE_URL}/glassware${KEY_PARAM}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -72,7 +83,7 @@ export const getGlassware = async () => {
 // // @access Public
 const searchBeersAndBreweries = async (query, page) => {
 	try {
-		const url = `${breweryDBApiHost}/search?q=${query}&p=${page}&withBreweries=y&withLocations=y&key=${breweryDBApiKey}`
+		const url = `${BASE_URL}/search${KEY_PARAM}&q=${query}&p=${page}&withBreweries=y&withLocations=y`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -84,7 +95,7 @@ const searchBeersAndBreweries = async (query, page) => {
 // // @access Public
 const filterBreweryByType = async (type, page) => {
 	try {
-		const url = `${breweryDBApiHost}/locations?locationType=${type}&p=${page}&key=${breweryDBApiKey}`
+		const url = `${BASE_URL}/locations${KEY_PARAM}&locationType=${type}&p=${page}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -96,7 +107,7 @@ const filterBreweryByType = async (type, page) => {
 // // @access Public
 const filterByCountry = async (country, page) => {
 	try {
-		const url = `${breweryDBApiHost}/locations?countryIsoCode=${country}&p=${page}&key=${breweryDBApiKey}`
+		const url = `${BASE_URL}/locations${KEY_PARAM}&countryIsoCode=${country}&p=${page}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {
@@ -108,7 +119,7 @@ const filterByCountry = async (country, page) => {
 // // @access Public
 const filterByState = async (state, page) => {
 	try {
-		const url = `${breweryDBApiHost}/locations?region=${state}&p=${page}&key=${breweryDBApiKey}`
+		const url = `${BASE_URL}/locations${KEY_PARAM}&region=${state}&p=${page}`
 		const response = await axios.get(url)
 		return response.data
 	} catch (error) {

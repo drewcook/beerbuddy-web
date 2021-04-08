@@ -6,6 +6,7 @@ module.exports = {
 		BREWERYDB_API_HOST: process.env.BREWERYDB_API_HOST,
 		BREWERYDB_API_KEY: process.env.BREWERYDB_API_KEY,
 		BREWERYDB_SANDBOX_API_HOST: process.env.BREWERYDB_SANDBOX_API_HOST,
+		USE_SANDBOX_API: process.env.USE_SANDBOX_API,
 	},
 	publicRuntimeConfig: {
 		// Will be available on both server and client
@@ -14,5 +15,7 @@ module.exports = {
 		beerBuddyApiHost: process.env.BEERBUDDY_API_HOST,
 		breweryDBApiHost: process.env.BREWERYDB_API_HOST,
 		breweryDBApiKey: process.env.BREWERYDB_API_KEY,
+		breweryDBSandboxApiHost: process.env.BREWERYDB_SANDBOX_API_HOST,
+		useSandboxApi: process.env.USE_SANDBOX_API,
 	},
 }
