@@ -1,11 +1,23 @@
+/*
+	TODO: consider moving this to the backend API service
+*/
 // BreweryDB API endpoints
 import axios from 'axios'
 import getConfig from 'next/config'
 
+// Add header for all requests here
+// axios.interceptors.request.use(request => {
+// 	console.log(request.url)
+// 	if (request.url.includes('brewerydb')) {
+// 		console.log('add header')
+// 		// request.headers['Access-Control-Allow-Origin'] = '*'
+// 	}
+// })
+
 // These endpoints are setup to be used within Next's getServerSideProps,
 // so these requests run on the server and not the client.
 const {
-	serverRuntimeConfig: {
+	publicRuntimeConfig: {
 		BREWERYDB_API_HOST,
 		BREWERYDB_SANDBOX_API_HOST,
 		BREWERYDB_API_KEY,
