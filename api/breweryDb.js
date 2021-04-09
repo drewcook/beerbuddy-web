@@ -1,5 +1,6 @@
 /*
-	TODO: consider moving this to the backend API service
+	TODO: these need to be moved onto the server to
+	make sever-to-server requests with BreweryDB
 */
 // BreweryDB API endpoints
 import axios from 'axios'
