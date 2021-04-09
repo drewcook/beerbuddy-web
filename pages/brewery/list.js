@@ -1,17 +1,11 @@
 import { Grid } from '@material-ui/core'
 import Head from 'next/head'
-import { getBreweries } from '@bb/api/breweryDb'
-import { useAuthentication } from '@bb/components/AuthenticationContext'
 import BreweryCard from '@bb/components/BreweryCard'
 import ListPagination from '@bb/components/ListPagination'
 import PageTitle from '@bb/components/PageTitle'
 
-const BreweryListPage = props => {
-	const { list, page, totalPages, totalResults } = props
-	const { isAuthenticated } = useAuthentication()
-
-	if (!isAuthenticated) console.log("uh oh, you shouldn'nt be here")
-
+const BreweryListPage = () => {
+	return null
 	return (
 		<>
 			<Head>
@@ -32,21 +26,6 @@ const BreweryListPage = props => {
 			</Grid>
 		</>
 	)
-}
-
-export const getServerSideProps = async ctx => {
-	const page = 1
-	const resp = await getBreweries(page)
-	const { data, currentPage, numberOfPages, totalResults } = resp
-
-	return {
-		props: {
-			list: data,
-			page: currentPage,
-			totalPages: numberOfPages,
-			totalResults,
-		},
-	}
 }
 
 export default BreweryListPage
