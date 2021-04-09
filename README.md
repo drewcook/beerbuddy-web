@@ -13,7 +13,7 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:5440](http://localhost:5440) with your browser to see the result.
 
 ### Secrets
 This application relies on an API secret used for accessing the third-party data with [BreweryDB](https://brewerydb.com).  If you choose to play with the beer and brewery data locally, you will need an API key with BreweryDB.  Since you probaby do not have one laying around, you can still work with a limted dataset using their sandbox API.  This is stored in the `.env` file as `BREWERYDB_SANDBOX_API_HOST`.
