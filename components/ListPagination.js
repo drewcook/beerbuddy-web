@@ -1,29 +1,28 @@
 import { Box, IconButton, Typography } from '@material-ui/core'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import PropTypes from 'prop-types'
+import styles from '@bb/styles/pagination.module.scss'
 
-const ListPagination = ({ pageInfo }) => {
-	const { page, totalPages } = pageInfo
-
-	const handlePrevPage = () => {
-		console.log('prev page')
-	}
-
-	const handleNextPage = () => {
-		console.log('next page')
-	}
+const ListPagination = props => {
+	const { pageInfo, onPrevPage, onNextPage } = props
+	const { page, totalPages, totalResults } = pageInfo
 
 	return (
 		<Box display="flex" alignItems="center" justifyContent="flex-start" my={5}>
-			<IconButton edge="start" aria-label="previous page" onClick={handlePrevPage}>
-				<ArrowBackIosIcon />
+			<IconButton
+				edge="start"
+				aria-label="previous page"
+				onClick={onPrevPage}
+				disabled={page === 1}
+			>
+				<ArrowBackIcon />
 			</IconButton>
-			<Typography>
+			<Typography className={styles.pageInfo}>
 				Page {page} out of {totalPages}
 			</Typography>
-			<IconButton edge="end" aria-label="previous page" onClick={handleNextPage}>
-				<ArrowForwardIosIcon />
+			<IconButton edge="end" aria-label="previous page" onClick={onNextPage}>
+				<ArrowForwardIcon />
 			</IconButton>
 		</Box>
 	)
@@ -34,6 +33,8 @@ ListPagination.propTypes = {
 		page: PropTypes.number.isRequired,
 		totalPages: PropTypes.number.isRequired,
 	}).isRequired,
+	onPrevPage: PropTypes.func.isRequired,
+	onNextPage: PropTypes.func.isRequired,
 }
 
 export default ListPagination
