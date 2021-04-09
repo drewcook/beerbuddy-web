@@ -11,7 +11,7 @@ class BreweryDbAPI extends RESTDataSource {
 	}
 
 	async getBeer(page) {
-		const data = await this.get('/beer', { page })
+		const data = await this.post('/beer', { page })
 		return data
 	}
 
@@ -21,7 +21,7 @@ class BreweryDbAPI extends RESTDataSource {
 	}
 
 	async getBreweries(page) {
-		const data = await this.get('/breweries', { page })
+		const data = await this.post('/breweries', { page })
 		return data
 	}
 
