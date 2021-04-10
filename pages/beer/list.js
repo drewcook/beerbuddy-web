@@ -10,7 +10,7 @@ import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
 
 // These beer IDs are causing 404s when fetching thier details from BreweryDB
-const BUGGY_BEER_IDS = ['p1tFbP']
+const BUGGY_BEER_IDS = ['p1tFbP', 'BznahA']
 
 const BeerListPage = () => {
 	const [page, setPage] = useState(1)
