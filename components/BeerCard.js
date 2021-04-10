@@ -9,7 +9,7 @@ const BeerCard = ({ beer }) => (
 		<CardContent>
 			<CardMedia
 				component="img"
-				image={beer.labels?.medium ?? '/beer_mug.png'}
+				image={beer.labels?.medium ?? '/beer_pint_color.png'}
 				title={beer.name}
 				alt={beer.name}
 			/>
