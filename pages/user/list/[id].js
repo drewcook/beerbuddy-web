@@ -156,6 +156,8 @@ const UserListDetailsPage = ({ id }) => {
 			return `${beer.style?.category?.name}${abv}${ibu}`
 		}
 
+		if (!beer) return
+
 		return (
 			<ListItem key={key} divider className={styles.listItem}>
 				<Link href={`/beer/${beer.id}`}>
@@ -183,6 +185,8 @@ const UserListDetailsPage = ({ id }) => {
 			const country = main.country ? `, ${main.country.displayName}` : ''
 			return isUSBased ? primaryLocation : `${primaryLocation}${country}`
 		}
+
+		if (!brewery) return
 
 		return (
 			<ListItem key={key} divider className={styles.listItem}>
