@@ -34,7 +34,7 @@ const BreweryCard = ({ brewery }) => {
 			<Box>
 				<CardMedia
 					component="img"
-					image={brewery.images?.squareMedium ?? '/brewery_inverse.png'}
+					image={brewery.images?.squareMedium ?? '/brewery_vats2.png'}
 					title={brewery.name}
 					alt={brewery.name}
 				/>
