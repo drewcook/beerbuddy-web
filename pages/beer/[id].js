@@ -89,8 +89,8 @@ const BeerDetailsPage = ({ id }) => {
 				)}
 				<List>
 					<ListItem>
-						<ListItemText>ABV: {details.abv}</ListItemText>
-						<ListItemText>IBU: {details.ibu}</ListItemText>
+						<ListItemText>ABV: {details.abv ?? 'N/A'}</ListItemText>
+						<ListItemText>IBU: {details.ibu ?? 'N/A'}</ListItemText>
 						<ListItemText>Organic: {details.isOrganic === 'Y' ? 'Yes' : 'No'}</ListItemText>
 						<ListItemText>Retired: {details.isRetired === 'Y' ? 'Yes' : 'No'}</ListItemText>
 					</ListItem>
