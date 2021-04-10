@@ -31,6 +31,9 @@ import {
 	DELETE_LIST_MUTATION,
 	LIST_DETAILS_QUERY,
 	REMOVE_ITEM_MUTATION,
+	ADD_USER_FAVORITE_MUTATION,
+	REMOVE_USER_FAVORITE_MUTATION,
+	VIEWER_QUERY,
 } from '@bb/lib/apollo-client/schemas'
 import { formatDate } from '@bb/lib/dateUtils'
 import getErrors from '@bb/lib/getGraphQLErrors'
@@ -50,6 +53,35 @@ const UserListDetailsPage = ({ id }) => {
 		variables: { listId: id },
 	})
 	const details = _get(data, 'listDetails')
+
+	const [addToFavorites, { loading: addFavLoading, error: addFavError }] = useMutation(
+		ADD_USER_FAVORITE_MUTATION,
+		{
+			variables: {
+				input: { userId: viewer._id, itemId: id, name: details?.name, type: 'list' },
+			},
+			refetchQueries: [
+				{ query: VIEWER_QUERY },
+				{ query: USER_DASHBOARD_QUERY, variables: { userId: viewer._id } },
+			],
+		},
+	)
+
+	const [removeFromFavorites, { loading: removeFavLoading, error: removeFavError }] = useMutation(
+		REMOVE_USER_FAVORITE_MUTATION,
+		{
+			variables: {
+				input: {
+					userId: viewer._id,
+					favoriteId: viewer.favorites.filter(fav => fav.itemId === id)[0]?._id,
+				},
+			},
+			refetchQueries: [
+				{ query: VIEWER_QUERY },
+				{ query: USER_DASHBOARD_QUERY, variables: { userId: viewer._id } },
+			],
+		},
+	)
 
 	const [removeItemFromList, { loading: removeLoading, error: removeError }] = useMutation(
 		REMOVE_ITEM_MUTATION,
@@ -233,16 +265,41 @@ const UserListDetailsPage = ({ id }) => {
 								Brewery Count: <strong>{details.breweryItems.length}</strong>
 							</Typography>
 						</Box>
-						<Box my={2}>
-							<Button
-								variant="contained"
-								color="primary"
-								onClick={() => console.log('favoriting..', id)}
-								endIcon={<StarIcon />}
-							>
-								Add To Favorites
-							</Button>
-						</Box>
+						{viewer.favorites.some(f => f.itemId === id) ? (
+							<Box my={2}>
+								<Button
+									variant="contained"
+									color="primary"
+									onClick={removeFromFavorites}
+									endIcon={<StarIcon />}
+									disabled={removeFavLoading}
+								>
+									Remove From Favorites
+								</Button>
+								{removeFavError && (
+									<Typography color="error">
+										An error occrred while unfavoriting this item.
+									</Typography>
+								)}
+							</Box>
+						) : (
+							<Box my={2}>
+								<Button
+									variant="contained"
+									color="primary"
+									onClick={addToFavorites}
+									endIcon={<StarIcon />}
+									disabled={addFavLoading}
+								>
+									Add To Favorites
+								</Button>
+								{addFavError && (
+									<Typography color="error">
+										An error occrred while favoriting this item.
+									</Typography>
+								)}
+							</Box>
+						)}
 						<Box my={2}>
 							<Button
 								variant="contained"

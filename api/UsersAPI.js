@@ -29,6 +29,22 @@ class UsersAPI extends RESTDataSource {
 		const data = await this.get('/me')
 		return data
 	}
+
+	// Favorites
+	async getFavorites(id) {
+		const data = await this.get(`/${id}/favorites`)
+		return data
+	}
+
+	async addUserFavorite({ userId, itemId, name, type }) {
+		const data = await this.put(`/${userId}/favorites`, { itemId, name, type })
+		return data
+	}
+
+	async removeUserFavorite({ userId, favoriteId }) {
+		const data = await this.delete(`/${userId}/favorites/${favoriteId}`)
+		return data
+	}
 }
 
 export default UsersAPI

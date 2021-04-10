@@ -1,5 +1,14 @@
 import { useQuery } from '@apollo/client'
-import { Box, Divider, Grid, List, ListItem, Paper, Typography } from '@material-ui/core'
+import {
+	Box,
+	Divider,
+	Grid,
+	List,
+	ListItem,
+	ListItemText,
+	Paper,
+	Typography,
+} from '@material-ui/core'
 import _get from 'lodash/get'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -18,6 +27,7 @@ const DashboardPage = () => {
 		variables: { userId: viewer._id },
 	})
 	const details = _get(data, 'userDashboard')
+	const favorites = _get(viewer, 'favorites')
 
 	if (loading) return <LoadingState />
 	if (error)
@@ -69,9 +79,25 @@ const DashboardPage = () => {
 						</Typography>
 						<Divider />
 						<Box className={baseStyles.centered} my={3}>
-							<Typography>
-								<em>Coming soon...</em>
-							</Typography>
+							<List>
+								{favorites.length > 0 &&
+									favorites.map(fav => (
+										<Link
+											href={
+												fav.type === 'list'
+													? `/user/list/${fav.itemId}`
+													: `/${fav.type}/${fav.itemId}`
+											}
+										>
+											<a>
+												<ListItem key={fav._id} divider>
+													<ListItemText>{fav.name}</ListItemText>
+													<ListItemText>{fav.type}</ListItemText>
+												</ListItem>
+											</a>
+										</Link>
+									))}
+							</List>
 						</Box>
 					</Paper>
 				</Grid>
