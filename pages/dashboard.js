@@ -72,7 +72,7 @@ const DashboardPage = () => {
 			<PageTitle title="My Dashboard" headline={`Hello, ${details.userName}!`} />
 
 			<Grid container spacing={3}>
-				<Grid item xs={12} md={6}>
+				<Grid item xs={12} sm={6}>
 					<Paper className={styles.paper}>
 						<Box display="flex" alignItems="baseline" mb={3} className={styles.listsHeader}>
 							<Typography variant="h4" gutterBottom>
@@ -94,7 +94,7 @@ const DashboardPage = () => {
 								<Divider />
 							</Box>
 						))}
-						<Box display="flex" justifyContent="flex-end">
+						<Box className={baseStyles.centered} my={3}>
 							<CreateListDialog />
 						</Box>
 					</Paper>
@@ -114,7 +114,7 @@ const DashboardPage = () => {
 						)}
 					</Paper>
 				</Grid>
-				<Grid item xs={12} md={6}>
+				<Grid item xs={12} sm={6}>
 					<Paper className={styles.paper}>
 						<Typography variant="h4" gutterBottom>
 							My Stats
