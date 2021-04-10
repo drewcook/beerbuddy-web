@@ -88,10 +88,16 @@ const BeerDetailsPage = ({ id }) => {
 					</>
 				)}
 				<List>
-					<ListItem>
+					<ListItem divider>
 						<ListItemText>ABV: {details.abv ?? 'N/A'}</ListItemText>
+					</ListItem>
+					<ListItem divider>
 						<ListItemText>IBU: {details.ibu ?? 'N/A'}</ListItemText>
+					</ListItem>
+					<ListItem divider>
 						<ListItemText>Organic: {details.isOrganic === 'Y' ? 'Yes' : 'No'}</ListItemText>
+					</ListItem>
+					<ListItem divider>
 						<ListItemText>Retired: {details.isRetired === 'Y' ? 'Yes' : 'No'}</ListItemText>
 					</ListItem>
 				</List>
