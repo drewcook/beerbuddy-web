@@ -25,4 +25,4 @@ If you do happen to have a valid API key however, update `USE_SANDBOX_API` to be
 **The production app uses the full-featured API. Use the demo link below to view the app.**
 
 ## Deployments
-The app currently deploys to a Heroku environment.  The current production application can be accessed [here](https://beerbuddy.io/).
+The app currently deploys to a Heroku environment.  The current production application [can be viewed here](https://beerbuddy.io/).
