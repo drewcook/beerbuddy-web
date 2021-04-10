@@ -1,7 +1,12 @@
 import { ServerStyleSheets } from '@material-ui/core/styles'
+import getConfig from 'next/config'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import React from 'react'
 import theme from '@bb/styles/theme'
+
+const {
+	publicRuntimeConfig: { GA_TAG },
+} = getConfig()
 
 export default class MyDocument extends Document {
 	render() {
@@ -14,18 +19,22 @@ export default class MyDocument extends Document {
 						rel="stylesheet"
 						href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
 					/>
-					{/* Google Analytics */}
-					<script async src="https://www.googletagmanager.com/gtag/js?id=G-6RWQTDLEET"></script>
-					<script
-						dangerouslySetInnerHTML={{
-							__html: `
-								window.dataLayer = window.dataLayer || [];
-								function gtag(){dataLayer.push(arguments);}
-								gtag('js', new Date());
-								gtag('config', 'G-6RWQTDLEET');
-							`,
-						}}
-					/>
+					{process.env.NODE_ENV === 'production' && (
+						<>
+							{/* Google Analytics */}
+							<script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TAG}`}></script>
+							<script
+								dangerouslySetInnerHTML={{
+									__html: `
+										window.dataLayer = window.dataLayer || [];
+										function gtag(){dataLayer.push(arguments);}
+										gtag('js', new Date());
+										gtag('config', '${GA_TAG}');
+									`,
+								}}
+							/>
+						</>
+					)}
 				</Head>
 				<body>
 					<Main />

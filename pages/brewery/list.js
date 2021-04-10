@@ -1,15 +1,78 @@
-import { Grid } from '@material-ui/core'
+import { useLazyQuery } from '@apollo/client'
+import { Grid, Typography } from '@material-ui/core'
+import _get from 'lodash/get'
 import Head from 'next/head'
-import { getBreweries } from '@bb/api/breweryDb'
-import { useAuthentication } from '@bb/components/AuthenticationContext'
+import { useState, useEffect } from 'react'
+import { BREWERY_LIST_QUERY } from '@bb/lib/apollo-client/shemas'
 import BreweryCard from '@bb/components/BreweryCard'
+import ListPagination from '@bb/components/ListPagination'
+import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
 
-const BreweryListPage = props => {
-	const { list, page, totalPages, totalResults } = props
-	const { isAuthenticated } = useAuthentication()
+const BreweryListPage = () => {
+	const [page, setPage] = useState(1)
+	const [getBreweries, { data, loading, error }] = useLazyQuery(BREWERY_LIST_QUERY, {
+		variables: { page },
+	})
 
-	if (!isAuthenticated) console.log("uh oh, you shouldn'nt be here")
+	const results = _get(data, 'breweryList.data', [])
+	const pageInfo = {
+		currentPage: _get(data, 'breweryList.currentPage', 0),
+		numberOfPages: _get(data, 'breweryList.numberOfPages', 0),
+		totalResults: _get(data, 'breweryList.totalResults', 0),
+	}
+
+	const handlePrevPage = async () => {
+		if (page === 1) return
+		setPage(page - 1)
+	}
+
+	const handleNextPage = async () => {
+		if (page === pageInfo.numberOfPages) return
+		setPage(page + 1)
+	}
+
+	useEffect(async () => {
+		try {
+			await getBreweries()
+		} catch (ex) {
+			console.error(ex)
+		}
+	}, [])
+
+	useEffect(async () => {
+		try {
+			await getBreweries()
+		} catch (ex) {
+			console.error(ex)
+		}
+	}, [page])
+
+	const renderContent = () => {
+		if (loading) return <LoadingState />
+
+		if (error)
+			return (
+				<Typography color="error">Sorry, an error occurred while getting the results.</Typography>
+			)
+
+		return (
+			<>
+				<ListPagination
+					pageInfo={pageInfo}
+					onPrevPage={handlePrevPage}
+					onNextPage={handleNextPage}
+				/>
+				<Grid container spacing={3}>
+					{results.map(brewery => (
+						<Grid item xs={12} sm={6} md={4} key={brewery.id}>
+							<BreweryCard brewery={brewery} />
+						</Grid>
+					))}
+				</Grid>
+			</>
+		)
+	}
 
 	return (
 		<>
@@ -19,31 +82,9 @@ const BreweryListPage = props => {
 			</Head>
 
 			<PageTitle title="Brewery List" headline="Search Breweries" />
-
-			<Grid container spacing={3}>
-				{list.map(brewery => (
-					<Grid item xs={12} sm={6} md={4} key={brewery.id}>
-						<BreweryCard brewery={brewery} />
-					</Grid>
-				))}
-			</Grid>
+			{renderContent()}
 		</>
 	)
-}
-
-export const getServerSideProps = async ctx => {
-	const page = 1
-	const resp = await getBreweries(page)
-	const { data, currentPage, numberOfPages, totalResults } = resp
-
-	return {
-		props: {
-			list: data,
-			page: currentPage,
-			totalPages: numberOfPages,
-			totalResults,
-		},
-	}
 }
 
 export default BreweryListPage

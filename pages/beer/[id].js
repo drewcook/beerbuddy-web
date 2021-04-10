@@ -1,13 +1,13 @@
-import { Box, Button, Typography } from '@material-ui/core'
+import { Box, Button } from '@material-ui/core'
 import Head from 'next/head'
 import Link from 'next/link'
-import * as breweryDbService from '@bb/api/breweryDb'
 import AddItemToListDialog from '@bb/components/AddItemToListDialog'
 import PageTitle from '@bb/components/PageTitle'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/details.module.scss'
 
-const BeerDetailsPage = ({ details }) => {
+const BeerDetailsPage = ({ id }) => {
+	return null
 	return (
 		<>
 			<Head>
@@ -36,15 +36,10 @@ const BeerDetailsPage = ({ details }) => {
 	)
 }
 
-export const getServerSideProps = async ctx => {
-	const resp = await breweryDbService.getBeerDetails(ctx.query.id)
-	const { data } = resp
-
-	return {
-		props: {
-			details: data,
-		},
-	}
-}
+export const getServerSideProps = async ctx => ({
+	props: {
+		id: ctx.query.id,
+	},
+})
 
 export default BeerDetailsPage
