@@ -9,10 +9,6 @@ import ListPagination from '@bb/components/ListPagination'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
 
-const str = `Abstract type "SearchResultItem" must resolve to an Object type at
-runtime for field "BreweryDbList.data". Either the "SearchResultItem" type should
-provide a "resolveType" function or each possible type should provide an "isTypeOf" function.`
-
 const BreweryListPage = () => {
 	const [page, setPage] = useState(1)
 	const [getBreweries, { data, loading, error }] = useLazyQuery(BREWERY_LIST_QUERY, {
