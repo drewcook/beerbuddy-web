@@ -7,7 +7,12 @@ import styles from '@bb/styles/list.module.scss'
 const BeerCard = ({ beer }) => (
 	<Card className={styles.card}>
 		<CardContent>
-			<CardMedia component="img" image="/beer_mug.png" title={beer.name} alt={beer.name} />
+			<CardMedia
+				component="img"
+				image={beer.labels?.medium ?? '/beer_pint_color.png'}
+				title={beer.name}
+				alt={beer.name}
+			/>
 			<Typography variant="h6">{beer.name}</Typography>
 			{beer.breweries && (
 				<Typography>

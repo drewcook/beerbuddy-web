@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { Box, Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
 import Link from 'next/link'
-import { USER_LISTS_QUERY } from '@bb/lib/apollo-client/shemas'
+import { USER_LISTS_QUERY } from '@bb/lib/apollo-client/schemas'
 import { formatDate } from '@bb/lib/dateUtils'
 import CreateListDialog from '@bb/components/CreateListDialog'
 import LoadingState from '@bb/components/LoadingState'

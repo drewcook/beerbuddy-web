@@ -1,13 +1,37 @@
-import { Box, Button } from '@material-ui/core'
+import { useQuery } from '@apollo/client'
+import {
+	Box,
+	Button,
+	Divider,
+	List,
+	ListItem,
+	ListItemText,
+	Paper,
+	Typography,
+} from '@material-ui/core'
+import _get from 'lodash/get'
 import Head from 'next/head'
 import Link from 'next/link'
+import { BEER_DETAILS_QUERY } from '@bb/lib/apollo-client/schemas'
 import AddItemToListDialog from '@bb/components/AddItemToListDialog'
+import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/details.module.scss'
 
 const BeerDetailsPage = ({ id }) => {
-	return null
+	const { data, loading, error } = useQuery(BEER_DETAILS_QUERY, { variables: { id } })
+	const details = _get(data, 'beer')
+
+	if (loading) return <LoadingState />
+
+	if (error)
+		return (
+			<Typography color="error">
+				Sorry, an error occurred while getting the beer details.
+			</Typography>
+		)
+
 	return (
 		<>
 			<Head>
@@ -27,11 +51,57 @@ const BeerDetailsPage = ({ id }) => {
 				</Link>
 			</Box>
 
-			<AddItemToListDialog beerId={details.id} />
+			<AddItemToListDialog beerId={details?.id} />
 
-			<pre className={baseStyles.code}>
-				<code>{JSON.stringify(details, null, 2)}</code>
-			</pre>
+			<Divider />
+
+			<Paper className={styles.paper}>
+				{details.labels && <img src={details.labels.large} alt={details.name} />}
+				<Typography variant="h4" gutterBottom>
+					About This Beer
+				</Typography>
+				<Typography variant="subtitle1" gutterBottom>
+					{details.description}
+				</Typography>
+				<Typography variant="h6" component="p" gutterBottom>
+					This is a beer from{' '}
+					<Link href={`/brewery/${details.breweries[0].id}`}>
+						<a>{details.breweries[0].name}.</a>
+					</Link>
+				</Typography>
+				{details.glasswareId && (
+					<Typography variant="h6" component="p" gutterBottom>
+						This beer is best enjoyed in a {details.glass.name.toLowerCase()} glass.
+					</Typography>
+				)}
+				<Typography variant="h5" gutterBottom>
+					Beer Style
+				</Typography>
+				{details.style.id && (
+					<>
+						<Typography gutterBottom>{details.style.description}</Typography>
+						<Typography gutterBottom>
+							{details.style.name}
+							<small>{details.style.category.shortName}</small>
+							<small>{details.style.category.name}</small>
+						</Typography>
+					</>
+				)}
+				<List>
+					<ListItem divider>
+						<ListItemText>ABV: {details.abv ?? 'N/A'}</ListItemText>
+					</ListItem>
+					<ListItem divider>
+						<ListItemText>IBU: {details.ibu ?? 'N/A'}</ListItemText>
+					</ListItem>
+					<ListItem divider>
+						<ListItemText>Organic: {details.isOrganic === 'Y' ? 'Yes' : 'No'}</ListItemText>
+					</ListItem>
+					<ListItem divider>
+						<ListItemText>Retired: {details.isRetired === 'Y' ? 'Yes' : 'No'}</ListItemText>
+					</ListItem>
+				</List>
+			</Paper>
 		</>
 	)
 }

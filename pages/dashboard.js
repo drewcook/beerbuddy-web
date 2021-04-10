@@ -3,7 +3,7 @@ import { Box, Divider, Grid, List, ListItem, Paper, Typography } from '@material
 import _get from 'lodash/get'
 import Head from 'next/head'
 import Link from 'next/link'
-import { USER_DASHBOARD_QUERY } from '@bb/lib/apollo-client/shemas'
+import { USER_DASHBOARD_QUERY } from '@bb/lib/apollo-client/schemas'
 import { formatDate } from '@bb/lib/dateUtils'
 import CreateListDialog from '@bb/components/CreateListDialog'
 import LoadingState from '@bb/components/LoadingState'
@@ -73,12 +73,6 @@ const DashboardPage = () => {
 								<em>Coming soon...</em>
 							</Typography>
 						</Box>
-						<List>
-							<ListItem>Odell Imperial IPA</ListItem>
-							<ListItem>Pelican Brewing Company</ListItem>
-							<ListItem>New Image Brewery</ListItem>
-							<ListItem>My Super Sour List</ListItem>
-						</List>
 					</Paper>
 				</Grid>
 				<Grid item xs={12} md={6}>
@@ -92,10 +86,6 @@ const DashboardPage = () => {
 								<em>Coming soon...</em>
 							</Typography>
 						</Box>
-						<List>
-							<ListItem>Beers Logged: x</ListItem>
-							<ListItem>Brewery Check Ins: x</ListItem>
-						</List>
 					</Paper>
 					<Paper className={styles.paper}>
 						<Typography variant="h4" gutterBottom>

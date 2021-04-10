@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import _get from 'lodash/get'
 import { createContext, useContext } from 'react'
-import { VIEWER_QUERY } from '@bb/lib/apollo-client/shemas'
+import { VIEWER_QUERY } from '@bb/lib/apollo-client/schemas'
 
 const ViewerContext = createContext()
 

@@ -8,10 +8,11 @@ const ListPagination = props => {
 	const { pageInfo, onPrevPage, onNextPage } = props
 	const { currentPage, numberOfPages, totalResults } = pageInfo
 
+	if (!pageInfo) return null
+
 	return (
-		<>
-			<Typography gutterBottom>{totalResults} results</Typography>
-			<Box display="flex" alignItems="center" justifyContent="flex-start" my={5}>
+		<Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" mb={5}>
+			<Box display="flex" alignItems="center" justifyContent="flex-start">
 				<IconButton
 					edge="start"
 					aria-label="previous page"
@@ -23,11 +24,19 @@ const ListPagination = props => {
 				<Typography className={styles.pageInfo}>
 					Page {currentPage} out of {numberOfPages}
 				</Typography>
-				<IconButton edge="end" aria-label="previous page" onClick={onNextPage}>
+				<IconButton
+					edge="end"
+					aria-label="previous page"
+					onClick={onNextPage}
+					disabled={currentPage === numberOfPages}
+				>
 					<ArrowForwardIcon />
 				</IconButton>
 			</Box>
-		</>
+			<Typography variant="overline" component="p">
+				{totalResults} results
+			</Typography>
+		</Box>
 	)
 }
 

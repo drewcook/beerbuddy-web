@@ -31,7 +31,7 @@ import {
 	DELETE_LIST_MUTATION,
 	LIST_DETAILS_QUERY,
 	REMOVE_ITEM_MUTATION,
-} from '@bb/lib/apollo-client/shemas'
+} from '@bb/lib/apollo-client/schemas'
 import { formatDate } from '@bb/lib/dateUtils'
 import getErrors from '@bb/lib/getGraphQLErrors'
 import LoadingState from '@bb/components/LoadingState'
