@@ -15,7 +15,7 @@ import {
 	CREATE_NEW_LIST,
 	USER_DASHBOARD_QUERY,
 	USER_LISTS_QUERY,
-} from '@bb/lib/apollo-client/shemas'
+} from '@bb/lib/apollo-client/schemas'
 import LoadingState from './LoadingState'
 import { useViewer } from './ViewerContext'
 

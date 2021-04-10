@@ -20,7 +20,7 @@ import {
 	USER_LISTS_QUERY,
 	ADD_ITEM_MUTATION,
 	LIST_DETAILS_QUERY,
-} from '@bb/lib/apollo-client/shemas'
+} from '@bb/lib/apollo-client/schemas'
 import LoadingState from './LoadingState'
 import { useViewer } from './ViewerContext'
 

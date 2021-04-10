@@ -3,7 +3,7 @@ import { Box, Divider, Grid, List, ListItem, Paper, Typography } from '@material
 import _get from 'lodash/get'
 import Head from 'next/head'
 import Link from 'next/link'
-import { USER_DASHBOARD_QUERY } from '@bb/lib/apollo-client/shemas'
+import { USER_DASHBOARD_QUERY } from '@bb/lib/apollo-client/schemas'
 import { formatDate } from '@bb/lib/dateUtils'
 import CreateListDialog from '@bb/components/CreateListDialog'
 import LoadingState from '@bb/components/LoadingState'
