@@ -60,10 +60,23 @@ const UserListDetailsPage = ({ id }) => {
 			variables: {
 				input: { userId: viewer._id, itemId: id, name: details?.name, type: 'list' },
 			},
-			refetchQueries: [
-				{ query: VIEWER_QUERY },
-				{ query: USER_DASHBOARD_QUERY, variables: { userId: viewer._id } },
-			],
+			update: (store, { data }) => {
+				// Update Viewer cache
+				const viewerData = store.readQuery({
+					query: VIEWER_QUERY,
+				})
+				if (viewerData) {
+					store.writeQuery({
+						query: VIEWER_QUERY,
+						data: {
+							viewer: {
+								...viewerData.viewer,
+								favorites: [...viewerData.viewer.favorites, data?.addUserFavorite],
+							},
+						},
+					})
+				}
+			},
 		},
 	)
 
@@ -76,10 +89,25 @@ const UserListDetailsPage = ({ id }) => {
 					favoriteId: viewer.favorites.filter(fav => fav.itemId === id)[0]?._id,
 				},
 			},
-			refetchQueries: [
-				{ query: VIEWER_QUERY },
-				{ query: USER_DASHBOARD_QUERY, variables: { userId: viewer._id } },
-			],
+			update: (store, { data }) => {
+				// Update Viewer cache
+				const viewerData = store.readQuery({
+					query: VIEWER_QUERY,
+				})
+				if (viewerData) {
+					store.writeQuery({
+						query: VIEWER_QUERY,
+						data: {
+							viewer: {
+								...viewerData.viewer,
+								favorites: viewerData.viewer.favorites.filter(
+									fav => fav.itemId !== data?.removeUserFavorite.itemId,
+								),
+							},
+						},
+					})
+				}
+			},
 		},
 	)
 

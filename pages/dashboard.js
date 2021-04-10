@@ -29,6 +29,31 @@ const DashboardPage = () => {
 	const details = _get(data, 'userDashboard')
 	const favorites = _get(viewer, 'favorites')
 
+	const renderFavoriteItem = favorite => {
+		if (!favorite) return
+
+		const url =
+			favorite.type === 'list'
+				? `/user/list/${favorite.itemId}`
+				: `/${favorite.type}/${favorite.itemId}`
+
+		return (
+			<Box key={favorite._id} className={styles.favoriteItem}>
+				<Link href={url}>
+					<a>
+						<ListItem key={favorite._id} divider>
+							<ListItemText
+								primary={favorite.name}
+								secondary={favorite.type}
+								secondaryTypographyProps={{ variant: 'overline' }}
+							/>
+						</ListItem>
+					</a>
+				</Link>
+			</Box>
+		)
+	}
+
 	if (loading) return <LoadingState />
 	if (error)
 		return (
@@ -78,27 +103,15 @@ const DashboardPage = () => {
 							My Favorites
 						</Typography>
 						<Divider />
-						<Box className={baseStyles.centered} my={3}>
-							<List>
-								{favorites.length > 0 &&
-									favorites.map(fav => (
-										<Link
-											href={
-												fav.type === 'list'
-													? `/user/list/${fav.itemId}`
-													: `/${fav.type}/${fav.itemId}`
-											}
-										>
-											<a>
-												<ListItem key={fav._id} divider>
-													<ListItemText>{fav.name}</ListItemText>
-													<ListItemText>{fav.type}</ListItemText>
-												</ListItem>
-											</a>
-										</Link>
-									))}
-							</List>
-						</Box>
+						{favorites.length > 0 ? (
+							<List>{favorites.map(fav => renderFavoriteItem(fav))}</List>
+						) : (
+							<Box className={baseStyles.centered} my={3}>
+								<Typography>
+									<em>Nothing to show! You can favorite items from their details page.</em>
+								</Typography>
+							</Box>
+						)}
 					</Paper>
 				</Grid>
 				<Grid item xs={12} md={6}>

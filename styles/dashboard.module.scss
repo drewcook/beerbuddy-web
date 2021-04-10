@@ -31,3 +31,14 @@
 		color: $breezy_grey_dark;
 	}
 }
+
+
+.favoriteItem {
+	a {
+		color: $breezy_primary;
+
+		&:hover {
+			color: $breezy_secondary;
+		}
+	}
+}
