@@ -73,12 +73,6 @@ const DashboardPage = () => {
 								<em>Coming soon...</em>
 							</Typography>
 						</Box>
-						<List>
-							<ListItem>Odell Imperial IPA</ListItem>
-							<ListItem>Pelican Brewing Company</ListItem>
-							<ListItem>New Image Brewery</ListItem>
-							<ListItem>My Super Sour List</ListItem>
-						</List>
 					</Paper>
 				</Grid>
 				<Grid item xs={12} md={6}>
@@ -92,10 +86,6 @@ const DashboardPage = () => {
 								<em>Coming soon...</em>
 							</Typography>
 						</Box>
-						<List>
-							<ListItem>Beers Logged: x</ListItem>
-							<ListItem>Brewery Check Ins: x</ListItem>
-						</List>
 					</Paper>
 					<Paper className={styles.paper}>
 						<Typography variant="h4" gutterBottom>
