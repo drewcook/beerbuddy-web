@@ -5,7 +5,7 @@ import { authenticateUser } from '@bb/api/auth'
 
 const AuthenticationContext = createContext()
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ apolloClient, children }) => {
 	const router = useRouter()
 	const [isAuthenticated, setIsAuthenticated] = useState(null)
 
@@ -28,6 +28,8 @@ export const AuthProvider = ({ children }) => {
 			const token = await authenticateUser({ email, password })
 			sessionStorage.setItem('auth-token', token)
 			setIsAuthenticated(true)
+			// start fresh and refresh queries - technically should be cleared from logout
+			apolloClient.resetStore()
 		} catch (error) {
 			throw new Error(error)
 		}
@@ -40,6 +42,8 @@ export const AuthProvider = ({ children }) => {
 			sessionStorage.removeItem('auth-token')
 			setIsAuthenticated(false)
 			router.push('/')
+			// clear apollo cache, but don't refresh queries after
+			apolloClient.clearStore()
 		} catch (error) {
 			throw new Error(error)
 		}

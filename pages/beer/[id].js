@@ -156,7 +156,9 @@ const BeerDetailsPage = ({ id }) => {
 			<Divider />
 
 			<Paper className={styles.paper}>
-				{details.labels && <img src={details.labels.large} alt={details.name} />}
+				{details.labels && (
+					<img src={details.labels.large} alt={details.name} className={styles.image} />
+				)}
 				<Typography variant="h4" gutterBottom>
 					About This Beer
 				</Typography>

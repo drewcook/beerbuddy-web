@@ -23,7 +23,7 @@ const BeerBuddy = ({ Component, pageProps, router }) => {
 	return (
 		<ApolloProvider client={apolloClient}>
 			<ThemeProvider theme={theme}>
-				<AuthProvider>
+				<AuthProvider apolloClient={apolloClient}>
 					<ViewerProvider router={router}>
 						<CssBaseline />
 						<ContentLayout content={<Component {...pageProps} />} />
