@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import { Box, Button, Card, CardActions, CardContent, Typography } from '@material-ui/core'
+import { Box, Button, Card, CardActions, CardContent, Grid, Typography } from '@material-ui/core'
 import Link from 'next/link'
 import { USER_LISTS_QUERY } from '@bb/lib/apollo-client/schemas'
 import { formatDate } from '@bb/lib/dateUtils'
@@ -8,6 +8,7 @@ import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
 import { useViewer } from '@bb/components/ViewerContext'
 import baseStyles from '@bb/styles/base.module.scss'
+import styles from '@bb/styles/userLists.module.scss'
 
 const UserListsPage = () => {
 	const { viewer } = useViewer()
@@ -21,10 +22,17 @@ const UserListsPage = () => {
 
 	return (
 		<div>
-			<Box display="flex" justifyContent="space-between" alignItems="center">
-				<PageTitle title="User Lists" headline="My Lists" />
-				<CreateListDialog />
-			</Box>
+			<Grid container>
+				<Grid item xs={12} sm={6}>
+					<PageTitle title="User Lists" headline="My Lists" />
+				</Grid>
+				<Grid item xs={12} sm={6}>
+					<Box className={styles.createListBtn}>
+						<CreateListDialog />
+					</Box>
+				</Grid>
+			</Grid>
+			{/* <Box display="flex" justifyContent="space-between" alignItems="center"></Box> */}
 
 			{!data.userLists.length ? (
 				<Box className={baseStyles.centered}>

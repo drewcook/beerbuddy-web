@@ -1,5 +1,6 @@
 import { useMutation } from '@apollo/client'
 import {
+	Box,
 	Button,
 	Dialog,
 	DialogActions,
@@ -10,6 +11,7 @@ import {
 	Typography,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
+import PropTypes from 'prop-types'
 import { useState } from 'react'
 import {
 	CREATE_NEW_LIST,
@@ -19,7 +21,7 @@ import {
 import LoadingState from './LoadingState'
 import { useViewer } from './ViewerContext'
 
-const CreateListDialog = () => {
+const CreateListDialog = ({ boxProps, btnProps }) => {
 	const { viewer } = useViewer()
 	const [open, setOpen] = useState(false)
 	const [name, setName] = useState('')
@@ -82,8 +84,14 @@ const CreateListDialog = () => {
 	}
 
 	return (
-		<div>
-			<Button variant="outlined" color="primary" onClick={toggleOpen} endIcon={<AddIcon />}>
+		<Box {...boxProps}>
+			<Button
+				variant="contained"
+				color="secondary"
+				onClick={toggleOpen}
+				endIcon={<AddIcon />}
+				{...btnProps}
+			>
 				Create New List
 			</Button>
 			<Dialog open={open} onClose={handleClose} aria-labelledby="create-list">
@@ -118,8 +126,18 @@ const CreateListDialog = () => {
 					</Button>
 				</DialogActions>
 			</Dialog>
-		</div>
+		</Box>
 	)
+}
+
+CreateListDialog.propTypes = {
+	boxProps: PropTypes.shape({}),
+	btnProps: PropTypes.shape({}),
+}
+
+CreateListDialog.defaultProps = {
+	boxProps: undefined,
+	btnProps: undefined,
 }
 
 export default CreateListDialog

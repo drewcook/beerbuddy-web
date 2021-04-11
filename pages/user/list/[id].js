@@ -339,9 +339,13 @@ const UserListDetailsPage = ({ id }) => {
 							</Button>
 						</Box>
 						<Box my={2}>
-							<IconButton edge="end" aria-label="delete" onClick={() => setDeleteDialogOpen(true)}>
-								<DeleteIcon />
-							</IconButton>
+							<Button
+								className={styles.deleteListBtn}
+								onClick={() => setDeleteDialogOpen(true)}
+								endIcon={<DeleteIcon />}
+							>
+								Delete List
+							</Button>
 						</Box>
 					</Paper>
 				</Grid>

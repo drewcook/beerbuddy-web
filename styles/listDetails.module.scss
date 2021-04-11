@@ -16,6 +16,17 @@
 	}
 }
 
+.deleteListBtn {
+	color: $error_color !important;
+	transition: 300ms;
+
+	&:hover {
+		transition: 300ms;
+		color: $breezy_grey_dark !important;
+		background: none !important;
+	}
+}
+
 .deleteBtn {
 	background-color: $error_color !important;
 	color: $breezy_light;
