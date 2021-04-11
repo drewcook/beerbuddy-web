@@ -17,7 +17,7 @@
 }
 
 .listItem {
-	margin-bottom: 30px;
+	padding-top: 20px;
 
 	a {
 		color: $breezy_primary;
@@ -30,6 +30,10 @@
 	em {
 		color: $breezy_grey_dark;
 	}
+
+	hr {
+		margin-top: 20px;
+	}
 }
 
 
@@ -41,4 +45,8 @@
 			color: $breezy_secondary;
 		}
 	}
+}
+
+.statsItem {
+
 }
