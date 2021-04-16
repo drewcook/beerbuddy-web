@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { destroyCookie, setCookie } from 'nookies'
 import PropTypes from 'prop-types'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { authenticateUser } from '@bb/api/auth'
@@ -26,7 +27,11 @@ export const AuthProvider = ({ apolloClient, children }) => {
 	const logIn = async ({ email, password }) => {
 		try {
 			const token = await authenticateUser({ email, password })
+			// Set an isomorphic cookie
+			setCookie(null, 'authToken', token)
+			// Set the browser session storage
 			sessionStorage.setItem('auth-token', token)
+			// Set local state
 			setIsAuthenticated(true)
 			// start fresh and refresh queries - technically should be cleared from logout
 			apolloClient.resetStore()
@@ -39,8 +44,13 @@ export const AuthProvider = ({ apolloClient, children }) => {
 		try {
 			const token = sessionStorage.getItem('auth-token')
 			if (!token) throw new Error('No token found')
+			// Destroy the isomorphic cookie
+			destroyCookie(null, 'authToken')
+			// Clear out browser session storage
 			sessionStorage.removeItem('auth-token')
+			// Reset local state
 			setIsAuthenticated(false)
+			// Redirect to root
 			router.push('/')
 			// clear apollo cache, but don't refresh queries after
 			apolloClient.clearStore()
