@@ -70,4 +70,4 @@ const UserListsPage = () => {
 	)
 }
 
-export default requiresAuthentication()(UserListsPage)
+export default requiresAuthentication(UserListsPage)

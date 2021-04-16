@@ -18,40 +18,49 @@ import withInitialPropsRedirect from './withInitialPropsRedirect'
 // const clientHost = getClientHost()
 // const SECURE_COOKIES = _startsWith(clientHost, 'https') // Only use secure cookies when the CLIENT_HOST is https
 
-const requiresAuthentication = () => WrappedComponent => {
-	const requiresAuth = props => <WrappedComponent {...props} />
+const requiresAuthentication = WrappedComponent => {
+	const requiresAuthComponent = props => <WrappedComponent {...props} />
 
-	requiresAuth.getServerSideProps = async ctx => {
-		console.log('in requiresAuth serversideprops')
+	requiresAuthComponent.getInitialProps = async ctx => {
 		const apolloClient = initializeApollo({ ctx })
-		const accessToken = false //sessionStorage?.getItem('auth-token')
+		// TODO: need to get auth token on server side
+		const accessToken = true //sessionStorage?.getItem('auth-token')
 
 		if (!apolloClient) {
 			throw Error('Apollo Client is required.')
 		}
 
 		if (!accessToken) {
-			console.info('accessToken not found, redirecting user to login')
+			console.info('No access token found. Redirecting to login...')
 
 			redirectToLogin({ ctx })
-			return { initialPropsRedirecting: true }
+			return {
+				redirect: {
+					permanent: false,
+					destination: '/login',
+				},
+			}
 		}
 
-		console.info('accessToken found, continuing on finding the user...')
+		// TODO: can add props here and almost replace ViewerContext with 'me'
+		// but need to support server side calls so we can support pageloads.
+		// console.info('accessToken found, optionally continuing on finding the user...')
 		// const response = await apolloClient.query({ query: VIEWER_QUERY })
-		// const me = _get(response, 'data.viewer.me')
+		// console.log('got the user', response)
+		// const me = _get(response, 'data.viewer')
 
 		return {
 			props: {
 				...WrappedComponent.getServerSideProps,
-				isAuthedOut: true,
+				// isAuthedOut: true, etc.
+				// me,
 			},
 		}
 	}
 
-	requiresAuthentication.displayName = `requiresAuthentication(${getDisplayName(WrappedComponent)})`
+	requiresAuthComponent.displayName = `requiresAuthentication(${getDisplayName(WrappedComponent)})`
 
-	return withInitialPropsRedirect()(requiresAuth)
+	return requiresAuthComponent
 }
 
 export default requiresAuthentication
