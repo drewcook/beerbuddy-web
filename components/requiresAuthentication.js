@@ -1,6 +1,7 @@
 // import { wrapGetInitialProps } from '@gloojs/react-lib'
 import _get from 'lodash/get'
 import _startsWith from 'lodash/startsWith'
+import nookies from 'nookies'
 import { initializeApollo } from '@bb/lib/apollo-client/apolloClient'
 import { VIEWER_QUERY } from '@bb/lib/apollo-client/schemas'
 import getDisplayName from '@bb/lib/getDisplayName'
@@ -24,6 +25,8 @@ const requiresAuthentication = WrappedComponent => {
 	requiresAuthComponent.getInitialProps = async ctx => {
 		const apolloClient = initializeApollo({ ctx })
 		// TODO: need to get auth token on server side
+		const cookies = nookies.get(ctx)
+		console.log({ cookies })
 		const accessToken = true //sessionStorage?.getItem('auth-token')
 
 		if (!apolloClient) {
