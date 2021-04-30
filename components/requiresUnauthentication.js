@@ -21,10 +21,11 @@ const requiresUnauthentication = WrappedComponent => {
 			}
 
 			// Return original props for unauthenticated users
-			return { ...WrappedComponent.getInitialProps }
+			// withHoc - https://github.com/vercel/next.js/issues/8919
+			return { ...WrappedComponent.getInitialProps, withHoc: true }
 		} catch {
 			// Return original props on fail
-			return { ...WrappedComponent.getInitialProps }
+			return { ...WrappedComponent.getInitialProps, withHoc: true }
 		}
 	}
 

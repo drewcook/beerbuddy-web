@@ -45,7 +45,8 @@ const requiresAuthentication = WrappedComponent => {
 			return { ...WrappedComponent.getServerSideProps, me }
 		} catch (ex) {
 			// Return original props on fail
-			return { ...WrappedComponent.getServerSideProps }
+			// withHoc - https://github.com/vercel/next.js/issues/8919
+			return { ...WrappedComponent.getServerSideProps, withHoc: true }
 		}
 	}
 

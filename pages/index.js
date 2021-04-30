@@ -1,6 +1,7 @@
 import { Button, Card, CardActions, Typography } from '@material-ui/core'
 import Head from 'next/head'
 import Link from 'next/link'
+import PageTitle from '@bb/components/PageTitle'
 import requiresUnauthentication from '@bb/components/requiresUnauthentication'
 import styles from '@bb/styles/home.module.scss'
 
