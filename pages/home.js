@@ -2,6 +2,7 @@ import { Button, Card, CardActions, Typography } from '@material-ui/core'
 import Head from 'next/head'
 import Link from 'next/link'
 import PageTitle from '@bb/components/PageTitle'
+import requiresAuthentication from '@bb/components/requiresAuthentication'
 import styles from '@bb/styles/home.module.scss'
 
 const HomePage = () => (
@@ -37,4 +38,4 @@ const HomePage = () => (
 	</div>
 )
 
-export default HomePage
+export default requiresAuthentication(HomePage)

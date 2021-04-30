@@ -8,8 +8,9 @@ import BreweryCard from '@bb/components/BreweryCard'
 import ListPagination from '@bb/components/ListPagination'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
+import requiresAuthentication from '@bb/components/requiresAuthentication'
 
-const BreweryListPage = () => {
+const BreweryListPage = ({ me }) => {
 	const [page, setPage] = useState(1)
 	const [getBreweries, { data, loading, error }] = useLazyQuery(BREWERY_LIST_QUERY, {
 		variables: { page },
@@ -66,7 +67,7 @@ const BreweryListPage = () => {
 				<Grid container spacing={3}>
 					{results.map(brewery => (
 						<Grid item xs={12} sm={6} md={4} key={brewery.id}>
-							<BreweryCard brewery={brewery} />
+							<BreweryCard brewery={brewery} userId={me._id} />
 						</Grid>
 					))}
 				</Grid>
@@ -87,4 +88,4 @@ const BreweryListPage = () => {
 	)
 }
 
-export default BreweryListPage
+export default requiresAuthentication(BreweryListPage)

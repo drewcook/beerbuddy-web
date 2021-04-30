@@ -2,6 +2,7 @@ import { Button, Card, CardActions, Typography } from '@material-ui/core'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import nookies from 'nookies'
 import { useEffect, useState } from 'react'
 import { useAuthentication } from '@bb/components/AuthenticationContext'
 import LoadingState from '@bb/components/LoadingState'
@@ -68,6 +69,23 @@ const WelcomePage = () => {
 			<LoadingState />
 		</div>
 	)
+}
+
+export const getServerSideProps = async ctx => {
+	const { authToken } = nookies.get(ctx)
+
+	if (authToken) {
+		// Logged in users shouldn't see this page.
+		// We should redirect to their home page.
+		return {
+			redirect: {
+				permanent: false,
+				destination: '/home',
+			},
+		}
+	}
+
+	return { props: {} }
 }
 
 export default WelcomePage

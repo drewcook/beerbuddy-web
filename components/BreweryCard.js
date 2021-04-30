@@ -13,7 +13,7 @@ import PropTypes from 'prop-types'
 import AddItemToListDialog from '@bb/components/AddItemToListDialog'
 import styles from '@bb/styles/list.module.scss'
 
-const BreweryCard = ({ brewery }) => {
+const BreweryCard = ({ brewery, userId }) => {
 	const renderLocation = () => {
 		return (
 			brewery.locations && (
@@ -54,6 +54,7 @@ const BreweryCard = ({ brewery }) => {
 				<AddItemToListDialog
 					breweryId={brewery.id}
 					btnProps={{ fullWidth: true, size: 'small', color: 'secondary' }}
+					userId={userId}
 				/>
 				<Link href={`/brewery/${brewery.id}`}>
 					<a>
@@ -72,6 +73,7 @@ BreweryCard.propTypes = {
 		id: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 	}).isRequired,
+	userId: PropTypes.number.isRequired,
 }
 
 export default BreweryCard

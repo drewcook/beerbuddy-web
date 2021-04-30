@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router'
-import { destroyCookie, setCookie } from 'nookies'
+import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import PropTypes from 'prop-types'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 import { authenticateUser } from '@bb/api/auth'
+import LoadingState from './LoadingState'
 
 const AuthenticationContext = createContext()
 
@@ -10,27 +11,14 @@ export const AuthProvider = ({ apolloClient, children }) => {
 	const router = useRouter()
 	const [isAuthenticated, setIsAuthenticated] = useState(null)
 
-	const checkAuthentication = () => {
-		const token = sessionStorage.getItem('auth-token')
-
-		if (token) {
-			setIsAuthenticated(true)
-		} else {
-			setIsAuthenticated(false)
-		}
-	}
-
-	useEffect(() => {
-		checkAuthentication()
-	}, [])
-
 	const logIn = async ({ email, password }) => {
 		try {
 			const token = await authenticateUser({ email, password })
 			// Set an isomorphic cookie
-			setCookie(null, 'authToken', token)
-			// Set the browser session storage
-			sessionStorage.setItem('auth-token', token)
+			setCookie(null, 'authToken', token, {
+				// httpOnly: true,
+				secure: true,
+			})
 			// Set local state
 			setIsAuthenticated(true)
 			// start fresh and refresh queries - technically should be cleared from logout
@@ -42,12 +30,10 @@ export const AuthProvider = ({ apolloClient, children }) => {
 
 	const logOut = () => {
 		try {
-			const token = sessionStorage.getItem('auth-token')
+			const token = parseCookies(null).authToken
 			if (!token) throw new Error('No token found')
 			// Destroy the isomorphic cookie
 			destroyCookie(null, 'authToken')
-			// Clear out browser session storage
-			sessionStorage.removeItem('auth-token')
 			// Reset local state
 			setIsAuthenticated(false)
 			// Redirect to root
@@ -58,6 +44,14 @@ export const AuthProvider = ({ apolloClient, children }) => {
 			throw new Error(error)
 		}
 	}
+
+	useEffect(() => {
+		// Check to see if a token exists to set initial state
+		const token = parseCookies(null).authToken
+		setIsAuthenticated(token ? true : false)
+	}, [])
+
+	if (isAuthenticated === null) return <LoadingState />
 
 	return (
 		<AuthenticationContext.Provider

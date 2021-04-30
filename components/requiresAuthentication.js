@@ -19,37 +19,38 @@ const requiresAuthentication = WrappedComponent => {
 	const requiresAuthComponent = props => <WrappedComponent {...props} />
 
 	requiresAuthComponent.getInitialProps = async ctx => {
-		const apolloClient = initializeApollo({ ctx })
-		const { authToken } = nookies.get(ctx)
-
-		if (!apolloClient) {
-			throw Error('Apollo Client is required.')
-		}
-
-		if (!authToken) {
-			console.info('No access token found. Redirecting to login...')
-
-			redirectToLogin({ ctx })
-			return {
-				redirect: {
-					permanent: false,
-					destination: '/login',
-				},
+		try {
+			const apolloClient = initializeApollo({ ctx })
+			const { authToken } = nookies.get(ctx)
+			if (!apolloClient) {
+				throw Error('Apollo Client is required.')
 			}
-		}
 
-		// TODO: can add props here and almost replace ViewerContext with 'me'
-		// console.info('accessToken found, optionally continuing on finding the user...')
-		// const response = await apolloClient.query({ query: VIEWER_QUERY })
-		// console.log('got the user', response)
-		// const me = _get(response, 'data.viewer')
+			if (!authToken) {
+				console.info('No access token found. Redirecting to login...')
 
-		return {
-			props: {
-				...WrappedComponent.getServerSideProps,
-				// isAuthedOut: true, etc.
-				// me,
-			},
+				redirectToLogin({ ctx })
+				return {
+					redirect: {
+						permanent: false,
+						destination: '/login',
+					},
+				}
+			}
+
+			console.info('Access token found. Finding the user...')
+			const response = await apolloClient.query({
+				query: VIEWER_QUERY,
+				context: {
+					headers: {
+						Authorization: `Bearer ${authToken}`,
+					},
+				},
+			})
+			const me = _get(response, 'data.viewer')
+			return { ...WrappedComponent.getServerSideProps, me }
+		} catch (ex) {
+			return { ...WrappedComponent.getServerSideProps }
 		}
 	}
 

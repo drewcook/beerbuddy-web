@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import AddItemToListDialog from './AddItemToListDialog'
 import styles from '@bb/styles/list.module.scss'
 
-const BeerCard = ({ beer }) => (
+const BeerCard = ({ beer, userId }) => (
 	<Card className={styles.card}>
 		<CardContent>
 			<CardMedia
@@ -27,6 +27,7 @@ const BeerCard = ({ beer }) => (
 			<AddItemToListDialog
 				beerId={beer.id}
 				btnProps={{ fullWidth: true, size: 'small', color: 'secondary' }}
+				userId={userId}
 			/>
 			<Link href={`/beer/${beer.id}`}>
 				<a>
@@ -44,6 +45,7 @@ BeerCard.propTypes = {
 		id: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 	}).isRequired,
+	userId: PropTypes.number.isRequired,
 }
 
 export default BeerCard

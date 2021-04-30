@@ -19,10 +19,8 @@ import {
 	USER_LISTS_QUERY,
 } from '@bb/lib/apollo-client/schemas'
 import LoadingState from './LoadingState'
-import { useViewer } from './ViewerContext'
 
-const CreateListDialog = ({ boxProps, btnProps }) => {
-	const { viewer } = useViewer()
+const CreateListDialog = ({ boxProps, btnProps, userId }) => {
 	const [open, setOpen] = useState(false)
 	const [name, setName] = useState('')
 
@@ -31,12 +29,12 @@ const CreateListDialog = ({ boxProps, btnProps }) => {
 			// Update User Dashboard cache
 			const dashboardData = store.readQuery({
 				query: USER_DASHBOARD_QUERY,
-				variables: { userId: viewer._id },
+				variables: { userId },
 			})
 			if (dashboardData) {
 				store.writeQuery({
 					query: USER_DASHBOARD_QUERY,
-					variables: { userId: viewer._id },
+					variables: { userId },
 					data: {
 						userDashboard: {
 							...dashboardData.userDashboard,
@@ -49,12 +47,12 @@ const CreateListDialog = ({ boxProps, btnProps }) => {
 			// Update User Lists cache
 			const listsData = store.readQuery({
 				query: USER_LISTS_QUERY,
-				variables: { userId: viewer._id },
+				variables: { userId },
 			})
 			if (listsData) {
 				store.writeQuery({
 					query: USER_LISTS_QUERY,
-					variables: { userId: viewer._id },
+					variables: { userId },
 					data: {
 						userLists: [...listsData.userLists, data?.createNewList],
 					},
@@ -72,7 +70,7 @@ const CreateListDialog = ({ boxProps, btnProps }) => {
 
 	const handleSubmit = async () => {
 		const input = {
-			userId: viewer._id,
+			userId,
 			name,
 		}
 		try {

@@ -1,4 +1,5 @@
 import { Container, Typography } from '@material-ui/core'
+import PropTypes from 'prop-types'
 import NavigationBar from './NavigationBar'
 import styles from '@bb/styles/base.module.scss'
 
@@ -25,5 +26,9 @@ const ContentLayout = ({ content }) => (
 		</footer>
 	</>
 )
+
+ContentLayout.propTypes = {
+	content: PropTypes.node.isRequired,
+}
 
 export default ContentLayout

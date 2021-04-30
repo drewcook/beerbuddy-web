@@ -23,12 +23,11 @@ import {
 import AddItemToListDialog from '@bb/components/AddItemToListDialog'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
-import { useViewer } from '@bb/components/ViewerContext'
+import requiresAuthentication from '@bb/components/requiresAuthentication'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/details.module.scss'
 
-const BreweryDetailsPage = ({ id }) => {
-	const { viewer } = useViewer()
+const BreweryDetailsPage = ({ id, me }) => {
 	const { data, loading, error } = useQuery(BREWERY_DETAILS_QUERY, { variables: { id } })
 	const details = _get(data, 'brewery')
 
@@ -36,7 +35,7 @@ const BreweryDetailsPage = ({ id }) => {
 		ADD_USER_FAVORITE_MUTATION,
 		{
 			variables: {
-				input: { userId: viewer._id, itemId: id, name: details?.name, type: 'brewery' },
+				input: { userId: me._id, itemId: id, name: details?.name, type: 'brewery' },
 			},
 			update: (store, { data }) => {
 				// Update Viewer cache
@@ -63,8 +62,8 @@ const BreweryDetailsPage = ({ id }) => {
 		{
 			variables: {
 				input: {
-					userId: viewer._id,
-					favoriteId: viewer.favorites.filter(fav => fav.itemId === id)[0]?._id,
+					userId: me._id,
+					favoriteId: me.favorites.filter(fav => fav.itemId === id)[0]?._id,
 				},
 			},
 			update: (store, { data }) => {
@@ -117,7 +116,7 @@ const BreweryDetailsPage = ({ id }) => {
 				</Link>
 			</Box>
 
-			{viewer.favorites.some(f => f.itemId === id) ? (
+			{me.favorites.some(f => f.itemId === id) ? (
 				<Box my={2}>
 					<Button
 						variant="contained"
@@ -150,7 +149,7 @@ const BreweryDetailsPage = ({ id }) => {
 			)}
 
 			<Box my={2}>
-				<AddItemToListDialog beerId={details.id} />
+				<AddItemToListDialog beerId={details.id} userId={me._id} />
 			</Box>
 
 			<Divider />
@@ -237,4 +236,4 @@ export const getServerSideProps = async ctx => ({
 	},
 })
 
-export default BreweryDetailsPage
+export default requiresAuthentication(BreweryDetailsPage)
