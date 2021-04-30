@@ -45,7 +45,7 @@ BeerCard.propTypes = {
 		id: PropTypes.string.isRequired,
 		name: PropTypes.string.isRequired,
 	}).isRequired,
-	userId: PropTypes.number.isRequired,
+	userId: PropTypes.string.isRequired,
 }
 
 export default BeerCard

@@ -17,37 +17,34 @@ const requiresAuthentication = WrappedComponent => {
 	const requiresAuthComponent = props => <WrappedComponent {...props} />
 
 	requiresAuthComponent.getInitialProps = async ctx => {
-		try {
-			// Redirect to login if no token found
-			const { authToken } = nookies.get(ctx)
-			if (!authToken) {
-				redirectToPage({ ctx, page: '/login' })
-			}
+		// Redirect to login if no token found
+		const { authToken } = nookies.get(ctx)
 
-			// Require Apollo Client
-			const apolloClient = initializeApollo({ ctx })
-			if (!apolloClient) {
-				throw Error('Apollo Client is required.')
-			}
-
-			// Find User
-			const response = await apolloClient.query({
-				query: VIEWER_QUERY,
-				context: {
-					headers: {
-						Authorization: `Bearer ${authToken}`,
-					},
-				},
-			})
-			const me = _get(response, 'data.viewer')
-
-			// Pass user data down as 'me' prop for authenticated users
-			return { ...WrappedComponent.getServerSideProps, me }
-		} catch (ex) {
-			// Return original props on fail
-			// withHoc - https://github.com/vercel/next.js/issues/8919
-			return { ...WrappedComponent.getServerSideProps, withHoc: true }
+		if (!authToken) {
+			redirectToPage({ ctx, page: '/login' })
 		}
+
+		// Require Apollo Client
+		const apolloClient = initializeApollo({ ctx })
+		if (!apolloClient) {
+			throw Error('Apollo Client is required.')
+		}
+
+		// Find User
+		const response = await apolloClient.query({
+			query: VIEWER_QUERY,
+			context: ctx.res
+				? {
+						// Pass through for server-to-server calls
+						headers: {
+							Authorization: `Bearer ${authToken}`,
+						},
+				  }
+				: {},
+		})
+		const me = _get(response, 'data.viewer')
+		// Pass user data down as 'me' prop for authenticated users
+		return { ...WrappedComponent.getServerSideProps, me }
 	}
 
 	requiresAuthComponent.displayName = `requiresAuthentication(${getDisplayName(WrappedComponent)})`

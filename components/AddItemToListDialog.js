@@ -195,7 +195,7 @@ AddItemToListDialog.propTypes = {
 	btnProps: PropTypes.shape({
 		fullWidth: PropTypes.bool,
 	}),
-	userId: PropTypes.number.isRequired,
+	userId: PropTypes.string.isRequired,
 }
 
 AddItemToListDialog.defaultProps = {

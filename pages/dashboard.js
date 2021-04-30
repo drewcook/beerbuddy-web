@@ -22,7 +22,6 @@ import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/dashboard.module.scss'
 
 const DashboardPage = ({ me }) => {
-	console.log({ me }, me._id)
 	const { loading, data, error } = useQuery(USER_DASHBOARD_QUERY, {
 		variables: { userId: me._id },
 		skip: !me._id,
