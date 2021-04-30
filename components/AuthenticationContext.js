@@ -1,9 +1,15 @@
+import _startsWith from 'lodash/startsWith'
 import { useRouter } from 'next/router'
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import PropTypes from 'prop-types'
 import { createContext, useContext, useState, useEffect } from 'react'
 import { authenticateUser } from '@bb/api/auth'
+import getClientHost from '@bb/lib/apollo-client'
 import LoadingState from './LoadingState'
+
+// Only use secure cookies when the CLIENT_HOST is https
+const clientHost = getClientHost()
+const SECURE_COOKIES = _startsWith(clientHost, 'https')
 
 const AuthenticationContext = createContext()
 
@@ -16,8 +22,7 @@ export const AuthProvider = ({ apolloClient, children }) => {
 			const token = await authenticateUser({ email, password })
 			// Set an isomorphic cookie
 			setCookie(null, 'authToken', token, {
-				// httpOnly: true,
-				secure: true,
+				secure: SECURE_COOKIES,
 			})
 			// Set local state
 			setIsAuthenticated(true)
