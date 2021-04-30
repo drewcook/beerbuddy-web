@@ -1,18 +1,16 @@
-// import { wrapGetInitialProps } from '@gloojs/react-lib'
 import _get from 'lodash/get'
 import _startsWith from 'lodash/startsWith'
 import nookies from 'nookies'
 import { initializeApollo } from '@bb/lib/apollo-client/apolloClient'
 import { VIEWER_QUERY } from '@bb/lib/apollo-client/schemas'
 import getDisplayName from '@bb/lib/getDisplayName'
-import redirectToLogin from '@bb/lib/redirectToLogin'
+import redirectToPage from '@bb/lib/redirectToPage'
 
 /*
-  - A higher order component that restricts access to a page.  You should _only_
-  use this for top level pages and not sub-components.
+  - A higher order component that restricts access to a page.  You should ONLY use this for top level pages and not sub-components.
   - Checks if a user JWT is found, if not, call redirect function
-  - If it finds a user JWT, continue to render wrapped component
-  - This HOC takes in a function as an argument, which takes in ctx, and returns a redirectUri as type string
+  - If it finds a user JWT, make GQL call to get viewer information
+	- Pass through viewer infomration as prop to wrapped component
 */
 
 const requiresAuthentication = WrappedComponent => {
@@ -20,25 +18,19 @@ const requiresAuthentication = WrappedComponent => {
 
 	requiresAuthComponent.getInitialProps = async ctx => {
 		try {
-			const apolloClient = initializeApollo({ ctx })
+			// Redirect to login if no token found
 			const { authToken } = nookies.get(ctx)
+			if (!authToken) {
+				redirectToPage({ ctx, page: '/login' })
+			}
+
+			// Require Apollo Client
+			const apolloClient = initializeApollo({ ctx })
 			if (!apolloClient) {
 				throw Error('Apollo Client is required.')
 			}
 
-			if (!authToken) {
-				console.info('No access token found. Redirecting to login...')
-
-				redirectToLogin({ ctx })
-				return {
-					redirect: {
-						permanent: false,
-						destination: '/login',
-					},
-				}
-			}
-
-			console.info('Access token found. Finding the user...')
+			// Find User
 			const response = await apolloClient.query({
 				query: VIEWER_QUERY,
 				context: {
@@ -48,8 +40,11 @@ const requiresAuthentication = WrappedComponent => {
 				},
 			})
 			const me = _get(response, 'data.viewer')
+
+			// Pass user data down as 'me' prop for authenticated users
 			return { ...WrappedComponent.getServerSideProps, me }
 		} catch (ex) {
+			// Return original props on fail
 			return { ...WrappedComponent.getServerSideProps }
 		}
 	}

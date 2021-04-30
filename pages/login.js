@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { useAuthentication } from '@bb/components/AuthenticationContext'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
+import requiresUnauthentication from '@bb/components/requiresUnauthentication'
 import styles from '@bb/styles/login.module.scss'
 
 const LoginPage = () => {
@@ -106,4 +107,4 @@ const LoginPage = () => {
 	)
 }
 
-export default LoginPage
+export default requiresUnauthentication(LoginPage)

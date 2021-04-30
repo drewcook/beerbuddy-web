@@ -16,8 +16,10 @@ const UserListsPage = ({ me }) => {
 	})
 
 	if (loading) return <LoadingState />
-	if (error)
+	if (error) {
+		console.log({ error })
 		return <Typography color="error">Sorry, an error occurred getting user lists.</Typography>
+	}
 
 	return (
 		<div>

@@ -45,9 +45,9 @@ export const AuthProvider = ({ apolloClient, children }) => {
 		}
 	}
 
-	useEffect(() => {
+	useEffect(async () => {
 		// Check to see if a token exists to set initial state
-		const token = parseCookies(null).authToken
+		const token = await parseCookies(null).authToken
 		setIsAuthenticated(token ? true : false)
 	}, [])
 
