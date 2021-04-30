@@ -8,11 +8,12 @@ import BeerCard from '@bb/components/BeerCard'
 import ListPagination from '@bb/components/ListPagination'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
+import requiresAuthentication from '@bb/components/requiresAuthentication'
 
 // These beer IDs are causing 404s when fetching thier details from BreweryDB
 const BUGGY_BEER_IDS = ['p1tFbP', 'BznahA']
 
-const BeerListPage = () => {
+const BeerListPage = ({ me }) => {
 	const [page, setPage] = useState(1)
 	const [getBeer, { data, loading, error }] = useLazyQuery(BEER_LIST_QUERY, { variables: { page } })
 
@@ -69,7 +70,7 @@ const BeerListPage = () => {
 						.filter(b => !BUGGY_BEER_IDS.includes(b.id))
 						.map(beer => (
 							<Grid item xs={12} sm={6} md={4} key={beer.id}>
-								<BeerCard beer={beer} />
+								<BeerCard beer={beer} userId={me._id} />
 							</Grid>
 						))}
 				</Grid>
@@ -90,4 +91,4 @@ const BeerListPage = () => {
 	)
 }
 
-export default BeerListPage
+export default requiresAuthentication(BeerListPage)

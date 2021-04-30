@@ -18,17 +18,14 @@ import {
 	ADD_USER_FAVORITE_MUTATION,
 	REMOVE_USER_FAVORITE_MUTATION,
 	VIEWER_QUERY,
-	USER_DASHBOARD_QUERY,
 } from '@bb/lib/apollo-client/schemas'
 import AddItemToListDialog from '@bb/components/AddItemToListDialog'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
-import { useViewer } from '@bb/components/ViewerContext'
-import baseStyles from '@bb/styles/base.module.scss'
+import requiresAuthentication from '@bb/components/requiresAuthentication'
 import styles from '@bb/styles/details.module.scss'
 
-const BeerDetailsPage = ({ id }) => {
-	const { viewer } = useViewer()
+const BeerDetailsPage = ({ id, me }) => {
 	const { data, loading, error } = useQuery(BEER_DETAILS_QUERY, { variables: { id } })
 	const details = _get(data, 'beer')
 
@@ -36,7 +33,7 @@ const BeerDetailsPage = ({ id }) => {
 		ADD_USER_FAVORITE_MUTATION,
 		{
 			variables: {
-				input: { userId: viewer._id, itemId: id, name: details?.name, type: 'beer' },
+				input: { userId: me._id, itemId: id, name: details?.name, type: 'beer' },
 			},
 			update: (store, { data }) => {
 				// Update Viewer cache
@@ -63,8 +60,8 @@ const BeerDetailsPage = ({ id }) => {
 		{
 			variables: {
 				input: {
-					userId: viewer._id,
-					favoriteId: viewer.favorites.filter(fav => fav.itemId === id)[0]?._id,
+					userId: me._id,
+					favoriteId: me.favorites.filter(fav => fav.itemId === id)[0]?._id,
 				},
 			},
 			update: (store, { data }) => {
@@ -117,7 +114,7 @@ const BeerDetailsPage = ({ id }) => {
 				</Link>
 			</Box>
 
-			{viewer.favorites.some(f => f.itemId === id) ? (
+			{me.favorites.some(f => f.itemId === id) ? (
 				<Box my={2}>
 					<Button
 						variant="contained"
@@ -150,14 +147,14 @@ const BeerDetailsPage = ({ id }) => {
 			)}
 
 			<Box my={2}>
-				<AddItemToListDialog beerId={details?.id} />
+				<AddItemToListDialog beerId={details?.id} userId={me._id} />
 			</Box>
 
 			<Divider />
 
 			<Paper className={styles.paper}>
 				{details.labels && (
-					<img src={details.labels.large} alt={details.name} className={styles.image} />
+					<img src={details.labels.large} alt={details.name} className={styles.beerImage} />
 				)}
 				<Typography variant="h4" gutterBottom>
 					About This Beer
@@ -179,7 +176,7 @@ const BeerDetailsPage = ({ id }) => {
 				<Typography variant="h5" gutterBottom>
 					Beer Style
 				</Typography>
-				{details.style.id && (
+				{details.style?.id && (
 					<>
 						<Typography gutterBottom>{details.style.description}</Typography>
 						<Typography gutterBottom>
@@ -208,10 +205,4 @@ const BeerDetailsPage = ({ id }) => {
 	)
 }
 
-export const getServerSideProps = async ctx => ({
-	props: {
-		id: ctx.query.id,
-	},
-})
-
-export default BeerDetailsPage
+export default requiresAuthentication(BeerDetailsPage)

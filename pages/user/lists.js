@@ -6,19 +6,19 @@ import { formatDate } from '@bb/lib/dateUtils'
 import CreateListDialog from '@bb/components/CreateListDialog'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
-import { useViewer } from '@bb/components/ViewerContext'
+import requiresAuthentication from '@bb/components/requiresAuthentication'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/userLists.module.scss'
 
-const UserListsPage = () => {
-	const { viewer } = useViewer()
+const UserListsPage = ({ me }) => {
 	const { loading, data, error } = useQuery(USER_LISTS_QUERY, {
-		variables: { userId: viewer._id },
+		variables: { userId: me._id },
 	})
 
 	if (loading) return <LoadingState />
-	if (error)
+	if (error) {
 		return <Typography color="error">Sorry, an error occurred getting user lists.</Typography>
+	}
 
 	return (
 		<div>
@@ -28,7 +28,7 @@ const UserListsPage = () => {
 				</Grid>
 				<Grid item xs={12} sm={6}>
 					<Box className={styles.createListBtn}>
-						<CreateListDialog />
+						<CreateListDialog userId={me._id} />
 					</Box>
 				</Grid>
 			</Grid>
@@ -69,4 +69,4 @@ const UserListsPage = () => {
 	)
 }
 
-export default UserListsPage
+export default requiresAuthentication(UserListsPage)

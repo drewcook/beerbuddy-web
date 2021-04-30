@@ -17,17 +17,17 @@ import { formatDate, formatDateName } from '@bb/lib/dateUtils'
 import CreateListDialog from '@bb/components/CreateListDialog'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
-import { useViewer } from '@bb/components/ViewerContext'
+import requiresAuthentication from '@bb/components/requiresAuthentication'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/dashboard.module.scss'
 
-const DashboardPage = () => {
-	const { viewer } = useViewer()
+const DashboardPage = ({ me }) => {
 	const { loading, data, error } = useQuery(USER_DASHBOARD_QUERY, {
-		variables: { userId: viewer._id },
+		variables: { userId: me._id },
+		skip: !me._id,
 	})
 	const details = _get(data, 'userDashboard')
-	const favorites = _get(viewer, 'favorites')
+	const favorites = _get(me, 'favorites')
 
 	const renderFavoriteItem = favorite => {
 		if (!favorite) return
@@ -73,7 +73,7 @@ const DashboardPage = () => {
 
 			<Box mt={-2} mb={4}>
 				<Typography>
-					<em>Quenching thirsts on BeerBuddy since {formatDateName(viewer.dateCreated)}.</em>
+					<em>Quenching thirsts on BeerBuddy since {formatDateName(me.dateCreated)}.</em>
 				</Typography>
 			</Box>
 
@@ -176,7 +176,7 @@ const DashboardPage = () => {
 								</Typography>
 							</Box>
 						)}
-						<CreateListDialog boxProps={{ mt: 3 }} btnProps={{ fullWidth: true }} />
+						<CreateListDialog boxProps={{ mt: 3 }} btnProps={{ fullWidth: true }} userId={me._id} />
 					</Paper>
 				</Grid>
 			</Grid>
@@ -184,4 +184,4 @@ const DashboardPage = () => {
 	)
 }
 
-export default DashboardPage
+export default requiresAuthentication(DashboardPage)

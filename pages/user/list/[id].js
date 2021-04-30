@@ -39,13 +39,12 @@ import { formatDate } from '@bb/lib/dateUtils'
 import getErrors from '@bb/lib/getGraphQLErrors'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
-import { useViewer } from '@bb/components/ViewerContext'
+import requiresAuthentication from '@bb/components/requiresAuthentication'
 import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/listDetails.module.scss'
 
-const UserListDetailsPage = ({ id }) => {
+const UserListDetailsPage = ({ id, me }) => {
 	const router = useRouter()
-	const { viewer } = useViewer()
 	const [itemToRemove, setItemToRemove] = useState(null)
 	const [removeDialogOpen, setRemoveDialogOpen] = useState(false)
 	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -58,7 +57,7 @@ const UserListDetailsPage = ({ id }) => {
 		ADD_USER_FAVORITE_MUTATION,
 		{
 			variables: {
-				input: { userId: viewer._id, itemId: id, name: details?.name, type: 'list' },
+				input: { userId: me._id, itemId: id, name: details?.name, type: 'list' },
 			},
 			update: (store, { data }) => {
 				// Update Viewer cache
@@ -85,8 +84,8 @@ const UserListDetailsPage = ({ id }) => {
 		{
 			variables: {
 				input: {
-					userId: viewer._id,
-					favoriteId: viewer.favorites.filter(fav => fav.itemId === id)[0]?._id,
+					userId: me._id,
+					favoriteId: me.favorites.filter(fav => fav.itemId === id)[0]?._id,
 				},
 			},
 			update: (store, { data }) => {
@@ -130,12 +129,12 @@ const UserListDetailsPage = ({ id }) => {
 				// Update User Dashboard cache
 				const dashboardData = store.readQuery({
 					query: USER_DASHBOARD_QUERY,
-					variables: { userId: viewer._id },
+					variables: { userId: me._id },
 				})
 				if (dashboardData) {
 					store.writeQuery({
 						query: USER_DASHBOARD_QUERY,
-						variables: { userId: viewer._id },
+						variables: { userId: me._id },
 						data: {
 							userDashboard: {
 								...dashboardData.userDashboard,
@@ -149,12 +148,12 @@ const UserListDetailsPage = ({ id }) => {
 				// Update User Lists cache
 				const listsData = store.readQuery({
 					query: USER_LISTS_QUERY,
-					variables: { userId: viewer._id },
+					variables: { userId: me._id },
 				})
 				if (listsData) {
 					store.writeQuery({
 						query: USER_LISTS_QUERY,
-						variables: { userId: viewer._id },
+						variables: { userId: me._id },
 						data: {
 							userLists: listsData.userLists.filter(list => list._id !== data?.deleteUserList._id),
 						},
@@ -293,7 +292,7 @@ const UserListDetailsPage = ({ id }) => {
 								Brewery Count: <strong>{details.breweryItems.length}</strong>
 							</Typography>
 						</Box>
-						{viewer.favorites.some(f => f.itemId === id) ? (
+						{me.favorites.some(f => f.itemId === id) ? (
 							<Box my={2}>
 								<Button
 									variant="contained"
@@ -449,7 +448,8 @@ const UserListDetailsPage = ({ id }) => {
 	)
 }
 
-export const getServerSideProps = async ctx => {
+// Must use getInitialProps with requiresAuthentication
+export const getInitialProps = async ctx => {
 	const { id } = ctx.query
 
 	return {
@@ -457,4 +457,4 @@ export const getServerSideProps = async ctx => {
 	}
 }
 
-export default UserListDetailsPage
+export default requiresAuthentication(UserListDetailsPage)

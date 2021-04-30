@@ -22,15 +22,13 @@ import {
 	LIST_DETAILS_QUERY,
 } from '@bb/lib/apollo-client/schemas'
 import LoadingState from './LoadingState'
-import { useViewer } from './ViewerContext'
 
-const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
-	const { viewer } = useViewer()
+const AddItemToListDialog = ({ beerId, breweryId, btnProps, userId }) => {
 	const [open, setOpen] = useState(false)
 	const [listId, setListId] = useState('new')
 	const [listName, setListName] = useState('')
 	const { data: getData, loading: getLoading, error: getError } = useQuery(USER_LISTS_QUERY, {
-		variables: { userId: viewer._id },
+		variables: { userId },
 	})
 	const [addItemToNewList, { loading: addNewLoading, error: addNewError }] = useMutation(
 		ADD_ITEM_NEW_LIST_MUTATION,
@@ -39,12 +37,12 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 				// Update User Dashboard cache
 				const dashboardData = store.readQuery({
 					query: USER_DASHBOARD_QUERY,
-					variables: { userId: viewer._id },
+					variables: { userId },
 				})
 				if (dashboardData) {
 					store.writeQuery({
 						query: USER_DASHBOARD_QUERY,
-						variables: { userId: viewer._id },
+						variables: { userId },
 						data: {
 							userDashboard: {
 								...dashboardData.userDashboard,
@@ -57,12 +55,12 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 				// Update User Lists cache
 				const listsData = store.readQuery({
 					query: USER_LISTS_QUERY,
-					variables: { userId: viewer._id },
+					variables: { userId },
 				})
 				if (listsData) {
 					store.writeQuery({
 						query: USER_LISTS_QUERY,
-						variables: { userId: viewer._id },
+						variables: { userId },
 						data: {
 							userLists: [...listsData.userLists, data?.addItemToNewList],
 						},
@@ -77,7 +75,7 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 			// User lists cache
 			const listsData = store.readQuery({
 				query: USER_LISTS_QUERY,
-				variables: { userId: viewer._id },
+				variables: { userId },
 			})
 			if (listsData) {
 				const userLists = listsData.userLists.map(list =>
@@ -85,7 +83,7 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 				)
 				store.writeQuery({
 					query: USER_LISTS_QUERY,
-					variables: { userId: viewer._id },
+					variables: { userId },
 					data: { userLists },
 				})
 			}
@@ -105,7 +103,7 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps }) => {
 		try {
 			if (listId === 'new') {
 				await addItemToNewList({
-					variables: { input: { userId: viewer._id, listName, beerId, breweryId } },
+					variables: { input: { userId, listName, beerId, breweryId } },
 				})
 
 				handleClose()
@@ -197,6 +195,7 @@ AddItemToListDialog.propTypes = {
 	btnProps: PropTypes.shape({
 		fullWidth: PropTypes.bool,
 	}),
+	userId: PropTypes.string.isRequired,
 }
 
 AddItemToListDialog.defaultProps = {

@@ -8,6 +8,7 @@ import { CREATE_USER_MUTATION } from '@bb/lib/apollo-client/schemas'
 import { useAuthentication } from '@bb/components/AuthenticationContext'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
+import requiresUnauthentication from '@bb/components/requiresUnauthentication'
 import styles from '@bb/styles/login.module.scss'
 
 const CreateAccountPage = () => {
@@ -25,7 +26,7 @@ const CreateAccountPage = () => {
 		setIsSubmitting(true)
 		setError(null)
 		try {
-			// TODO: wire this up, then sign them in, then redirect to hom
+			// TODO: wire this up, then sign them in, then redirect to home
 			await createUser({ variables: { input: { name, email, password } } })
 			await logIn({ email, password })
 			// Redirect to home
@@ -125,4 +126,4 @@ const CreateAccountPage = () => {
 	)
 }
 
-export default CreateAccountPage
+export default requiresUnauthentication(CreateAccountPage)
