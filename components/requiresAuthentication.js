@@ -39,9 +39,9 @@ const requiresAuthentication = WrappedComponent => {
 		}
 
 		// TODO: can add props here and almost replace ViewerContext with 'me'
-		console.info('accessToken found, optionally continuing on finding the user...')
-		const response = await apolloClient.query({ query: VIEWER_QUERY })
-		console.log('got the user', response)
+		// console.info('accessToken found, optionally continuing on finding the user...')
+		// const response = await apolloClient.query({ query: VIEWER_QUERY })
+		// console.log('got the user', response)
 		// const me = _get(response, 'data.viewer')
 
 		return {
