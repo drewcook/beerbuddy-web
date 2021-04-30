@@ -16,6 +16,7 @@ import redirectToPage from '@bb/lib/redirectToPage'
 const requiresAuthentication = WrappedComponent => {
 	const requiresAuthComponent = props => <WrappedComponent {...props} />
 
+	// TODO: this still doesn't support full use of getServerSideProps or getInitialProps on a page component using this
 	requiresAuthComponent.getInitialProps = async ctx => {
 		// Redirect to login if no token found
 		const { authToken } = nookies.get(ctx)
@@ -44,7 +45,8 @@ const requiresAuthentication = WrappedComponent => {
 		})
 		const me = _get(response, 'data.viewer')
 		// Pass user data down as 'me' prop for authenticated users
-		return { ...WrappedComponent.getServerSideProps, me }
+		// Pass through all query params as props
+		return { ...WrappedComponent.getInitialProps, ...ctx.query, me }
 	}
 
 	requiresAuthComponent.displayName = `requiresAuthentication(${getDisplayName(WrappedComponent)})`

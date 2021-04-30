@@ -18,13 +18,11 @@ import {
 	ADD_USER_FAVORITE_MUTATION,
 	REMOVE_USER_FAVORITE_MUTATION,
 	VIEWER_QUERY,
-	USER_DASHBOARD_QUERY,
 } from '@bb/lib/apollo-client/schemas'
 import AddItemToListDialog from '@bb/components/AddItemToListDialog'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
 import requiresAuthentication from '@bb/components/requiresAuthentication'
-import baseStyles from '@bb/styles/base.module.scss'
 import styles from '@bb/styles/details.module.scss'
 
 const BeerDetailsPage = ({ id, me }) => {
@@ -156,7 +154,7 @@ const BeerDetailsPage = ({ id, me }) => {
 
 			<Paper className={styles.paper}>
 				{details.labels && (
-					<img src={details.labels.large} alt={details.name} className={styles.image} />
+					<img src={details.labels.large} alt={details.name} className={styles.beerImage} />
 				)}
 				<Typography variant="h4" gutterBottom>
 					About This Beer
@@ -178,7 +176,7 @@ const BeerDetailsPage = ({ id, me }) => {
 				<Typography variant="h5" gutterBottom>
 					Beer Style
 				</Typography>
-				{details.style.id && (
+				{details.style?.id && (
 					<>
 						<Typography gutterBottom>{details.style.description}</Typography>
 						<Typography gutterBottom>
@@ -206,11 +204,5 @@ const BeerDetailsPage = ({ id, me }) => {
 		</>
 	)
 }
-
-export const getServerSideProps = async ctx => ({
-	props: {
-		id: ctx.query.id,
-	},
-})
 
 export default requiresAuthentication(BeerDetailsPage)

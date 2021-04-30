@@ -176,7 +176,7 @@ const DashboardPage = ({ me }) => {
 								</Typography>
 							</Box>
 						)}
-						<CreateListDialog boxProps={{ mt: 3 }} btnProps={{ fullWidth: true }} />
+						<CreateListDialog boxProps={{ mt: 3 }} btnProps={{ fullWidth: true }} userId={me._id} />
 					</Paper>
 				</Grid>
 			</Grid>

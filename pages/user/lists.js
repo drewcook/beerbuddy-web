@@ -28,7 +28,7 @@ const UserListsPage = ({ me }) => {
 				</Grid>
 				<Grid item xs={12} sm={6}>
 					<Box className={styles.createListBtn}>
-						<CreateListDialog />
+						<CreateListDialog userId={me._id} />
 					</Box>
 				</Grid>
 			</Grid>

@@ -448,7 +448,8 @@ const UserListDetailsPage = ({ id, me }) => {
 	)
 }
 
-export const getServerSideProps = async ctx => {
+// Must use getInitialProps with requiresAuthentication
+export const getInitialProps = async ctx => {
 	const { id } = ctx.query
 
 	return {

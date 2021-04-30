@@ -156,7 +156,7 @@ const BreweryDetailsPage = ({ id, me }) => {
 
 			<Paper className={styles.paper}>
 				{details.images && (
-					<img src={details.images.large} alt={details.name} className={styles.image} />
+					<img src={details.images.large} alt={details.name} className={styles.breweryImage} />
 				)}
 				<Typography variant="h4" gutterBottom>
 					About This Brewery
@@ -215,12 +215,16 @@ const BreweryDetailsPage = ({ id, me }) => {
 					<Box mt={5}>
 						<Typography variant="h4">Social Accounts</Typography>
 						{details.socialAccounts.map(acct => (
-							<Box my={2}>
-								<Link href={acct.link}>
-									<a>
-										<Typography>{acct.socialMedia.name}</Typography>
-									</a>
-								</Link>
+							<Box my={2} key={acct.id}>
+								{acct.link ? (
+									<Link href={acct.link}>
+										<a>
+											<Typography>{acct.socialMedia.name}</Typography>
+										</a>
+									</Link>
+								) : (
+									<Typography>{acct.socialMedia.name}</Typography>
+								)}
 							</Box>
 						))}
 					</Box>
@@ -229,11 +233,5 @@ const BreweryDetailsPage = ({ id, me }) => {
 		</>
 	)
 }
-
-export const getServerSideProps = async ctx => ({
-	props: {
-		id: ctx.query.id,
-	},
-})
 
 export default requiresAuthentication(BreweryDetailsPage)

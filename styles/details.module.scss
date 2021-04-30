@@ -3,7 +3,15 @@
 	padding: 15px 10px;
 }
 
-.image {
+.beerImage {
+	display: block;
+	width: 100%;
+	max-width: 400px;
+	margin: 10px auto;
+}
+
+.breweryImage {
+	display: block;
 	width: 100%;
 	max-width: 100%;
 	margin: 10px auto;
