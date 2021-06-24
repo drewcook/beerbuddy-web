@@ -24,7 +24,7 @@ const NavigationBar = () => {
 	const [open, setOpen] = useState(false)
 	const anchorRef = useRef(null)
 
-	const checkForMobile = () => setIsMobile(window.innerWidth < 600)
+	const checkForMobile = () => setIsMobile(window.innerWidth < 850)
 
 	const handleToggle = () => setOpen(prevOpen => !prevOpen)
 
@@ -89,6 +89,11 @@ const NavigationBar = () => {
 						<MenuItem>Breweries</MenuItem>
 					</a>
 				</Link>
+				<Link href="/search">
+					<a onClick={handleClose}>
+						<MenuItem>Search</MenuItem>
+					</a>
+				</Link>
 				<MenuItem onClick={logOut}>Sign Out</MenuItem>
 			</MenuList>
 		</ClickAwayListener>
@@ -117,7 +122,7 @@ const NavigationBar = () => {
 											aria-haspopup="true"
 											onClick={handleToggle}
 										>
-											<MenuIcon />
+											<MenuIcon className={styles.menuIcon} />
 										</Button>
 										<Popper
 											open={open}

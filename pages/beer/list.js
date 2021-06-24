@@ -34,20 +34,20 @@ const BeerListPage = ({ me }) => {
 		setPage(page + 1)
 	}
 
-	useEffect(async () => {
+	const handleGetBeer = async () => {
 		try {
 			await getBeer()
 		} catch (ex) {
 			console.error(ex)
 		}
+	}
+
+	useEffect(async () => {
+		await handleGetBeer()
 	}, [])
 
 	useEffect(async () => {
-		try {
-			await getBeer()
-		} catch (ex) {
-			console.error(ex)
-		}
+		await handleGetBeer()
 	}, [page])
 
 	const renderContent = () => {
@@ -74,6 +74,11 @@ const BeerListPage = ({ me }) => {
 							</Grid>
 						))}
 				</Grid>
+				<ListPagination
+					pageInfo={pageInfo}
+					onPrevPage={handlePrevPage}
+					onNextPage={handleNextPage}
+				/>
 			</>
 		)
 	}
@@ -82,10 +87,8 @@ const BeerListPage = ({ me }) => {
 		<>
 			<Head>
 				<title>BeerBuddy - Beer List</title>
-				<link rel="icon" href="/favicon.ico" />
 			</Head>
-
-			<PageTitle title="Beer List" headline="Search Beer" />
+			<PageTitle title="Beer List" headline="Browse Beer" />
 			{renderContent()}
 		</>
 	)
