@@ -73,7 +73,7 @@ const SearchPage = ({ me }) => {
 						))
 					) : (
 						<Grid item xs={12}>
-							<Box justifyContent="center" alignItems="center" my={5} textAlign="center">
+							<Box justifyContent="center" alignItems="center" my={2} textAlign="center">
 								{called ? (
 									<Typography>Nothing found. Try searching for something less specific!</Typography>
 								) : (

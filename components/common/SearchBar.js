@@ -3,7 +3,7 @@ import { useState } from 'react'
 import styles from '@bb/styles/searchBar.module.scss'
 
 const SearchBar = props => {
-	const { type, onSearch } = props
+	const { onSearch } = props
 	const [searchTerm, setSearchTerm] = useState('')
 
 	const handleSubmit = e => {
@@ -13,23 +13,21 @@ const SearchBar = props => {
 
 	return (
 		<div className={styles.searchBar}>
-			<h3>Search {type}</h3>
 			<form onSubmit={handleSubmit}>
-				<Grid container>
-					<Grid item xs={10}>
+				<Grid container spacing={2}>
+					<Grid item xs={12} sm={10}>
 						<TextField
 							variant="filled"
 							label="Search for a brewski..."
 							fullWidth
-							className={styles.input}
 							value={searchTerm}
 							onChange={e => setSearchTerm(e.target.value)}
 						/>
 					</Grid>
-					<Grid item xs={2}>
+					<Grid item xs={12} sm={2}>
 						<Button
 							variant="contained"
-							color="secondary"
+							color="primary"
 							disableElevation
 							fullWidth
 							size="large"
