@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import {
 	BREWERY_LIST_QUERY,
+	FILTER_BY_BREWERY_TYPE_MUTATION,
 	FILTER_BY_COUNTRY_MUTATION,
 	FILTER_BY_STATE_MUTATION,
 } from '@bb/lib/apollo-client/schemas'
@@ -20,6 +21,9 @@ const BreweryListPage = ({ me }) => {
 	const [getBreweries, { data, loading, error }] = useLazyQuery(BREWERY_LIST_QUERY, {
 		variables: { page },
 	})
+	const [filterByType, { data: tData, loading: tLoading, error: tError }] = useMutation(
+		FILTER_BY_BREWERY_TYPE_MUTATION,
+	)
 	const [filterByCountry, { data: cData, loading: cLoading, error: cError }] = useMutation(
 		FILTER_BY_COUNTRY_MUTATION,
 	)
@@ -44,7 +48,15 @@ const BreweryListPage = ({ me }) => {
 		setPage(page + 1)
 	}
 
-	const handleFilter = async ({ country, state }) => {
+	const handleFilter = async ({ type, country, state }) => {
+		if (type !== '') {
+			try {
+				await filterByType({ variables: { input: { page: 1, type } } })
+			} catch (ex) {
+				console.error(ex)
+			}
+		}
+
 		if (country !== '') {
 			try {
 				await filterByCountry({ variables: { input: { page: 1, country } } })
@@ -79,12 +91,17 @@ const BreweryListPage = ({ me }) => {
 	}, [page])
 
 	const renderContent = () => {
-		if (loading || cLoading || sLoading) return <LoadingState />
+		if (loading || tLoading || cLoading || sLoading) return <LoadingState />
 
-		if (error || cError || sError)
+		if (error || tError || cError || sError)
 			return (
 				<Typography color="error">Sorry, an error occurred while getting the results.</Typography>
 			)
+
+		if (tData) {
+			const filteredTypeData = _get(tData, 'filterByBreweryType', [])
+			console.log('got filtered type data', filteredTypeData)
+		}
 
 		if (cData) {
 			const filteredCountryData = _get(cData, 'filterByCountry', [])
@@ -95,6 +112,8 @@ const BreweryListPage = ({ me }) => {
 			const filteredStateData = _get(sData, 'filterByState', [])
 			console.log('got filtered state data', filteredStateData)
 		}
+
+		if (results) console.log(results)
 
 		return (
 			<>

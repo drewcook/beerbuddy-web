@@ -42,16 +42,19 @@ class BreweryDbAPI extends RESTDataSource {
 
 	async filterByBreweryType({ page, type }) {
 		const data = await this.post('/filter/breweries', { page, type })
+		console.log('filtered data', data.data[0])
 		return data
 	}
 
 	async filterByCountry({ page, country }) {
 		const data = await this.post('/filter/location/countries', { page, country })
+		console.log('filtered data', data.data[0])
 		return data
 	}
 
 	async filterByState({ page, state }) {
 		const data = await this.post('/filter/location/states', { page, state })
+		console.log('filtered data', data.data[0])
 		return data
 	}
 }
