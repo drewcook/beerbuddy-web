@@ -16,7 +16,6 @@ const BUGGY_BEER_IDS = ['p1tFbP', 'BznahA']
 const BeerListPage = ({ me }) => {
 	const [page, setPage] = useState(1)
 	const [getBeer, { data, loading, error }] = useLazyQuery(BEER_LIST_QUERY, { variables: { page } })
-
 	const results = _get(data, 'beerList.data', [])
 	const pageInfo = {
 		currentPage: _get(data, 'beerList.currentPage', 0),

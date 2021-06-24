@@ -1,13 +1,18 @@
-import { useLazyQuery } from '@apollo/client'
+import { useLazyQuery, useMutation } from '@apollo/client'
 import { Grid, Typography } from '@material-ui/core'
 import _get from 'lodash/get'
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
-import { BREWERY_LIST_QUERY } from '@bb/lib/apollo-client/schemas'
+import {
+	BREWERY_LIST_QUERY,
+	FILTER_BY_COUNTRY_MUTATION,
+	FILTER_BY_STATE_MUTATION,
+} from '@bb/lib/apollo-client/schemas'
 import BreweryCard from '@bb/components/BreweryCard'
 import ListPagination from '@bb/components/ListPagination'
 import LoadingState from '@bb/components/LoadingState'
 import PageTitle from '@bb/components/PageTitle'
+import FilterBar from '@bb/components/common/FilterBar'
 import requiresAuthentication from '@bb/components/requiresAuthentication'
 
 const BreweryListPage = ({ me }) => {
@@ -15,6 +20,12 @@ const BreweryListPage = ({ me }) => {
 	const [getBreweries, { data, loading, error }] = useLazyQuery(BREWERY_LIST_QUERY, {
 		variables: { page },
 	})
+	const [filterByCountry, { data: cData, loading: cLoading, error: cError }] = useMutation(
+		FILTER_BY_COUNTRY_MUTATION,
+	)
+	const [filterByState, { data: sData, loading: sLoading, error: sError }] = useMutation(
+		FILTER_BY_STATE_MUTATION,
+	)
 
 	const results = _get(data, 'breweryList.data', [])
 	const pageInfo = {
@@ -31,6 +42,24 @@ const BreweryListPage = ({ me }) => {
 	const handleNextPage = async () => {
 		if (page === pageInfo.numberOfPages) return
 		setPage(page + 1)
+	}
+
+	const handleFilter = async ({ country, state }) => {
+		if (country !== '') {
+			try {
+				await filterByCountry({ variables: { input: { page: 1, country } } })
+			} catch (ex) {
+				console.error(ex)
+			}
+		}
+
+		if (state !== '') {
+			try {
+				await filterByState({ variables: { input: { page: 1, state } } })
+			} catch (ex) {
+				console.error(ex)
+			}
+		}
 	}
 
 	useEffect(async () => {
@@ -50,12 +79,22 @@ const BreweryListPage = ({ me }) => {
 	}, [page])
 
 	const renderContent = () => {
-		if (loading) return <LoadingState />
+		if (loading || cLoading || sLoading) return <LoadingState />
 
-		if (error)
+		if (error || cError || sError)
 			return (
 				<Typography color="error">Sorry, an error occurred while getting the results.</Typography>
 			)
+
+		if (cData) {
+			const filteredCountryData = _get(cData, 'filterByCountry', [])
+			console.log('got filtered country data', filteredCountryData)
+		}
+
+		if (sData) {
+			const filteredStateData = _get(sData, 'filterByState', [])
+			console.log('got filtered state data', filteredStateData)
+		}
 
 		return (
 			<>
@@ -86,8 +125,8 @@ const BreweryListPage = ({ me }) => {
 				<title>BeerBuddy - Brewery List</title>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-
 			<PageTitle title="Brewery List" headline="Browse Breweries" />
+			<FilterBar onFilter={handleFilter} />
 			{renderContent()}
 		</>
 	)
