@@ -89,6 +89,11 @@ const NavigationBar = () => {
 						<MenuItem>Breweries</MenuItem>
 					</a>
 				</Link>
+				<Link href="/search">
+					<a onClick={handleClose}>
+						<MenuItem>Search</MenuItem>
+					</a>
+				</Link>
 				<MenuItem onClick={logOut}>Sign Out</MenuItem>
 			</MenuList>
 		</ClickAwayListener>
