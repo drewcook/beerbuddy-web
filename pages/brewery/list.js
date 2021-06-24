@@ -71,6 +71,11 @@ const BreweryListPage = ({ me }) => {
 						</Grid>
 					))}
 				</Grid>
+				<ListPagination
+					pageInfo={pageInfo}
+					onPrevPage={handlePrevPage}
+					onNextPage={handleNextPage}
+				/>
 			</>
 		)
 	}
@@ -82,7 +87,7 @@ const BreweryListPage = ({ me }) => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<PageTitle title="Brewery List" headline="Search Breweries" />
+			<PageTitle title="Brewery List" headline="Browse Breweries" />
 			{renderContent()}
 		</>
 	)
