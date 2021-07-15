@@ -1,0 +1,14 @@
+.filterBar {
+	margin-bottom: 60px;
+	padding: 30px 15px;
+
+	.filterTitle {
+		margin-bottom: 20px;
+	}
+
+	button[type="submit"] {
+		height: 100%;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+}
