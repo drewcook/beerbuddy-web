@@ -14,20 +14,17 @@ import AddItemToListDialog from '@bb/components/AddItemToListDialog'
 import styles from '@bb/styles/list.module.scss'
 
 const BreweryCard = ({ brewery, userId }) => {
-	const renderLocation = () => {
-		return (
-			brewery.locations && (
-				<Typography variant="overline">
-					<em>
-						{brewery.locations[0].locality}
-						{brewery.locations[0].region && ', ' + brewery.locations[0].region}
-						{brewery.locations[0].country.displayName !== 'United States' &&
-							', ' + brewery.locations[0].country.displayName}
-					</em>
-				</Typography>
-			)
+	const renderLocation = () =>
+		brewery.locations && (
+			<Typography variant="overline">
+				<em>
+					{brewery.locations[0].locality}
+					{brewery.locations[0].region && `, ${brewery.locations[0].region}`}
+					{brewery.locations[0].country.displayName !== 'United States' &&
+						`, ${brewery.locations[0].country.displayName}`}
+				</em>
+			</Typography>
 		)
-	}
 
 	return (
 		<Card className={styles.card}>
@@ -43,7 +40,7 @@ const BreweryCard = ({ brewery, userId }) => {
 					{renderLocation()}
 					{brewery.website && (
 						<Typography variant="body2">
-							<a href={brewery.website} target="_blank" className={styles.website}>
+							<a href={brewery.website} target="_blank" className={styles.website} rel="noreferrer">
 								<LanguageIcon /> Website
 							</a>
 						</Typography>
