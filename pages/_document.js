@@ -22,7 +22,7 @@ export default class MyDocument extends Document {
 					{process.env.NODE_ENV === 'production' && (
 						<>
 							{/* Google Analytics */}
-							<script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TAG}`}></script>
+							<script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TAG}`} />
 							<script
 								dangerouslySetInnerHTML={{
 									__html: `

@@ -1,8 +1,8 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
-import AddItemToListDialog from './AddItemToListDialog'
 import styles from '@bb/styles/list.module.scss'
+import AddItemToListDialog from './AddItemToListDialog'
 
 const BeerCard = ({ beer, userId }) => (
 	<Card className={styles.card}>

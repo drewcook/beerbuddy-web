@@ -53,7 +53,7 @@ export const AuthProvider = ({ apolloClient, children }) => {
 	useEffect(async () => {
 		// Check to see if a token exists to set initial state
 		const token = await parseCookies(null).authToken
-		setIsAuthenticated(token ? true : false)
+		setIsAuthenticated(!!token)
 	}, [])
 
 	if (isAuthenticated === null) return <LoadingState />

@@ -9,6 +9,7 @@ module.exports = {
 		},
 	},
 	rules: {
+		// 'max-len': ['warn', { code: 100, ignoreComments: true, ignoreUrls: true }],
 		// Next.js application, import 'React' is implicit
 		'react/react-in-jsx-scope': 'off',
 		'react/jsx-filename-extension': 'off',

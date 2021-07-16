@@ -46,8 +46,8 @@ ListPagination.propTypes = {
 		numberOfPages: PropTypes.number.isRequired,
 		totalResults: PropTypes.number.isRequired,
 	}).isRequired,
-	onPrevPage: PropTypes.func.isRequired,
 	onNextPage: PropTypes.func.isRequired,
+	onPrevPage: PropTypes.func.isRequired,
 }
 
 export default ListPagination

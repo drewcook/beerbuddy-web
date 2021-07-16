@@ -6,9 +6,9 @@ module.exports = {
 		'^@bb/api/(.*)$',
 		'^@bb/lib/(.*)$',
 		'^@bb/components/(.*)$',
-		'^[./]',
 		'^@bb/public/(.*)$',
 		'^@bb/styles/(.*)$',
+		'^[./]',
 	],
 	importOrderSeparation: false,
 	experimentalBabelParserPluginsList: ['jsx', 'typescript'], // not using typescript ATM but might, so prepping

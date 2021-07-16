@@ -169,18 +169,10 @@ const AddItemToListDialog = ({ beerId, breweryId, btnProps, userId }) => {
 					)}
 				</DialogContent>
 				<DialogActions>
-					<Button
-						onClick={handleClose}
-						color="primary"
-						disabled={getLoading || addLoading ? true : false}
-					>
+					<Button onClick={handleClose} color="primary" disabled={!!(getLoading || addLoading)}>
 						Cancel
 					</Button>
-					<Button
-						onClick={handleAddToList}
-						color="primary"
-						disabled={getLoading || addLoading ? true : false}
-					>
+					<Button onClick={handleAddToList} color="primary" disabled={!!(getLoading || addLoading)}>
 						Submit
 					</Button>
 				</DialogActions>
