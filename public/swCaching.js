@@ -37,22 +37,22 @@ self.addEventListener('fetch', e => {
 	// Exclude any requests are not GET and any coming from other sources (chrome extensions)
 	// if (e.request.url.indexOf('http') === -1) return
 	// if (e.request.method !== 'GET') return
+	e.respondWith(fetch(e.request))
+	// const response = fetch(e.request)
+	// 	.then(res => {
+	// 		// Make a clone of the response to cache
+	// 		const resClone = res.clone()
+	// 		caches.open(CACHE_NAME).then(cache => {
+	// 			// TODO: only add if response is not in cache already
+	// 			cache.put(e.request, resClone)
+	// 		})
+	// 		return res
+	// 	})
+	// 	.catch(err => {
+	// 		console.error(`Service Worker: Fetch error - ${err.message}`)
+	// 		// If offline, serve from cache
+	// 		return caches.match(e.request)
+	// 	})
 
-	const response = fetch(e.request)
-		.then(res => {
-			// Make a clone of the response to cache
-			const resClone = res.clone()
-			caches.open(CACHE_NAME).then(cache => {
-				// TODO: only add if response is not in cache already
-				cache.put(e.request, resClone)
-			})
-			return res
-		})
-		.catch(err => {
-			console.error(`Service Worker: Fetch error - ${err.message}`)
-			// If offline, serve from cache
-			return caches.match(e.request)
-		})
-
-	e.respondWith(response)
+	// e.respondWith(response)
 })
