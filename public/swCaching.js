@@ -48,7 +48,11 @@ self.addEventListener('fetch', e => {
 			})
 			return res
 		})
-		.catch(err => caches.match(e.request)) // If offline, serve from cache
+		.catch(err => {
+			console.error(`Service Worker: Fetch error - ${err.message}`)
+			// If offline, serve from cache
+			return caches.match(e.request)
+		})
 
 	e.respondWith(response)
 })
