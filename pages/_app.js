@@ -1,23 +1,20 @@
 import { ApolloProvider } from '@apollo/client'
+import { AuthProvider } from '@bb/components/AuthenticationContext'
+import ContentLayout from '@bb/components/ContentLayout'
+import { initializeApollo } from '@bb/lib/apollo-client/apolloClient'
+import useRemoveServerSideJss from '@bb/lib/useRemoveServerSideJss'
+import useServiceWorkers from '@bb/lib/useServiceWorkers'
+import '@bb/styles/globals.scss'
+import theme from '@bb/styles/theme'
 import { CssBaseline } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/core/styles'
 import withApollo from 'next-with-apollo'
 import App from 'next/app'
-import { useEffect } from 'react'
-import { initializeApollo } from '@bb/lib/apollo-client/apolloClient'
-import { AuthProvider } from '@bb/components/AuthenticationContext'
-import ContentLayout from '@bb/components/ContentLayout'
-import '@bb/styles/globals.scss'
-import theme from '@bb/styles/theme'
 
 const BeerBuddy = ({ Component, pageProps, router, apollo }) => {
-	useEffect(() => {
-		// Remove the server-side injected CSS to fix MUI className mismatch errors
-		const jssStyles = document.querySelector('#jss-server-side')
-		if (jssStyles) {
-			jssStyles.parentElement.removeChild(jssStyles)
-		}
-	}, [])
+	// Custom hooks
+	useRemoveServerSideJss()
+	useServiceWorkers()
 
 	return (
 		<ApolloProvider client={apollo}>
