@@ -43,6 +43,7 @@ self.addEventListener('fetch', e => {
 			// Make a clone of the response to cache
 			const resClone = res.clone()
 			caches.open(CACHE_NAME).then(cache => {
+				// TODO: only add if response is not in cache already
 				cache.put(e.request, resClone)
 			})
 			return res
