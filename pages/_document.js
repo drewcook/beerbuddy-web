@@ -1,8 +1,8 @@
+import theme from '@bb/styles/theme'
 import { ServerStyleSheets } from '@material-ui/core/styles'
 import getConfig from 'next/config'
-import Document, { Html, Head, Main, NextScript } from 'next/document'
+import Document, { Head, Html, Main, NextScript } from 'next/document'
 import React from 'react'
-import theme from '@bb/styles/theme'
 
 const {
 	publicRuntimeConfig: { GA_TAG },
