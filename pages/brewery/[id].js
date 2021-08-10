@@ -1,4 +1,15 @@
-import { useQuery, useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
+import AddItemToListDialog from '@bb/components/AddItemToListDialog'
+import LoadingState from '@bb/components/LoadingState'
+import PageTitle from '@bb/components/PageTitle'
+import requiresAuthentication from '@bb/components/requiresAuthentication'
+import {
+	ADD_USER_FAVORITE_MUTATION,
+	BREWERY_DETAILS_QUERY,
+	REMOVE_USER_FAVORITE_MUTATION,
+	VIEWER_QUERY,
+} from '@bb/lib/apollo-client/schemas'
+import styles from '@bb/styles/details.module.scss'
 import {
 	Box,
 	Button,
@@ -12,20 +23,8 @@ import {
 import StarIcon from '@material-ui/icons/Star'
 import _get from 'lodash/get'
 import Head from 'next/head'
+import Image from 'next/image'
 import Link from 'next/link'
-import {
-	BREWERY_DETAILS_QUERY,
-	ADD_USER_FAVORITE_MUTATION,
-	REMOVE_USER_FAVORITE_MUTATION,
-	VIEWER_QUERY,
-	USER_DASHBOARD_QUERY,
-} from '@bb/lib/apollo-client/schemas'
-import AddItemToListDialog from '@bb/components/AddItemToListDialog'
-import LoadingState from '@bb/components/LoadingState'
-import PageTitle from '@bb/components/PageTitle'
-import requiresAuthentication from '@bb/components/requiresAuthentication'
-import baseStyles from '@bb/styles/base.module.scss'
-import styles from '@bb/styles/details.module.scss'
 
 const BreweryDetailsPage = ({ id, me }) => {
 	const { data, loading, error } = useQuery(BREWERY_DETAILS_QUERY, { variables: { id } })
@@ -156,7 +155,7 @@ const BreweryDetailsPage = ({ id, me }) => {
 
 			<Paper className={styles.paper}>
 				{details.images && (
-					<img src={details.images.large} alt={details.name} className={styles.breweryImage} />
+					<Image src={details.images.large} alt={details.name} className={styles.breweryImage} />
 				)}
 				<Typography variant="h4" gutterBottom>
 					About This Brewery
