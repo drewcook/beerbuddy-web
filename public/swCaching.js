@@ -35,8 +35,8 @@ self.addEventListener('activate', e => {
 */
 self.addEventListener('fetch', e => {
 	// Exclude any requests are not GET and any coming from other sources (chrome extensions)
-	if (e.request.url.indexOf('http') === -1) return
-	if (e.request.method !== 'GET') return
+	// if (e.request.url.indexOf('http') === -1) return
+	// if (e.request.method !== 'GET') return
 
 	const response = fetch(e.request)
 		.then(res => {
