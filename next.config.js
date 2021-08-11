@@ -13,4 +13,7 @@ module.exports = {
 		USE_SANDBOX_API: process.env.USE_SANDBOX_API,
 		GA_TAG: process.env.GA_TAG,
 	},
+	images: {
+		domains: ['brewerydb-images.s3.amazonaws.com'],
+	},
 }

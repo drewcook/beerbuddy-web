@@ -154,9 +154,14 @@ const BreweryDetailsPage = ({ id, me }) => {
 			<Divider />
 
 			<Paper className={styles.paper}>
-				{details.images && (
-					<Image src={details.images.large} alt={details.name} className={styles.breweryImage} />
-				)}
+				<div className={styles.breweryImage}>
+					<Image
+						src={details.images?.squareMedium ?? '/brewery_vats2.png'}
+						alt={details.name}
+						width="200"
+						height="200"
+					/>
+				</div>
 				<Typography variant="h4" gutterBottom>
 					About This Brewery
 				</Typography>

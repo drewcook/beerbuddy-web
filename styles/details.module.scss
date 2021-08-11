@@ -3,16 +3,7 @@
 	padding: 15px 10px;
 }
 
-.beerImage {
-	display: block;
-	width: 100%;
-	max-width: 400px;
-	margin: 10px auto;
-}
-
-.breweryImage {
-	display: block;
-	width: 100%;
-	max-width: 100%;
+.beerImage, .breweryImage {
+	text-align: center;
 	margin: 10px auto;
 }
