@@ -2,57 +2,84 @@
 /* eslint-disable no-console */
 
 // Cache configuration
-const CACHE_NAME = 'v1' // TODO: make this dynamic based on commit SHA
+const CACHE_NAME = 'v2'
+const staticAssets = ['/beer_pint_color.png', '/brewery_vats2.png', 'favicon.ico']
+const ORIGIN_WHITELIST = [
+	// Development URLS
+	'http://localhost:5440',
+	'http://localhost:5280',
+	// Production URLS
+	'https://beerbuddy-web.herokuapp.com',
+	'https://beerbuddy-api.herokuapp.com',
+	'https://beerbuddy.io',
+	'https://api.beerbuddy.io',
+	// Google Fonts
+	'https://fonts.gstatic.com',
+	'https://fonts.googleapis.com',
+	// Brewery DB URLS
+	'https://brewerydb-images.s3.amazonaws.com',
+]
+
+const precache = () => {
+	// Add all known, used static assets to cache
+	caches
+		.open(CACHE_NAME)
+		.then(cache => cache.addAll(staticAssets))
+		.then(() => {
+			console.info('Service Worker: Static assets added to cache')
+		})
+}
+
+const clearCache = () => {
+	// Remove unwanted cache
+	caches.keys().then(cacheNames =>
+		Promise.all(
+			cacheNames.map(cache => {
+				if (cache !== CACHE_NAME) {
+					console.info('Service Worker: Clearing old cache')
+					return caches.delete(cache)
+				}
+				return cache
+			}),
+		),
+	)
+}
+
+const handleResponse = req =>
+	fetch(req)
+		.then(res => {
+			// Make a clone of the response to cache
+			const clone = res.clone()
+			caches.open(CACHE_NAME).then(cache => cache.put(req, clone))
+			// return the original response
+			return res
+		})
+		.catch(err => {
+			console.error(`Service Worker Error: ${err.message}`)
+			// If offline, serve from cache
+			return caches.match(req)
+		})
 
 // Install the SW
 self.addEventListener('install', e => {
 	console.info('Service Worker: Installed')
+	e.waitUntil(precache())
 })
 
 // Activate the SW
 self.addEventListener('activate', e => {
 	console.info('Service Worker: Activated')
-
-	// Remove unwanted caches
-	e.waitUntil(
-		caches.keys().then(cacheNames =>
-			Promise.all(
-				cacheNames.map(cache => {
-					if (cache !== CACHE_NAME) {
-						console.info('Service Worker: Clearing old cache')
-						return caches.delete(cache)
-					}
-					return cache
-				}),
-			),
-		),
-	)
+	e.waitUntil(clearCache())
 })
 
-/*
-	Intercept fetch requests from our web application, complete fetch and then cache the response.
-	If we're offline, or the initial fetch fails, serve the response from the cache
-*/
+// Intercept all supported GET requests
 self.addEventListener('fetch', e => {
-	// Exclude any requests are not GET and any coming from other sources (chrome extensions)
-	// if (e.request.url.indexOf('http') === -1) return
-	// if (e.request.method !== 'GET') return
-	e.respondWith(fetch(e.request))
-	// const response = fetch(e.request)
-	// 	.then(res => {
-	// 		// Make a clone of the response to cache
-	// 		const resClone = res.clone()
-	// 		caches.open(CACHE_NAME).then(cache => {
-	// 			// TODO: only add if response is not in cache already
-	// 			cache.put(e.request, resClone)
-	// 		})
-	// 		return res
-	// 	})
-	// 	.catch(err => {
-	// 		console.error(`Service Worker: Fetch error - ${err.message}`)
-	// 		// If offline, serve from cache
-	// 		return caches.match(e.request)
-	// 	})
+	const { origin } = new URL(e.request.url)
+	const isGetRequest = e.request.method === 'GET'
 
-	// e.respondWith(response)
+	if (ORIGIN_WHITELIST.includes(origin) && isGetRequest) {
+		e.respondWith(handleResponse(e.request))
+	} else {
+		console.log(origin)
+	}
 })
