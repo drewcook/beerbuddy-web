@@ -79,7 +79,5 @@ self.addEventListener('fetch', e => {
 
 	if (ORIGIN_WHITELIST.includes(origin) && isGetRequest) {
 		e.respondWith(handleResponse(e.request))
-	} else {
-		console.log(origin)
 	}
 })
