@@ -26,3 +26,7 @@ If you do happen to have a valid API key however, update `USE_SANDBOX_API` to be
 
 ## Deployments
 The app currently deploys to a Heroku environment.  The current production application [can be viewed here](https://beerbuddy.io/).
+
+<p align="center">
+ <img src="https://visitor-badge.glitch.me/badge?page_id=drewcook.beerbuddy-web" alt="visitor count"/>
+</p>
