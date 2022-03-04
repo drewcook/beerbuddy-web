@@ -6,7 +6,7 @@ const {
 } = getConfig()
 
 // Authenticate a user based off email and password
-export const authenticateUser = async ({ email, password }) => {
+const authenticateUser = async ({ email, password }) => {
 	try {
 		const response = await axios.post(`${BEERBUDDY_API_HOST}/auth`, { email, password })
 		const token = response.data
@@ -15,3 +15,5 @@ export const authenticateUser = async ({ email, password }) => {
 		throw new Error(error.response.data)
 	}
 }
+
+export default authenticateUser

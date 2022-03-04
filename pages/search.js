@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client'
 import { Box, Grid, Typography } from '@material-ui/core'
 import _get from 'lodash/get'
 import Head from 'next/head'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { SEARCH_BREWERYDB_MUTATION } from '@bb/lib/apollo-client/schemas'
 import BeerCard from '@bb/components/BeerCard'
 import BreweryCard from '@bb/components/BreweryCard'
@@ -17,10 +17,20 @@ const SearchPage = ({ me }) => {
 	const [query, setQuery] = useState('')
 	const [search, { data, loading, error, called }] = useMutation(SEARCH_BREWERYDB_MUTATION)
 	const results = _get(data, 'searchBreweryDb.data', [])
+
 	const pageInfo = {
 		currentPage: _get(data, 'searchBreweryDb.currentPage', 0),
 		numberOfPages: _get(data, 'searchBreweryDb.numberOfPages', 0),
 		totalResults: _get(data, 'searchBreweryDb.totalResults', 0),
+	}
+
+	const handleGetSearch = async (q, pageQ = page) => {
+		setQuery(q)
+		try {
+			await search({ variables: { input: { page: pageQ, query: q } } })
+		} catch (ex) {
+			console.error(ex)
+		}
 	}
 
 	const handlePrevPage = async () => {
@@ -35,15 +45,6 @@ const SearchPage = ({ me }) => {
 		const newPage = page + 1
 		await setPage(newPage)
 		await handleGetSearch(query, newPage)
-	}
-
-	const handleGetSearch = async (q, pageQ = page) => {
-		setQuery(q)
-		try {
-			await search({ variables: { input: { page: pageQ, query: q } } })
-		} catch (ex) {
-			console.error(ex)
-		}
 	}
 
 	const renderContent = () => {
@@ -64,7 +65,7 @@ const SearchPage = ({ me }) => {
 					/>
 				)}
 				<Grid container spacing={3}>
-					{results.length > 0 ? (
+					{results !== null && results.length > 0 ? (
 						results.map(item => (
 							<Grid item xs={12} sm={6} md={4} key={item.id}>
 								{item.__typename === 'Beer' && <BeerCard beer={item} userId={me._id} />}

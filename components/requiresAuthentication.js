@@ -1,5 +1,4 @@
 import _get from 'lodash/get'
-import _startsWith from 'lodash/startsWith'
 import nookies from 'nookies'
 import { initializeApollo } from '@bb/lib/apollo-client/apolloClient'
 import { VIEWER_QUERY } from '@bb/lib/apollo-client/schemas'
@@ -10,7 +9,7 @@ import redirectToPage from '@bb/lib/redirectToPage'
   - A higher order component that restricts access to a page.  You should ONLY use this for top level pages and not sub-components.
   - Checks if a user JWT is found, if not, call redirect function
   - If it finds a user JWT, make GQL call to get viewer information
-	- Pass through viewer infomration as prop to wrapped component
+	- Pass through viewer information as prop to wrapped component
 */
 
 const requiresAuthentication = WrappedComponent => {

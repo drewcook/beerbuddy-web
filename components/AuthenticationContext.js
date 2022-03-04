@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import PropTypes from 'prop-types'
 import { createContext, useContext, useState, useEffect } from 'react'
-import { authenticateUser } from '@bb/api/auth'
+import authenticateUser from '@bb/api/auth'
 import getClientHost from '@bb/lib/getClientHost'
 import LoadingState from './LoadingState'
 

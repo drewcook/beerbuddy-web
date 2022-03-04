@@ -1,5 +1,3 @@
-import _get from 'lodash/get'
-import _startsWith from 'lodash/startsWith'
 import nookies from 'nookies'
 import getDisplayName from '@bb/lib/getDisplayName'
 import redirectToPage from '@bb/lib/redirectToPage'

@@ -24,7 +24,7 @@ const LoginPage = () => {
 		try {
 			await logIn({ email, password })
 			// Redirect to home
-			router.push('/')
+			router.push('/home')
 		} catch (e) {
 			setIsSubmitting(false)
 			setError(e.message)
